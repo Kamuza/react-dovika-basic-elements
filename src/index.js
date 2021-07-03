@@ -1,6 +1,5 @@
 import React from 'react'
-import styles from './styles.module.css'
+import ReactDOM from 'react-dom'
+import App from '../example/src/App'
 
-export const ExampleComponent = ({ text }) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
+ReactDOM.render(<App />, document.getElementById("root"));
