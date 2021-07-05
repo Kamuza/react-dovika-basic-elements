@@ -4,7 +4,7 @@ import _ from 'lodash'
 import styled from 'styled-components'
 import colors from './colors'
 
-/*
+/**
  *   Elements: [
  *      title:                  Título del input, se mostrará sobre el input.
  *      onChange:               Función que ejecutará cada vez que se ejecute un cambio.
@@ -175,7 +175,7 @@ const Container = styled.div`
     font-size: 10px;
     color: ${colors.primary};
     background: #fff;
-    padding: 0px 5px;
+    padding: 0 5px;
   }
   input:focus ~ .floating-label-outside,
   input:not(:focus).has-value ~ .floating-label-outside {
