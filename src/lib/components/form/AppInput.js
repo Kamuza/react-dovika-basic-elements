@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { RiCloseCircleLine } from 'react-icons/all'
 import _ from 'lodash'
 import styled from 'styled-components'
-import colors from './colors'
+import colors from '../colors'
 
 /**
  *   Elements: [
@@ -38,49 +38,61 @@ const AppInput = (props) => {
     isClearable,
     append,
     autoFocus,
-    isPassword
+    isPassword,
+    isReadOnly,
+    isDisabled,
+    noBorder
   } = props
   const [hasValue, setHasValue] = useState(value)
 
-  return (
-    <Container className='mb-2'>
-      <input
-        type={!isPassword ? 'text' : 'password'}
-        name={name}
-        className={`outside ${hasValue ? 'has-value' : ''} ${
-          error ? 'error' : ''
-        }`}
-        value={value}
-        onChange={(e) => {
-          onChange(e.target.value)
-          setHasValue(e.target.value)
-        }}
-        autoFocus={autoFocus}
-        onKeyDown={(e) => {
-          onKeyDown(e)
-          _.forEach(onPressKeyList, (key) => {
-            if (e.key === key) onPressKey(key)
-          })
-        }}
-      />
-      <span className='floating-label-outside'>
-        {title} {required && <span className='text-danger'>*</span>}{' '}
-        {error && <small className='text-danger'>{error}</small>}
-      </span>
-      {placeholder && <span className='placeholder'>{placeholder}</span>}
-      {icon && <span className='input-icon-outside'>{icon}</span>}
-      {value && isClearable && (
-        <span
-          className='clearable'
-          onClick={() => {
-            onChange('')
-            setHasValue('')
+  if (!isReadOnly && !isDisabled)
+    return (
+      <Container className='mb-2'>
+        <input
+          type={!isPassword ? 'text' : 'password'}
+          name={name}
+          className={`outside ${hasValue ? 'has-value' : ''} ${
+            error ? 'error' : ''
+          }`}
+          value={value}
+          onChange={(e) => {
+            onChange(e.target.value)
+            setHasValue(e.target.value)
           }}
-        >
-          <RiCloseCircleLine />
+          autoFocus={autoFocus}
+          onKeyDown={(e) => {
+            onKeyDown(e)
+            _.forEach(onPressKeyList, (key) => {
+              if (e.key === key) onPressKey(key)
+            })
+          }}
+        />
+        <span className='floating-label-outside'>
+          {title} {required && <span className='text-danger'>*</span>}{' '}
+          {error && <small className='text-danger'>{error}</small>}
         </span>
-      )}
-      {append && <div className='input-append'>{append}</div>}
+        {placeholder && <span className='placeholder'>{placeholder}</span>}
+        {icon && <span className='input-icon-outside'>{icon}</span>}
+        {value && isClearable && (
+          <span
+            className='clearable'
+            onClick={() => {
+              onChange('')
+              setHasValue('')
+            }}
+          >
+            <RiCloseCircleLine />
+          </span>
+        )}
+        {append && <div className='input-append'>{append}</div>}
+      </Container>
+    )
+
+  return (
+    <Container className={`mb-2 ${isDisabled && 'disabled'}`}>
+      <div className={`read-only ${noBorder && 'no-border'}`}>{value}</div>
+      <span className='floating-label-outside'>{title}</span>
+      {icon && <span className='input-icon-outside'>{icon}</span>}
     </Container>
   )
 }
@@ -99,8 +111,13 @@ AppInput.defaultProps = {
 const Container = styled.div`
   margin: 8px 0;
   position: relative;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   input.outside,
-  input[type='text'].outside {
+  input[type='text'].outside,
+  .read-only {
     color: #555;
     width: 100%;
     font-size: 15px;
@@ -117,6 +134,10 @@ const Container = styled.div`
     -moz-appearance: none;
     position: relative;
     z-index: 1;
+    &.no-border {
+      border: none !important;
+      padding: 10px 10px 2px 44px !important;
+    }
 
     &::placeholder {
       transition: all ease 0.8s;
@@ -169,7 +190,8 @@ const Container = styled.div`
     font-weight: 400;
   }
   input:focus ~ .floating-label-outside,
-  input.has-value ~ .floating-label-outside {
+  input.has-value ~ .floating-label-outside,
+  .read-only ~ .floating-label-outside {
     top: -7px;
     opacity: 1;
     font-size: 10px;
@@ -194,7 +216,8 @@ const Container = styled.div`
     z-index: 4;
   }
   .input-icon-outside svg,
-  .input-icon-outside span {
+  .input-icon-outside span,
+  .input-icon-outside i {
     position: absolute;
     top: 12px;
     left: 15px;
