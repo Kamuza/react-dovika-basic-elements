@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import { RiCloseCircleLine } from 'react-icons/ri'
 import styled from 'styled-components'
-import colors from '../colors'
+import defaultColors from '../../constants/defaultColors'
+const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
  *   Elements: [

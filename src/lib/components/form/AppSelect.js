@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import {
-  RiCloseCircleLine,
-  RiLoader4Line,
-  RiCheckLine,
-  FaCaretDown
-} from 'react-icons/all'
+import { RiCheckLine, RiCloseCircleLine, RiLoader4Line } from 'react-icons/ri'
 import _ from 'lodash'
-import colors from '../colors'
+import { FaCaretDown } from 'react-icons/fa'
+import styled from 'styled-components'
 import defaultTranslations from '../../constants/defaultTranslations'
 import defaultColors from '../../constants/defaultColors'
 import { useIsFirstRender } from '../../hooks/isFirstRender'
+const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
  *   Elements: [
@@ -29,14 +25,14 @@ import { useIsFirstRender } from '../../hooks/isFirstRender'
  *      icon (OPC):             Icono a la izquierda. Si no se establece, queda el hueco.
  *      isMulti (OPC):          TRUE si se quieren poder seleccionar múltiples opciones. Por defecto FALSE.
  *      hasSearchBox (OPC):     TRUE si se quiere poder realizar búsquedas entre los elementos. Por defecto FALSE
- *      hasSelectOptions (OPC): TRUE si se quiere tener botón de Seleccionar Todo y Deseleccionar todo. Seleccionará o deseleccionará todo lo visible (es decir, utilizará el filtro de hasSearchBox si existe)
+ *      hasSelectOptions (OPC): TRUE si se quiere tener botón de Seleccionar Todo y Deseleccionar todo. Śeleccionará o deseleccionará todo lo visible (es decir, utilizará el filtro de hasSearchBox si existe)
  *      defaultValue (OPC):     Valor por defecto (hay que ver si esto es necesario o ya no).
  *      setValueField (OPC):    Nombre del campo Value dentro de los objetos en 'options'. Por defecto value.
  *      setLabelField (OPC):    Nombre del campo Label dentro de los objetos en 'options'. Por defecto label.
  *      isClearable (OPC):      TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
  *      isLoading (OPC):        TRUE si se quiere mostrar un Select en modo carga mientras se reciben los datos. Por defecto FALSE.
  *   ]
- **/
+ * */
 
 const AppSelect = (props) => {
   const {
@@ -54,7 +50,9 @@ const AppSelect = (props) => {
     setValueField,
     setLabelField,
     isClearable,
-    isLoading
+    isLoading,
+    required,
+    error
   } = props
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState(
@@ -72,7 +70,6 @@ const AppSelect = (props) => {
 
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
-  const colors = window.dovikaBasicElementsColors || defaultColors
 
   useEffect(() => {
     if (!isFirstRender && !_.isEqual(selectedValue, selectedOptions))
@@ -103,13 +100,29 @@ const AppSelect = (props) => {
   const handleClickOption = (opt) => {
     if (!isMulti) {
       setSelectedOptions(opt)
-    } else {
-      const options = [...selectedOptions]
-      if (!options.includes(opt)) options.push(opt)
-      else {
-        options.splice(_.findIndex(options, opt), 1)
+    } else if ('isOptGroup' in opt) {
+      let tempOptions = [...selectedOptions]
+      const optChildOptions = options.filter((o) =>
+        o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
+      )
+      const selectedTempOptions = tempOptions.filter((o) =>
+        o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
+      )
+
+      if (optChildOptions.length === selectedTempOptions.length) {
+        const diff = _.difference(selectedOptions, optChildOptions)
+        setSelectedOptions(diff)
+      } else {
+        tempOptions = [...selectedOptions, ...optChildOptions]
+        setSelectedOptions(_.uniqBy(tempOptions, setValueField))
       }
-      setSelectedOptions(options)
+    } else {
+      const tempOptions = [...selectedOptions]
+      if (!tempOptions.includes(opt)) tempOptions.push(opt)
+      else {
+        tempOptions.splice(_.findIndex(tempOptions, opt), 1)
+      }
+      setSelectedOptions(tempOptions)
     }
   }
 
@@ -153,14 +166,18 @@ const AppSelect = (props) => {
   }
   // < SELECT OPTIONS
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <Container ref={block}>
-        <Input className={`${className}`}>
+        <Input className={`${className}`} hasIcon={!!icon} error={error}>
           <InputIcon>
             <RiLoader4Line className='fa-spin' color={colors.primary} />
           </InputIcon>
-          {title && <InputTitle>{title}</InputTitle>}
+          {title && (
+            <InputTitle>
+              {title} {required && <span className='text-danger'>*</span>}
+            </InputTitle>
+          )}
           <InputPlaceholder>{placeholder}</InputPlaceholder>
           <FaCaretDown
             className='float-right'
@@ -170,6 +187,7 @@ const AppSelect = (props) => {
         </Input>
       </Container>
     )
+  }
 
   return (
     <Container ref={block}>
@@ -177,9 +195,15 @@ const AppSelect = (props) => {
         active={selectedOptions}
         className={`${className}`}
         onClick={() => setIsOpen(!isOpen)}
+        hasIcon={!!icon}
+        error={error}
       >
         {icon && <InputIcon>{icon}</InputIcon>}
-        {title && <InputTitle>{title}</InputTitle>}
+        {title && (
+          <InputTitle>
+            {title} {required && <span className='text-danger'>*</span>}
+          </InputTitle>
+        )}
         {isMulti ? (
           selectedOptions && selectedOptions.length === 0 ? (
             <InputPlaceholder>{placeholder}</InputPlaceholder>
@@ -253,7 +277,7 @@ const AppSelect = (props) => {
                 filteredOptions.map((opt, i) => (
                   <div key={i}>
                     {'isOptGroup' in opt ? (
-                      <li>
+                      <li onClick={() => isMulti && handleClickOption(opt)}>
                         <OptGroup>{opt[setLabelField]}</OptGroup>
                       </li>
                     ) : (
@@ -262,9 +286,7 @@ const AppSelect = (props) => {
                           backgroundColor: opt.bgColor,
                           color: opt.fgColor
                         }}
-                        onClick={() =>
-                          'isOptGroup' in opt ? {} : handleClickOption(opt)
-                        }
+                        onClick={() => handleClickOption(opt)}
                         className={
                           (!isMulti &&
                             selectedOptions !== null &&
@@ -350,8 +372,8 @@ const ClearButton = styled.div`
 
 const Input = styled.div`
   position: relative;
-  border: #ddd solid 1px;
-  padding: 6px 6px 1px 40px;
+  border: ${(props) => (props.error ? 'red' : '#ddd')} solid 1px;
+  padding: 6px 6px 1px ${(props) => (props.hasIcon ? '40px' : '10px')};
   cursor: pointer;
 `
 
@@ -367,13 +389,17 @@ const SearchInput = styled.input`
 `
 
 const InputIcon = styled.span`
-  svg {
+  svg,
+  i {
     position: absolute;
     top: 10px;
     left: 14px;
     z-index: 3;
     color: #727272;
     transition: color ease 0.2s;
+  }
+  i {
+    top: 6px;
   }
 `
 

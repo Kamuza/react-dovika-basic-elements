@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
-import { RiCloseCircleLine } from 'react-icons/all'
-import _ from 'lodash'
+import React, { useEffect, useState } from 'react'
+import { RiCloseCircleLine } from 'react-icons/ri'
 import styled from 'styled-components'
-import colors from '../colors'
+import _ from 'lodash'
+import defaultColors from '../../constants/defaultColors'
+import { useIsFirstRender } from '../../hooks/isFirstRender'
+const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
  *   Elements: [
@@ -20,9 +22,10 @@ import colors from '../colors'
  *      isClearable (OPC):      TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
  *      append (OPC):           WIP: esto va a desaparecer.
  *      autoFocus (OPC):        Añadirá autoFocus al input.
+ *      decimals (OPC):         Números de decimales permitidos. Si se establece 0, no se permitirán comas o puntos. Por defecto 3.
  *   ]
  **/
-const AppInput = (props) => {
+const AppInputNumber = (props) => {
   const {
     title,
     onChange,
@@ -38,86 +41,94 @@ const AppInput = (props) => {
     isClearable,
     append,
     autoFocus,
-    isPassword,
-    isReadOnly,
-    isDisabled,
-    noBorder
+    readOnly,
+    decimals
   } = props
   const [hasValue, setHasValue] = useState(value)
+  const isFirstRender = useIsFirstRender()
+  const regex = `^(\\d+)${decimals === 0 ? '' : '?[,.]'}?(\\d{0,${decimals}})?$`
+  const re = new RegExp(regex)
+  const [formattedValue, setFormattedValue] = useState(
+    value ? value.toString() : ''
+  )
 
-  if (!isReadOnly && !isDisabled)
-    return (
-      <Container className='mb-2'>
-        <input
-          type={!isPassword ? 'text' : 'password'}
-          name={name}
-          className={`outside ${hasValue ? 'has-value' : ''} ${
-            error ? 'error' : ''
-          }`}
-          value={value}
-          onChange={(e) => {
-            onChange(e.target.value)
-            setHasValue(e.target.value)
-          }}
-          autoFocus={autoFocus}
-          onKeyDown={(e) => {
-            onKeyDown(e)
-            _.forEach(onPressKeyList, (key) => {
-              if (e.key === key) onPressKey(key)
-            })
-          }}
-        />
-        <span className='floating-label-outside'>
-          {title} {required && <span className='text-danger'>*</span>}{' '}
-          {error && <small className='text-danger'>{error}</small>}
-        </span>
-        {placeholder && <span className='placeholder'>{placeholder}</span>}
-        {icon && <span className='input-icon-outside'>{icon}</span>}
-        {value && isClearable && (
-          <span
-            className='clearable'
-            onClick={() => {
-              onChange('')
-              setHasValue('')
-            }}
-          >
-            <RiCloseCircleLine />
-          </span>
-        )}
-        {append && <div className='input-append'>{append}</div>}
-      </Container>
-    )
+  useEffect(() => {
+    if (value) setFormattedValue(value.toString())
+  }, [value])
+
+  useEffect(() => {
+    if (!isFirstRender) {
+      onChange(formattedValue)
+      setHasValue(formattedValue)
+    }
+  }, [formattedValue])
+
+  const handleOnChange = (val) => {
+    if (re.test(val)) setFormattedValue(val.replaceAll(',', '.'))
+  }
 
   return (
-    <Container className={`mb-2 ${isDisabled && 'disabled'}`}>
-      <div className={`read-only ${noBorder && 'no-border'}`}>{value}</div>
-      <span className='floating-label-outside'>{title}</span>
+    <Container className='mb-2' hasIcon={!!icon}>
+      <input
+        type='text'
+        name={name}
+        className={`outside ${hasValue ? 'has-value' : ''} ${
+          error ? 'error' : ''
+        }`}
+        value={value || ''}
+        readOnly={readOnly}
+        onChange={(e) => handleOnChange(e.target.value)}
+        autoFocus={autoFocus}
+        onKeyDown={(e) => {
+          onKeyDown(e)
+          _.forEach(onPressKeyList, (key) => {
+            if (e.key === key) onPressKey(key)
+          })
+        }}
+      />
+      <span className='floating-label-outside'>
+        {title} {required && <span className='text-danger'>*</span>}{' '}
+        {error && <small className='text-danger'>{error}</small>}
+      </span>
+      {placeholder && <span className='placeholder'>{placeholder}</span>}
       {icon && <span className='input-icon-outside'>{icon}</span>}
+      {value && isClearable ? (
+        <span
+          className='clearable'
+          onClick={() => {
+            onChange('')
+            setHasValue('')
+          }}
+        >
+          <RiCloseCircleLine />
+        </span>
+      ) : (
+        ''
+      )}
+      {append && <div className='input-append'>{append}</div>}
     </Container>
   )
 }
 
-export default AppInput
-AppInput.defaultProps = {
+export default AppInputNumber
+AppInputNumber.defaultProps = {
   name: '',
   isField: false,
   autoFocus: false,
   clearable: false,
   append: '',
   onKeyDown: () => {},
-  ref: null
+  min: null,
+  max: null,
+  decimals: 3,
+  readOnly: false
 }
 
 const Container = styled.div`
   margin: 8px 0;
   position: relative;
-  &.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
   input.outside,
-  input[type='text'].outside,
-  .read-only {
+  input[type='text'].outside {
     color: #555;
     width: 100%;
     font-size: 15px;
@@ -129,15 +140,11 @@ const Container = styled.div`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin-bottom: -1px;
-    padding: 6px 10px 6px 40px;
+    padding: 6px 10px 6px ${(props) => (props.hasIcon ? '40px' : '10px')};
     -webkit-appearance: none;
     -moz-appearance: none;
     position: relative;
     z-index: 1;
-    &.no-border {
-      border: none !important;
-      padding: 10px 10px 2px 44px !important;
-    }
 
     &::placeholder {
       transition: all ease 0.8s;
@@ -184,20 +191,19 @@ const Container = styled.div`
     input:not(:focus).has-value
     ~ .floating-label-outside {
     top: 12px;
-    left: 40px;
+    left: ${(props) => (props.hasIcon ? '40px' : '10px')};
     font-size: 10px;
     opacity: 1;
     font-weight: 400;
   }
   input:focus ~ .floating-label-outside,
-  input.has-value ~ .floating-label-outside,
-  .read-only ~ .floating-label-outside {
+  input.has-value ~ .floating-label-outside {
     top: -7px;
     opacity: 1;
     font-size: 10px;
     color: ${colors.primary};
     background: #fff;
-    padding: 0 5px;
+    padding: 0px 5px;
   }
   input:focus ~ .floating-label-outside,
   input:not(:focus).has-value ~ .floating-label-outside {
@@ -206,7 +212,7 @@ const Container = styled.div`
   .floating-label-outside {
     position: absolute;
     pointer-events: none;
-    left: 40px;
+    left: ${(props) => (props.hasIcon ? '40px' : '10px')};
     top: 8px;
     transition: 0.2s ease all;
     color: #777;
@@ -216,8 +222,7 @@ const Container = styled.div`
     z-index: 4;
   }
   .input-icon-outside svg,
-  .input-icon-outside span,
-  .input-icon-outside i {
+  .input-icon-outside span {
     position: absolute;
     top: 12px;
     left: 15px;
