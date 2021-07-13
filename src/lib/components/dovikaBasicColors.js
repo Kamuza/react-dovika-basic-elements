@@ -1,6 +1,6 @@
-const dovikaBasicColors = (props) => {
+const DovikaBasicColors = (props) => {
   window.dovikaBasicElementsColors = props
   return null
 }
 
-export default dovikaBasicColors
+export default DovikaBasicColors
