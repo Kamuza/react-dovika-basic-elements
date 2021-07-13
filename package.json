@@ -24,7 +24,8 @@
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "startExample": "node node_modules/react-scripts/bin/react-scripts.js start"
   },
   "peerDependencies": {
     "react": "^16.0.0",
@@ -57,8 +58,27 @@
     "README.md"
   ],
   "dependencies": {
+    "bootstrap": "^4.4.1",
     "lodash": "^4.17.21",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^7.0.1",
+    "react-datepicker": "^4.1.1",
+    "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
+    "react-notifications-component": "^3.1.0",
+    "remixicon": "^2.5.0",
     "styled-components": "^5.3.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

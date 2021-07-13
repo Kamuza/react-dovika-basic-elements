@@ -1,0 +1,12 @@
+html,body,#root{
+  height: 100%;
+  width: 100%;
+  background-color: #f4f6f9;
+}
+body {
+  font-size: .875rem;
+}
+
+h1,h2,h3,h4,h5,h6{color: $primary;font-weight: normal;}
+.react-datepicker-popper{z-index: 10}
+.react-datepicker__input-container{display: block}

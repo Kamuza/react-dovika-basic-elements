@@ -47,7 +47,7 @@ const AppInput = (props) => {
 
   if (!isReadOnly && !isDisabled)
     return (
-      <Container className='mb-2' hasIcon={!!icon}>
+      <Container className='mb-2'>
         <input
           type={!isPassword ? 'text' : 'password'}
           name={name}

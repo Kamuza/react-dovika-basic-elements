@@ -1,0 +1,36 @@
+//
+// Component: Carousel
+//
+.carousel{
+  height: 100%;
+  .carousel-inner{
+    height: 100%;
+    .carousel-item{
+      height: 100%;
+      .carousel-caption{
+        top: 20px;
+      }
+    }
+  }
+}
+
+.carousel-control {
+  &.left,
+  &.right {
+    background-image: none;
+  }
+
+  > .fa,
+  > .fas,
+  > .far,
+  > .fab,
+  > .glyphicon,
+  > .ion {
+    display: inline-block;
+    font-size: 40px;
+    margin-top: -20px;
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+  }
+}

@@ -1,0 +1,13 @@
+.card{
+  &.card-bordered{
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    box-shadow: none;
+  }
+  border-radius: 2px;
+  border:none;
+  box-shadow: 2px 2px 3px lightgray;
+  .card-header{
+    padding: 4px 18px;
+    background: white;
+  }
+}

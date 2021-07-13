@@ -1,0 +1,7 @@
+.main-content{
+  margin-left: 60px;
+  transition: margin-left ease .3s;
+  &.sidebar-expanded{
+    margin-left: $sidebarWidth;
+  }
+}

@@ -1,0 +1,126 @@
+.sidebar{
+  position: fixed;
+  top: 40px;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  padding: 6px;
+  z-index: 100;
+  transition: all ease .3s;
+  width: 50px;
+  .sidebar-heading {
+    padding: 0 0px;
+    h1{
+      color: $primary;
+      font-size: 0px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    h2{font-size: 14px}
+    h1,h2{
+      margin: 6px auto;
+      text-align: center;
+    }
+  }
+  &.sidebar-expanded{
+    width: $sidebarWidth;
+    .sidebar-heading {
+      h1{font-size: 14px}
+    }
+  }
+  ul{
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    li{
+      a, .link-a{
+        display: block;
+        padding: 6px 10px;
+        color: $gray-700;
+        cursor: pointer;
+        transition: background-color ease .5s;
+        .sidebar-icon{
+          margin-right: 6px;
+          margin-top: -3px;
+          transition: margin ease .3s;
+          font-size: 16px;
+        }
+        &:hover{
+          text-decoration: none;
+          background-color: $gray-200;
+          .sidebar-icon{
+            margin-right: 3px;
+            margin-left: 3px;
+          }
+        }
+        &.sub-element{
+          padding-left: 20px;
+        }
+      }
+      &.active{
+        background-color: $gray-200;
+        a{
+          color: $primary;
+        }
+      }
+      &.divider{
+        border: none;
+        height: 1px;
+        margin: 3px 0;
+        flex-shrink: 0;
+        background-color: rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+}
+.sidebar-expanded{
+  .sb-title, .sb-dropdown-icon{
+    display: inline-block;
+  }
+}
+.sb-title, .sb-dropdown-icon{
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
+  }
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+

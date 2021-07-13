@@ -1,0 +1,24 @@
+.wl-title{
+  //font-weight: bold;
+  padding-bottom: 4px;
+  margin-bottom: 0;
+  &.wl-title-xs{
+    font-size: 12px;
+  }
+  &.wl-title-sm{
+    font-size: 14px;
+  }
+  &.wl-title-md{
+    font-size: 16px;
+  }
+  &.wl-title-lg{
+    font-size: 22px;
+  }
+  &.wl-title-bold{
+    font-weight: bold;
+  }
+}
+
+.wl-text-light{
+  color: lighten(black,50%);
+}

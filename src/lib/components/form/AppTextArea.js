@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { RiCloseCircleLine } from 'react-icons/all'
 import _ from 'lodash'
+import { RiCloseCircleLine } from 'react-icons/ri'
 import styled from 'styled-components'
 import colors from '../colors'
 
@@ -20,9 +20,12 @@ import colors from '../colors'
  *      isClearable (OPC):      TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
  *      append (OPC):           WIP: esto va a desaparecer.
  *      autoFocus (OPC):        Añadirá autoFocus al input.
+ *      resize (OPC):           Permite cambiar la propiedad resize de css del textarea. Por defecto none.
+ *      height (OPC):           Permite establecer la altura inicial (o definitiva, dependiendo de resize) del textarea. Por defecto 80px.
+ *      maxHeight (OPC):        En caso de cambiar resize a vertical, permite establecer una altura máxima.
  *   ]
- **/
-const AppInput = (props) => {
+ * */
+const AppTextArea = (props) => {
   const {
     title,
     onChange,
@@ -38,90 +41,86 @@ const AppInput = (props) => {
     isClearable,
     append,
     autoFocus,
-    isPassword,
-    isReadOnly,
-    isDisabled,
-    noBorder
+    resize,
+    height,
+    maxHeight,
+    readOnly
   } = props
   const [hasValue, setHasValue] = useState(value)
 
-  if (!isReadOnly && !isDisabled)
-    return (
-      <Container className='mb-2' hasIcon={!!icon}>
-        <input
-          type={!isPassword ? 'text' : 'password'}
-          name={name}
-          className={`outside ${hasValue ? 'has-value' : ''} ${
-            error ? 'error' : ''
-          }`}
-          value={value}
-          onChange={(e) => {
-            onChange(e.target.value)
-            setHasValue(e.target.value)
-          }}
-          autoFocus={autoFocus}
-          onKeyDown={(e) => {
-            onKeyDown(e)
-            _.forEach(onPressKeyList, (key) => {
-              if (e.key === key) onPressKey(key)
-            })
-          }}
-        />
-        <span className='floating-label-outside'>
-          {title} {required && <span className='text-danger'>*</span>}{' '}
-          {error && <small className='text-danger'>{error}</small>}
-        </span>
-        {placeholder && <span className='placeholder'>{placeholder}</span>}
-        {icon && <span className='input-icon-outside'>{icon}</span>}
-        {value && isClearable && (
-          <span
-            className='clearable'
-            onClick={() => {
-              onChange('')
-              setHasValue('')
-            }}
-          >
-            <RiCloseCircleLine />
-          </span>
-        )}
-        {append && <div className='input-append'>{append}</div>}
-      </Container>
-    )
-
   return (
-    <Container className={`mb-2 ${isDisabled && 'disabled'}`}>
-      <div className={`read-only ${noBorder && 'no-border'}`}>{value}</div>
-      <span className='floating-label-outside'>{title}</span>
+    <Container
+      className='mb-2'
+      resize={resize}
+      height={height}
+      maxHeight={maxHeight}
+      hasIcon={!!icon}
+    >
+      <textarea
+        name={name}
+        className={`outside ${hasValue ? 'has-value' : ''} ${
+          error ? 'error' : ''
+        }`}
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value)
+          setHasValue(e.target.value)
+        }}
+        autoFocus={autoFocus}
+        readOnly={readOnly}
+        onKeyDown={(e) => {
+          onKeyDown(e)
+          _.forEach(onPressKeyList, (key) => {
+            if (e.key === key) onPressKey(key)
+          })
+        }}
+      />
+      <span className='floating-label-outside'>
+        {title} {required && <span className='text-danger'>*</span>}{' '}
+        {error && <small className='text-danger'>{error}</small>}
+      </span>
+      {placeholder && <span className='placeholder'>{placeholder}</span>}
       {icon && <span className='input-icon-outside'>{icon}</span>}
+      {value && isClearable && (
+        <span
+          className='clearable'
+          onClick={() => {
+            onChange('')
+            setHasValue('')
+          }}
+        >
+          <RiCloseCircleLine />
+        </span>
+      )}
+      {append && <div className='input-append'>{append}</div>}
     </Container>
   )
 }
 
-export default AppInput
-AppInput.defaultProps = {
+export default AppTextArea
+AppTextArea.defaultProps = {
   name: '',
   isField: false,
   autoFocus: false,
   clearable: false,
   append: '',
   onKeyDown: () => {},
-  ref: null
+  resize: 'none',
+  maxHeight: null,
+  height: '80px',
+  readOnly: false
 }
 
 const Container = styled.div`
   margin: 8px 0;
   position: relative;
-  &.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  input.outside,
-  input[type='text'].outside,
-  .read-only {
+  textarea.outside {
     color: #555;
     width: 100%;
     font-size: 15px;
-    height: 36px;
+    min-height: 36px;
+    max-height: ${(props) => props.maxHeight};
+    height: ${(props) => props.height};
     line-height: normal;
     border: #ddd solid 1px;
     border-radius: 0;
@@ -129,15 +128,12 @@ const Container = styled.div`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin-bottom: -1px;
-    padding: 6px 10px 6px 40px;
+    padding: 6px 26px 6px ${(props) => (props.hasIcon ? '40px' : '10px')};
     -webkit-appearance: none;
     -moz-appearance: none;
     position: relative;
     z-index: 1;
-    &.no-border {
-      border: none !important;
-      padding: 10px 10px 2px 44px !important;
-    }
+    resize: ${(props) => props.resize};
 
     &::placeholder {
       transition: all ease 0.8s;
@@ -167,46 +163,45 @@ const Container = styled.div`
     overflow: hidden;
   }
 
-  input:focus:not(.has-value) ~ .placeholder {
+  textarea:focus:not(.has-value) ~ .placeholder {
     left: 40px;
     opacity: 1;
   }
 
-  input:focus,
+  textarea:focus,
   select:focus {
     outline: 0 !important;
     color: #555 !important;
     border-color: #9e9e9e;
     z-index: 2;
   }
-  input:focus
+  textarea:focus
     ~ .floating-label-outside
-    input:not(:focus).has-value
+    textarea:not(:focus).has-value
     ~ .floating-label-outside {
     top: 12px;
-    left: 40px;
+    left: ${(props) => (props.hasIcon ? '40px' : '10px')};
     font-size: 10px;
     opacity: 1;
     font-weight: 400;
   }
-  input:focus ~ .floating-label-outside,
-  input.has-value ~ .floating-label-outside,
-  .read-only ~ .floating-label-outside {
+  textarea:focus ~ .floating-label-outside,
+  textarea.has-value ~ .floating-label-outside {
     top: -7px;
     opacity: 1;
     font-size: 10px;
     color: ${colors.primary};
     background: #fff;
-    padding: 0 5px;
+    padding: 0px 5px;
   }
-  input:focus ~ .floating-label-outside,
-  input:not(:focus).has-value ~ .floating-label-outside {
+  textarea:focus ~ .floating-label-outside,
+  textarea:not(:focus).has-value ~ .floating-label-outside {
     left: 35px;
   }
   .floating-label-outside {
     position: absolute;
     pointer-events: none;
-    left: 40px;
+    left: ${(props) => (props.hasIcon ? '40px' : '10px')};
     top: 8px;
     transition: 0.2s ease all;
     color: #777;
@@ -228,14 +223,14 @@ const Container = styled.div`
   .input-icon-outside span {
     top: 8px;
   }
-  input:focus ~ .input-icon-outside,
-  input:focus ~ .input-icon-outside span {
+  textarea:focus ~ .input-icon-outside,
+  textarea:focus ~ .input-icon-outside span {
     color: lighten(${colors.primary}, 10%);
   }
 
   .clearable {
     position: absolute;
-    right: 2px;
+    right: 10px;
     top: 2px;
     z-index: 4;
     cursor: pointer;

@@ -1,0 +1,150 @@
+input.outside,input[type=text].outside{
+  color:#555;
+  width:100%;
+  font-size:15px;
+  height:36px;
+  line-height:normal;
+  border:#ddd solid 1px;
+  border-radius:0;
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  margin-bottom:-1px;
+  padding:6px 10px 6px 40px;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  position:relative;
+  z-index:1;
+  &::placeholder{
+    transition: all ease .8s;
+    font-size: 0;
+  }
+  &:focus{
+    &::placeholder{
+      transition: all ease .8s;
+      font-size: 12px;
+    }
+  }
+  &.error{
+    border-color: $danger;
+  }
+}
+.placeholder{
+  position: absolute;
+  pointer-events:none;
+  top: 8px;
+  left: 0;
+  color: #aaa;
+  z-index:3;
+  opacity: 0;
+  transition: all ease .3s;
+}
+
+input:focus:not(.has-value)~.placeholder{
+  left: 40px;
+  opacity: 1;
+}
+
+input:focus,select:focus {
+  outline: 0 !important;
+  color: #555 !important;
+  border-color: #9e9e9e;
+  z-index: 2;
+
+}
+input:focus~.floating-label-outside input:not(:focus).has-value~.floating-label-outside{
+  top:12px;
+  left:40px;
+  font-size:10px;
+  opacity:1;
+  font-weight:400;
+}
+input:focus~.floating-label-outside,input.has-value~.floating-label-outside{
+  top:-7px;
+  opacity:1;
+  font-size:10px;
+  color: $primary;
+  background:#fff;
+  padding:0px 5px;
+}
+input:focus~.floating-label-outside,input:not(:focus).has-value~.floating-label-outside{left:35px}
+.floating-label-outside{
+  position:absolute;
+  pointer-events:none;
+  left:40px;
+  top:8px;
+  transition:.2s ease all;
+  color:#777;
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:.5px;
+  z-index:4;
+}
+.input-icon-outside svg, .input-icon-outside span{
+  position:absolute;
+  top:12px;
+  left:15px;
+  z-index:3;
+  color:#727272;
+  transition: color ease .2s
+}
+.input-icon-outside span{
+  top: 8px;
+}
+input:focus~.input-icon-outside, input:focus~.input-icon-outside span{
+  color: lighten($primary,10%);
+}
+
+.clearable{
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  z-index: 4;
+  cursor: pointer;
+  padding: 4px;
+  color: $primary;
+}
+
+.input-append{
+
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 35px;
+  min-width: 15px;
+  z-index: 5;
+}
+
+.inputDropDown{
+  position: relative;
+  border:#ddd solid 1px;
+  background-color: $gray-200;
+  text-align: right;
+  .selected-value{
+    line-height: 34px;
+    margin: 0 8px;
+    font-size:12px;
+  }
+  .caret{
+    margin-top: 35px;
+  }
+  .inputDropDown-options{
+    position: absolute;
+    background-color: white;
+    border:#ddd solid 1px;
+    list-style: none;
+    margin: 0; padding: 0;
+    top: 35px;
+    right: 0;
+    z-index: 6;
+    li{
+      text-align: left;
+      padding: 4px 12px;
+      min-width: 200px;
+      max-width: 400px;
+      &:hover{
+        background-color: $gray-200;
+      }
+    }
+  }
+}

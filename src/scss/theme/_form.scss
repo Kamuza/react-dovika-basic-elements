@@ -1,0 +1,18 @@
+.form-container{
+  border: 1px solid $gray-300;
+  &.form-container-info{
+    border-left: 4px solid $info;
+  }
+  &.form-container-primary{
+    border-left: 4px solid $primary;
+  }
+  &.form-container-warning{
+    border-left: 4px solid $warning;
+  }
+  &.form-container-danger{
+    border-left: 4px solid $danger;
+  }
+  &.form-container-success{
+    border-left: 4px solid $success;
+  }
+}
