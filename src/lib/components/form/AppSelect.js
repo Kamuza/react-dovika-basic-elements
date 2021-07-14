@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { RiCheckLine, RiCloseCircleLine, RiLoader4Line } from 'react-icons/ri'
 import _ from 'lodash'
-import { FaCaretDown } from 'react-icons/fa'
 import styled from 'styled-components'
 import defaultTranslations from '../../constants/defaultTranslations'
 import defaultColors from '../../constants/defaultColors'
 import { useIsFirstRender } from '../../hooks/isFirstRender'
+import AppRemixIcon from '../icon/AppRemixIcon'
+import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -171,7 +171,11 @@ const AppSelect = (props) => {
       <Container ref={block}>
         <Input className={`${className}`} hasIcon={!!icon} error={error}>
           <InputIcon>
-            <RiLoader4Line className='fa-spin' color={colors.primary} />
+            <AppRemixIcon
+              icon='loader-4'
+              className='fa-spin'
+              color={colors.primary}
+            />
           </InputIcon>
           {title && (
             <InputTitle>
@@ -179,11 +183,17 @@ const AppSelect = (props) => {
             </InputTitle>
           )}
           <InputPlaceholder>{placeholder}</InputPlaceholder>
-          <FaCaretDown
+          <AppFontAwesomeIcon
+            icon='caret-down'
             className='float-right'
             color={colors.primary}
             style={{ marginTop: 3 }}
           />
+          {/* <FaCaretDown */}
+          {/*  className='float-right' */}
+          {/*  color={colors.primary} */}
+          {/*  style={{ marginTop: 3 }} */}
+          {/* /> */}
         </Input>
       </Container>
     )
@@ -222,7 +232,8 @@ const AppSelect = (props) => {
         ) : (
           <InputPlaceholder>{placeholder}</InputPlaceholder>
         )}
-        <FaCaretDown
+        <AppFontAwesomeIcon
+          icon='caret-down'
           className='float-right'
           color={colors.primary}
           style={{ marginTop: 3 }}
@@ -232,7 +243,7 @@ const AppSelect = (props) => {
         ((isMulti && selectedOptions.length > 0) ||
           (!isMulti && selectedOptions)) && (
           <ClearButton onClick={() => setSelectedOptions(isMulti ? [] : null)}>
-            <RiCloseCircleLine color={colors.primary} />
+            <AppRemixIcon icon='close-circle' color={colors.primary} />
           </ClearButton>
         )}
       {isOpen && (
@@ -318,7 +329,10 @@ const AppSelect = (props) => {
                           (isMulti &&
                             selectedOptions !== null &&
                             selectedOptions.includes(opt))) && (
-                          <RiCheckLine className='float-right ks-check' />
+                          <AppRemixIcon
+                            icon='check'
+                            className='float-right ks-check'
+                          />
                         )}
                       </li>
                     )}

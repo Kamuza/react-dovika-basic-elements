@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { AppInput, AppSelect } from './lib'
-import { RiCheckLine } from 'react-icons/all'
+import { AppInput, AppRemixIcon, AppSelect } from './lib'
 import ReactNotification from 'react-notifications-component'
 import styled from 'styled-components'
 import AppTextArea from './lib/components/form/AppTextArea'
@@ -31,17 +30,21 @@ const App = () => {
           <AppCard header='Ejemplo de componentes'>
             <AppInput
               title='AppInput'
-              icon={<RiCheckLine />}
+              icon={<AppRemixIcon />}
               onChange={(v) => console.log(v)}
+              value='aa'
+              isClearable
             />
             <AppTextArea
               title='AppTextArea'
-              icon={<RiCheckLine />}
+              icon={<AppRemixIcon icon='check' />}
               onChange={(v) => console.log(v)}
+              value='aa'
+              isClearable
             />
             <AppSelect
               title='AppSelect'
-              icon={<RiCheckLine />}
+              icon={<AppRemixIcon icon='check' />}
               options={[
                 { label: 'Hola', isOptGroup: true },
                 { label: 'Hijo', value: 1, group: 'Hola' }
@@ -50,11 +53,15 @@ const App = () => {
               hasSearchBox
               hasSelectOptions
               onChange={(v) => console.log(v)}
+              value={{ label: 'Hola', isOptGroup: true }}
+              isClearable
             />
             <AppInputNumber
               title='AppInputNumber'
-              icon={<RiCheckLine />}
+              icon={<AppRemixIcon icon='check' />}
               onChange={(v) => console.log(v)}
+              value='1'
+              isClearable
             />
             <AppDatePicker
               title='AppDatePicker'

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
-import { RiCloseCircleLine } from 'react-icons/ri'
 import styled from 'styled-components'
 import defaultColors from '../../constants/defaultColors'
+import AppRemixIcon from '../icon/AppRemixIcon'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -90,7 +90,7 @@ const AppTextArea = (props) => {
             setHasValue('')
           }}
         >
-          <RiCloseCircleLine />
+          <AppRemixIcon icon='close-circle' />
         </span>
       )}
       {append && <div className='input-append'>{append}</div>}

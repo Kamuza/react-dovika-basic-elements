@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { RiCloseCircleLine } from 'react-icons/ri'
 import styled from 'styled-components'
 import _ from 'lodash'
 import defaultColors from '../../constants/defaultColors'
 import { useIsFirstRender } from '../../hooks/isFirstRender'
+import AppRemixIcon from '../icon/AppRemixIcon'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -100,7 +100,7 @@ const AppInputNumber = (props) => {
             setHasValue('')
           }}
         >
-          <RiCloseCircleLine />
+          <AppRemixIcon icon='close-circle' />
         </span>
       ) : (
         ''
@@ -222,7 +222,8 @@ const Container = styled.div`
     z-index: 4;
   }
   .input-icon-outside svg,
-  .input-icon-outside span {
+  .input-icon-outside span,
+  .input-icon-outside i {
     position: absolute;
     top: 12px;
     left: 15px;

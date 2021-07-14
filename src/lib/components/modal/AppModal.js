@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
-import { RiAlertLine, RiInformationLine } from 'react-icons/ri'
 import defaultColors from '../../constants/defaultColors'
+import { AppRemixIcon } from '../../index'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 const AppModal = (props) => {
@@ -26,9 +26,9 @@ const AppModal = (props) => {
   const iconType = () => {
     switch (type) {
       case 'danger':
-        return <RiAlertLine color='red' className='mr-2' />
+        return <AppRemixIcon icon='alert' color='red' className='mr-2' />
       case 'info':
-        return <RiInformationLine color='blue' className='mr-2' />
+        return <AppRemixIcon icon='alert' color='blue' className='mr-2' />
       default:
         return ''
     }

@@ -1,11 +1,11 @@
 import React from 'react'
 
 const AppRemixIcon = (props) => {
-  const { icon, size, color, filled, noVariants } = props
+  const { icon, size, color, filled, noVariants, className } = props
 
   return (
     <i
-      className={`ri-${icon}${
+      className={`${className} ri-${icon}${
         noVariants ? '' : `-${filled ? 'fill' : 'line'}`
       }`}
       style={{ fontSize: `${size}px`, color }}

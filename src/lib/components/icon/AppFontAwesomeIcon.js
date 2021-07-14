@@ -1,10 +1,10 @@
 import React from 'react'
 
 const AppFontAwesomeIcon = (props) => {
-  const { icon, variant, size, color } = props
+  const { icon, variant, size, color, className } = props
   return (
     <i
-      className={`fa${variant} fa-${icon}`}
+      className={`${className} fa${variant} fa-${icon}`}
       style={{ fontSize: `${size}px`, color }}
     />
   )
