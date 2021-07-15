@@ -5,13 +5,12 @@ const AppFontAwesomeIcon = (props) => {
   return (
     <i
       className={`${className} fa${variant} fa-${icon}`}
-      style={{ fontSize: `${size}px`, color }}
+      style={{ fontSize: size ? `${size}px` : 'inherit', color }}
     />
   )
 }
 export default AppFontAwesomeIcon
 AppFontAwesomeIcon.defaultProps = {
   icon: 'square',
-  variant: 's',
-  size: 12
+  variant: 's'
 }
