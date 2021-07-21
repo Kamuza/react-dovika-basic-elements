@@ -19,7 +19,7 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *                                  group: 'OPC. Si se incluye, se podrá utilizar como filtro de texto para encontrar el elemento'
  *                              }
  *      onChange:               Función que ejecutará cada vez que se ejecute un cambio.
- *      selectedValue:          Valor(es) seleccionado(s).
+ *      value:                  Valor(es) seleccionado(s).
  *      className (OPC):        Clase para añadir al input. Por defecto 'pointer'.
  *      placeholder (OPC):      Texto informativo. Se muestra cuando no hay opciones seleccionadas.
  *      icon (OPC):             Icono a la izquierda. Si no se establece, queda el hueco.
@@ -39,7 +39,7 @@ const AppSelect = (props) => {
     title,
     options,
     onChange,
-    selectedValue,
+    value,
     className,
     placeholder,
     icon,
@@ -72,13 +72,13 @@ const AppSelect = (props) => {
     window.dovikaBasicElementsTranslations || defaultTranslations
 
   useEffect(() => {
-    if (!isFirstRender && !_.isEqual(selectedValue, selectedOptions))
+    if (!isFirstRender && !_.isEqual(value, selectedOptions))
       onChange(selectedOptions)
   }, [selectedOptions])
 
   useEffect(() => {
-    if (selectedValue !== undefined) setSelectedOptions(selectedValue)
-  }, [selectedValue])
+    if (value !== undefined) setSelectedOptions(value)
+  }, [value])
 
   useEffect(() => {
     setFilteredOptions(options)

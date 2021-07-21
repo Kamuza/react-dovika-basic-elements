@@ -90,7 +90,7 @@ AppDatePicker.defaultProps = {
   minDate: false,
   maxDate: false,
   filterDate: false,
-  dropdownMode: false,
+  dropdownMode: 'scroll',
   locale: window.dovikaBasicElementsColors || 'en'
 }
 
@@ -158,7 +158,8 @@ const Container = styled.div`
     color: #727272;
     transition: color ease 0.2s;
   }
-  .input-icon-outside span {
+  .input-icon-outside span,
+  .input-icon-outside i {
     top: 8px;
   }
 
