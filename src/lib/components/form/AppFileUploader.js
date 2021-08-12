@@ -2,7 +2,7 @@ import React from 'react'
 import defaultTranslations from '../../constants/defaultTranslations'
 
 const AppFileUploader = (props) => {
-  const { id, isMulti, btnText, btnClass, onChange, isDisabled } = props
+  const { id, isMulti, btnText, btnClass, onChange, isDisabled, ...others } = props
 
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
@@ -23,6 +23,7 @@ const AppFileUploader = (props) => {
         onChange={(e) => handleOnChange(e.target.files)}
         multiple={isMulti}
         disabled={isDisabled}
+        {...others}
       />
       {/* <label htmlFor={`upload-${id}`} className="file-uploader-label font-weight-light text-truncate"> */}
       {/*    {selectedFilesName} */}

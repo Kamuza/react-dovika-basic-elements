@@ -21,6 +21,7 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      isClearable (OPC):      TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
  *      append (OPC):           WIP: esto va a desaparecer.
  *      autoFocus (OPC):        Añadirá autoFocus al input.
+ *      others (OPC):           Añadirá cualquiero otro campo al INPUT.
  *   ]
  **/
 const AppInput = (props) => {
@@ -42,7 +43,8 @@ const AppInput = (props) => {
     isPassword,
     isReadOnly,
     isDisabled,
-    noBorder
+    noBorder,
+    ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
 
@@ -67,6 +69,7 @@ const AppInput = (props) => {
               if (e.key === key) onPressKey(key)
             })
           }}
+          {...others}
         />
         <span className='floating-label-outside'>
           {title} {required && <span className='text-danger'>*</span>}{' '}
@@ -226,7 +229,7 @@ const Container = styled.div`
     color: #727272;
     transition: color ease 0.2s;
   }
-  .input-icon-outside span {
+  .input-icon-outside span, .input-icon-outside i {
     top: 8px;
   }
   input:focus ~ .input-icon-outside,

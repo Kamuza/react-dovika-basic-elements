@@ -24,6 +24,7 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      resize (OPC):           Permite cambiar la propiedad resize de css del textarea. Por defecto none.
  *      height (OPC):           Permite establecer la altura inicial (o definitiva, dependiendo de resize) del textarea. Por defecto 80px.
  *      maxHeight (OPC):        En caso de cambiar resize a vertical, permite establecer una altura máxima.
+ *      others (OPC):           Añadirá cualquiero otro campo al INPUT.
  *   ]
  * */
 const AppTextArea = (props) => {
@@ -45,7 +46,8 @@ const AppTextArea = (props) => {
     resize,
     height,
     maxHeight,
-    readOnly
+    readOnly,
+    ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
 
@@ -75,6 +77,7 @@ const AppTextArea = (props) => {
             if (e.key === key) onPressKey(key)
           })
         }}
+        {...others}
       />
       <span className='floating-label-outside'>
         {title} {required && <span className='text-danger'>*</span>}{' '}
@@ -231,7 +234,7 @@ const Container = styled.div`
 
   .clearable {
     position: absolute;
-    right: 10px;
+    right: 2px;
     top: 2px;
     z-index: 4;
     cursor: pointer;

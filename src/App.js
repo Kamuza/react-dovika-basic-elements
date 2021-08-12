@@ -29,22 +29,31 @@ const App = () => {
         <div className='col-lg-12'>
           <AppCard header='Ejemplo de componentes'>
             <AppInput
-              title='AppInput'
-              icon={<AppRemixIcon />}
+              title='AppInput1'
+              icon={<AppRemixIcon icon="checkbox-blank" />}
               onChange={(v) => console.log(v)}
               value='aa'
               isClearable
+              tabindex={2}
+            />
+            <AppInput
+              title='AppInput2'
+              icon={<AppRemixIcon icon="checkbox-blank" />}
+              onChange={(v) => console.log(v)}
+              value='aa'
+              isClearable
+              tabindex={1}
             />
             <AppTextArea
               title='AppTextArea'
-              icon={<AppRemixIcon icon='check' />}
+              icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => console.log(v)}
               value='aa'
               isClearable
             />
             <AppSelect
               title='AppSelect'
-              icon={<AppRemixIcon icon='check' />}
+              icon={<AppRemixIcon icon='checkbox-blank' />}
               options={[
                 { label: 'Hola', isOptGroup: true },
                 { label: 'Hijo', value: 1, group: 'Hola' }
@@ -58,7 +67,7 @@ const App = () => {
             />
             <AppInputNumber
               title='AppInputNumber'
-              icon={<AppRemixIcon icon='check' />}
+              icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => console.log(v)}
               value='1'
               isClearable

@@ -8,10 +8,11 @@ const AppCard = (props) => {
     className,
     bodyClassName,
     headerClassName,
-    footerClassName
+    footerClassName,
+    ...others
   } = props
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className}`} {...others}>
       {header && (
         <div className={`card-header ${headerClassName}`}>{header}</div>
       )}

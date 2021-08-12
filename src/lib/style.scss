@@ -2,3 +2,5 @@
 @import '~react-notifications-component/dist/theme.css';
 @import '~remixicon/fonts/remixicon.css';
 @import '~@fortawesome/fontawesome-free/css/all.css';
+.react-datepicker-popper{z-index: 10}
+.react-datepicker__input-container{display: block}

@@ -23,6 +23,7 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      append (OPC):           WIP: esto va a desaparecer.
  *      autoFocus (OPC):        Añadirá autoFocus al input.
  *      decimals (OPC):         Números de decimales permitidos. Si se establece 0, no se permitirán comas o puntos. Por defecto 3.
+ *      others (OPC):           Añadirá cualquiero otro campo al INPUT.
  *   ]
  **/
 const AppInputNumber = (props) => {
@@ -42,7 +43,8 @@ const AppInputNumber = (props) => {
     append,
     autoFocus,
     readOnly,
-    decimals
+    decimals,
+    ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
   const isFirstRender = useIsFirstRender()
@@ -85,6 +87,7 @@ const AppInputNumber = (props) => {
             if (e.key === key) onPressKey(key)
           })
         }}
+        {...others}
       />
       <span className='floating-label-outside'>
         {title} {required && <span className='text-danger'>*</span>}{' '}
@@ -231,7 +234,7 @@ const Container = styled.div`
     color: #727272;
     transition: color ease 0.2s;
   }
-  .input-icon-outside span {
+  .input-icon-outside span, .input-icon-outside i {
     top: 8px;
   }
   input:focus ~ .input-icon-outside,
