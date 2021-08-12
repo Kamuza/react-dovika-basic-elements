@@ -117,7 +117,6 @@ export default AppInputNumber
 AppInputNumber.defaultProps = {
   name: '',
   autoFocus: false,
-  clearable: false,
   append: '',
   onKeyDown: () => {},
   min: null,

@@ -105,7 +105,6 @@ export default AppInput
 AppInput.defaultProps = {
   name: '',
   autoFocus: false,
-  clearable: false,
   append: '',
   onKeyDown: () => {},
   ref: null

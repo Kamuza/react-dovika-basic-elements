@@ -105,7 +105,6 @@ export default AppTextArea
 AppTextArea.defaultProps = {
   name: '',
   autoFocus: false,
-  clearable: false,
   append: '',
   onKeyDown: () => {},
   resize: 'none',
