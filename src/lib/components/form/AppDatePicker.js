@@ -76,7 +76,6 @@ export default AppDatePicker
 AppDatePicker.defaultProps = {
   name: '',
   autoFocus: false,
-  clearable: false,
   append: '',
   onKeyDown: () => {},
   icon: <AppRemixIcon icon='calendar' />,
