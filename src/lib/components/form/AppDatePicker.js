@@ -27,7 +27,6 @@ const AppDatePicker = (props) => {
     showMonthYearPicker,
     showYearPicker,
     locale,
-    ...others
   } = props
 
   return (
@@ -63,7 +62,6 @@ const AppDatePicker = (props) => {
             )}
           </div>
         }
-        {...others}
       />
       {value && isClearable && (
         <span className='clearable' onClick={() => onChange(undefined)}>
