@@ -116,7 +116,6 @@ const AppInputNumber = (props) => {
 export default AppInputNumber
 AppInputNumber.defaultProps = {
   name: '',
-  isField: false,
   autoFocus: false,
   clearable: false,
   append: '',

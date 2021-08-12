@@ -104,7 +104,6 @@ const AppTextArea = (props) => {
 export default AppTextArea
 AppTextArea.defaultProps = {
   name: '',
-  isField: false,
   autoFocus: false,
   clearable: false,
   append: '',

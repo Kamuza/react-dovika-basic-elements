@@ -75,7 +75,6 @@ const AppDatePicker = (props) => {
 export default AppDatePicker
 AppDatePicker.defaultProps = {
   name: '',
-  isField: false,
   autoFocus: false,
   clearable: false,
   append: '',

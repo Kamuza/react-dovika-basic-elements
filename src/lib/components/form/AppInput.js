@@ -104,7 +104,6 @@ const AppInput = (props) => {
 export default AppInput
 AppInput.defaultProps = {
   name: '',
-  isField: false,
   autoFocus: false,
   clearable: false,
   append: '',
