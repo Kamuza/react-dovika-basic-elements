@@ -2,7 +2,8 @@ import React from 'react'
 import defaultTranslations from '../../constants/defaultTranslations'
 
 const AppFileUploader = (props) => {
-  const { id, isMulti, btnText, btnClass, onChange, isDisabled, ...others } = props
+  const { id, isMulti, btnText, btnClass, onChange, isDisabled, ...others } =
+    props
 
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
@@ -43,7 +44,7 @@ const AppFileUploader = (props) => {
 export default AppFileUploader
 
 AppFileUploader.defaultProps = {
-  isMultiple: false,
+  isMulti: false,
   btnClass: 'btn-info',
   id: 0,
   isDisabled: false

@@ -1,0 +1,99 @@
+import React from 'react'
+import styled from 'styled-components'
+import defaultColors from '../../constants/defaultColors'
+import AppRemixIcon from '../icon/AppRemixIcon'
+
+const colors = window.dovikaBasicElementsColors || defaultColors
+
+const AppNoInfo = (props) => {
+  const {
+    icon,
+    text,
+    color,
+    spin,
+    button,
+    buttonOnClick,
+    minHeight,
+    iconSize,
+    separation
+  } = props
+
+  return (
+    <Container minHeight={minHeight || null}>
+      {!icon && !spin ? (
+        <Spinner>
+          <AppRemixIcon icon='loader-4' color={color} size={iconSize} />
+        </Spinner>
+      ) : spin ? (
+        <Spinner>
+          {icon || (
+            <AppRemixIcon icon='loader-4' color={color} size={iconSize} />
+          )}
+        </Spinner>
+      ) : (
+        icon
+      )}
+      <p style={{ color: color || '#ccc', marginTop: separation }}>{text}</p>
+      {button && (
+        <span className='btn-default' onClick={buttonOnClick}>
+          {button}
+        </span>
+      )}
+    </Container>
+  )
+}
+
+export default AppNoInfo
+AppNoInfo.defaultProps = {
+  color: colors.primary,
+  iconSize: 34,
+  spin: false,
+  separation: '20px'
+}
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  ${(props) => props.minHeight && `min-height: ${props.minHeight}px;`}
+  text-align: center;
+`
+
+const Spinner = styled.div`
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%; /* IE 9 */
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+
+  @-moz-keyframes spin {
+    from {
+      -moz-transform: rotate(0deg);
+    }
+    to {
+      -moz-transform: rotate(360deg);
+    }
+  }
+
+  @-webkit-keyframes spin {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`

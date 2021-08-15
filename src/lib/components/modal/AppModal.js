@@ -18,7 +18,8 @@ const AppModal = (props) => {
     onClose,
     onConfirm,
     isConfirmDisabled,
-    isCloseButton
+    isCloseButton,
+    ...others
   } = props
   const handleClose = () => onClose(false)
   const handleConfirm = () => onConfirm()
@@ -36,7 +37,7 @@ const AppModal = (props) => {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} size={size}>
+      <Modal show={show} onHide={handleClose} size={size} {...others}>
         {(title || isCloseButton) && (
           <Modal.Header closeButton={isCloseButton}>
             <Modal.Title

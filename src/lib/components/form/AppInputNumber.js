@@ -232,7 +232,8 @@ const Container = styled.div`
     color: #727272;
     transition: color ease 0.2s;
   }
-  .input-icon-outside span, .input-icon-outside i {
+  .input-icon-outside span,
+  .input-icon-outside i {
     top: 8px;
   }
   input:focus ~ .input-icon-outside,

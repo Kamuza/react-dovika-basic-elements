@@ -1,7 +1,7 @@
 import { store as alert } from 'react-notifications-component'
 
 const AppNotificationAlert = (props) => {
-  const { title, message, type, position, duration } = props
+  const { title, message, type, position, duration, ...others } = props
 
   if (type) {
     alert.addNotification({
@@ -16,7 +16,8 @@ const AppNotificationAlert = (props) => {
         // duration: duration ? duration === 'no' ? 0 : duration : 5000,
         duration: duration,
         showIcon: duration === 0
-      }
+      },
+      ...others
     })
   }
   return null
