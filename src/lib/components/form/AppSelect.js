@@ -374,7 +374,7 @@ const Container = styled.div`
   flex: 1 auto;
   flex-direction: column;
   position: relative;
-  margin: 10px 0;
+  margin: 8px 0;
 `
 const ClearButton = styled.div`
   position: absolute;

@@ -6,8 +6,9 @@ import defaultColors from '../../constants/defaultColors'
 
 const colors = window.dovikaBasicElementsColors || defaultColors
 
-const ImageCropper = (props) => {
-  const { image, width, height, onSave, cropShape } = props
+const AppImageCropper = (props) => {
+  const { image, width, height, onSave, cropShape, showDeleteButton, bgImage } =
+    props
   const [isEditingAvatar, setIsEditingAvatar] = useState(false)
   const [isImgHover, setIsImgHover] = useState(false)
   const [isImgLoading, setIsImgLoading] = useState(false)
@@ -129,7 +130,7 @@ const ImageCropper = (props) => {
         className='mb-2 text-center d-flex justify-content-center align-items-center'
         style={{ width: `${width}px`, height: `${height}px` }}
       >
-        {image && !isEditingAvatar && (
+        {image && !isEditingAvatar && showDeleteButton && (
           <span
             className='top-right pointer btn btn-sm btn-danger cr-remove'
             title='Eliminar imagen de perfil'
@@ -193,9 +194,7 @@ const ImageCropper = (props) => {
                 (!cropShape || cropShape === 'round') && `img-circle`
               }`}
               style={{
-                backgroundImage: `url(${
-                  image || require('../../images/noUser.png')
-                })`,
+                backgroundImage: `url(${image || bgImage})`,
                 backgroundPosition: 'center center no-repeat',
                 backgroundSize: 'cover',
                 width: `${width}px`,
@@ -238,7 +237,11 @@ const ImageCropper = (props) => {
   )
 }
 
-export default ImageCropper
+export default AppImageCropper
+AppImageCropper.defaultProps = {
+  bgImage: require('../../images/noUser.png'),
+  showDeleteButton: true
+}
 
 const Container = styled.div`
   position: relative;
