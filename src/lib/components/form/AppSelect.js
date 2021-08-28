@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, forwardRef } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import defaultTranslations from '../../constants/defaultTranslations'
@@ -6,6 +6,8 @@ import defaultColors from '../../constants/defaultColors'
 import { useIsFirstRender } from '../../hooks/isFirstRender'
 import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
+import useDetectClickOut from '../../hooks/useDetectClickOut'
+import Drawer from '../../hooks/Drawer'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -54,7 +56,6 @@ const AppSelect = (props) => {
     required,
     error
   } = props
-  const [isOpen, setIsOpen] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState(
     defaultValue !== undefined
       ? !isMulti
@@ -65,9 +66,9 @@ const AppSelect = (props) => {
       : null
   )
   const [filteredOptions, setFilteredOptions] = useState(options)
-  const block = useRef(null)
+  const { show, nodeRef, triggerRef } = useDetectClickOut(false)
+  console.log('NR', triggerRef)
   const isFirstRender = useIsFirstRender()
-
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
 
@@ -84,22 +85,11 @@ const AppSelect = (props) => {
     setFilteredOptions(options)
   }, [options])
 
-  // > CLOSE ON CLICK OUTSIDE
-  const handleClickOutisde = (event) => {
-    if ((block && !block.current.contains(event.target)) || !isMulti) {
-      setIsOpen(false)
-      setFilteredOptions(options)
-      window.removeEventListener('click', handleClickOutisde)
-    }
-  }
-  useEffect(() => {
-    if (isOpen) window.addEventListener('click', handleClickOutisde)
-  }, [isOpen])
-  // < CLOSE ON CLICK OUTSIDE
-
   const handleClickOption = (opt) => {
     if (!isMulti) {
       setSelectedOptions(opt)
+      const body = document.getElementsByTagName('body')[0]
+      body.click()
     } else if ('isOptGroup' in opt) {
       let tempOptions = [...selectedOptions]
       const optChildOptions = options.filter((o) =>
@@ -168,7 +158,7 @@ const AppSelect = (props) => {
 
   if (isLoading) {
     return (
-      <Container ref={block}>
+      <Container>
         <Input className={`${className}`} hasIcon={!!icon} error={error}>
           <InputIcon>
             <AppRemixIcon
@@ -200,13 +190,13 @@ const AppSelect = (props) => {
   }
 
   return (
-    <Container ref={block}>
+    <Container>
       <Input
         active={selectedOptions}
         className={`${className}`}
-        onClick={() => setIsOpen(!isOpen)}
         hasIcon={!!icon}
         error={error}
+        ref={triggerRef}
       >
         {icon && <InputIcon>{icon}</InputIcon>}
         {title && (
@@ -246,8 +236,8 @@ const AppSelect = (props) => {
             <AppRemixIcon icon='close-circle' color={colors.primary} />
           </ClearButton>
         )}
-      {isOpen && (
-        <DropdownContainer style={{ minWidth: '300px' }}>
+      {show && (
+        <DropdownContainer style={{ minWidth: '300px' }} ref={nodeRef}>
           <DropdownContent>
             {hasSearchBox && (
               <div className='m-2'>

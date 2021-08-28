@@ -61,12 +61,13 @@ const App = () => {
               icon={<AppRemixIcon icon='checkbox-blank' />}
               options={[
                 { label: 'Hola', isOptGroup: true },
-                { label: 'Hijo', value: 1, group: 'Hola' }
+                { label: 'Hijo', value: 1, group: 'Hola' },
+                { label: 'Hijo2', value: 12, group: 'Hola' }
               ]}
-              isMulti
+              // isMulti
               hasSearchBox
               hasSelectOptions
-              onChange={(v) => console.log(v)}
+              onChange={(v) => console.log('ALGO', v)}
               value={{ label: 'Hola', isOptGroup: true }}
               isClearable
             />
