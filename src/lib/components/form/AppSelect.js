@@ -67,7 +67,7 @@ const AppSelect = (props) => {
   )
   const [filteredOptions, setFilteredOptions] = useState(options)
   const { show, nodeRef, triggerRef } = useDetectClickOut(false)
-  console.log('NR', triggerRef)
+
   const isFirstRender = useIsFirstRender()
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations

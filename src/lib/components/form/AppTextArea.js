@@ -46,7 +46,8 @@ const AppTextArea = (props) => {
     resize,
     height,
     maxHeight,
-    readOnly,
+    isReadOnly,
+    isDisabled,
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
@@ -59,26 +60,31 @@ const AppTextArea = (props) => {
       maxHeight={maxHeight}
       hasIcon={!!icon}
     >
-      <textarea
-        name={name}
-        className={`outside ${hasValue ? 'has-value' : ''} ${
-          error ? 'error' : ''
-        }`}
-        value={value}
-        onChange={(e) => {
-          onChange(e.target.value)
-          setHasValue(e.target.value)
-        }}
-        autoFocus={autoFocus}
-        readOnly={readOnly}
-        onKeyDown={(e) => {
-          onKeyDown(e)
-          _.forEach(onPressKeyList, (key) => {
-            if (e.key === key) onPressKey(key)
-          })
-        }}
-        {...others}
-      />
+      {isReadOnly ? (
+        <div className='outside is-read-only has-value'>{value}</div>
+      ) : (
+        <textarea
+          name={name}
+          className={`outside ${hasValue ? 'has-value' : ''} ${
+            error ? 'error' : ''
+          }`}
+          value={value}
+          onChange={(e) => {
+            onChange(e.target.value)
+            setHasValue(e.target.value)
+          }}
+          autoFocus={autoFocus}
+          readOnly={isDisabled}
+          onKeyDown={(e) => {
+            onKeyDown(e)
+            _.forEach(onPressKeyList, (key) => {
+              if (e.key === key) onPressKey(key)
+            })
+          }}
+          {...others}
+        />
+      )}
+
       <span className='floating-label-outside'>
         {title} {required && <span className='text-danger'>*</span>}{' '}
         {error && <small className='text-danger'>{error}</small>}
@@ -110,18 +116,20 @@ AppTextArea.defaultProps = {
   resize: 'none',
   maxHeight: null,
   height: '80px',
-  readOnly: false
+  isReadOnly: false
 }
 
 const Container = styled.div`
   margin: 8px 0;
   position: relative;
-  textarea.outside {
+  textarea.outside,
+  div.outside {
     color: #555;
     width: 100%;
     font-size: 15px;
     min-height: 36px;
     max-height: ${(props) => props.maxHeight};
+    overflow: auto;
     height: ${(props) => props.height};
     line-height: normal;
     border: #ddd solid 1px;
@@ -188,7 +196,8 @@ const Container = styled.div`
     font-weight: 400;
   }
   textarea:focus ~ .floating-label-outside,
-  textarea.has-value ~ .floating-label-outside {
+  textarea.has-value ~ .floating-label-outside,
+  .is-read-only ~ .floating-label-outside {
     top: -7px;
     opacity: 1;
     font-size: 10px;

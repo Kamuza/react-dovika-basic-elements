@@ -53,8 +53,49 @@ const App = () => {
               title='AppTextArea'
               icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => console.log(v)}
-              value='aa'
+              value=' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at felis eget dolor malesuada interdum. Cras ultrices nisi nec nisl vehicula ullamcorper. Nulla sit amet mauris condimentum, semper justo eu, fringilla nisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean consequat eu leo vitae iaculis. Vivamus placerat aliquam elit, sit amet iaculis elit hendrerit eleifend. Pellentesque bibendum, erat consequat tempor iaculis, felis nisl scelerisque neque, et laoreet justo lectus nec dui. Morbi imperdiet, nulla quis luctus dictum, est sem pellentesque ligula, ac aliquam ex nunc vel lectus. Nullam rutrum pretium enim, vitae pulvinar tellus finibus in. Nunc convallis lectus fringilla augue rhoncus efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse aliquet dignissim luctus. Integer at mi tortor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam posuere neque et augue rhoncus aliquam. Fusce augue lectus, scelerisque sed arcu vitae, interdum tempor ante.
+
+                     Sed consequat lobortis tempus. Sed elementum ligula ut sapien imperdiet, eget cursus tellus dictum. In ut nisl odio. Phasellus sed interdum urna. Sed tempor faucibus nibh, eget condimentum dolor facilisis sit amet. Phasellus metus augue, vestibulum dapibus hendrerit quis, tempus in dolor. Phasellus at elit elit. Nullam velit metus, lobortis nec fermentum sed, iaculis et dolor. Donec nec ex pulvinar tortor feugiat congue. Cras facilisis pretium lacus, id sollicitudin dui facilisis ac. Ut vitae dapibus dolor, sit amet gravida dolor. Suspendisse potenti.
+
+                     Aliquam finibus consectetur iaculis. Aliquam odio diam, fermentum sit amet felis et, fringilla pharetra neque. Donec a pretium orci. Mauris tincidunt orci a nunc venenatis egestas. Sed ut sagittis nisi. Vivamus convallis consequat porta. Aenean porttitor tincidunt aliquam. Phasellus sit amet leo finibus, iaculis lacus eget, suscipit ex. Sed tincidunt mollis purus, a ultricies urna auctor eget. In est ex, maximus in gravida non, porttitor eget lacus. Mauris semper porta quam, id placerat velit consectetur eu. Praesent ac tincidunt metus. Duis volutpat nisl sed dui cursus, et eleifend purus luctus. Nam convallis posuere nibh eget lacinia. Aliquam suscipit, justo in maximus eleifend, dolor quam rhoncus dui, ac consectetur est dolor non metus.
+
+                     Donec dapibus odio tellus, ut congue leo sollicitudin vitae. Suspendisse felis ante, gravida sit amet enim ac, maximus pharetra sem. In cursus nunc vel porttitor lobortis. Curabitur commodo pulvinar est ut venenatis. Praesent eget risus turpis. Sed nec semper turpis. Aenean nisl quam, pulvinar id ullamcorper vel, pellentesque non tortor. Vivamus sit amet justo luctus, tristique lectus ac, consequat nunc. '
               isClearable
+              resize
+            />
+            <AppTextArea
+              title='AppTextArea'
+              icon={<AppRemixIcon icon='checkbox-blank' />}
+              onChange={(v) => console.log(v)}
+              value={
+                <div>
+                  Hola me llamo <b>Paco!!</b>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  Hola me llamo <b>Paco!!</b>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  Hola me llamo <b>Paco!!</b>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  Hola me llamo <b>Paco!!</b>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                </div>
+              }
+              isReadOnly
             />
             <AppSelect
               title='AppSelect'
