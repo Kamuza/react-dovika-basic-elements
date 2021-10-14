@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import defaultTranslations from '../../constants/defaultTranslations'
 import defaultColors from '../../constants/defaultColors'
-import { useIsFirstRender } from '../../hooks/isFirstRender'
 import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 import useDetectClickOut from '../../hooks/useDetectClickOut'
-import Drawer from '../../hooks/Drawer'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -28,11 +26,11 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      isMulti (OPC):          TRUE si se quieren poder seleccionar múltiples opciones. Por defecto FALSE.
  *      hasSearchBox (OPC):     TRUE si se quiere poder realizar búsquedas entre los elementos. Por defecto FALSE
  *      hasSelectOptions (OPC): TRUE si se quiere tener botón de Seleccionar Todo y Deseleccionar todo. Śeleccionará o deseleccionará todo lo visible (es decir, utilizará el filtro de hasSearchBox si existe)
- *      defaultValue (OPC):     Valor por defecto (hay que ver si esto es necesario o ya no).
  *      setValueField (OPC):    Nombre del campo Value dentro de los objetos en 'options'. Por defecto value.
  *      setLabelField (OPC):    Nombre del campo Label dentro de los objetos en 'options'. Por defecto label.
  *      isClearable (OPC):      TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
  *      isLoading (OPC):        TRUE si se quiere mostrar un Select en modo carga mientras se reciben los datos. Por defecto FALSE.
+ *      isOnlyValue             TRUE si se quiere poder utilizar solo con value en vez de el objecto completo.
  *   ]
  * */
 
@@ -48,37 +46,32 @@ const AppSelect = (props) => {
     isMulti,
     hasSearchBox,
     hasSelectOptions,
-    defaultValue,
     setValueField,
     setLabelField,
     isClearable,
     isLoading,
+    isOnlyValue,
     required,
     error
   } = props
-  const [selectedOptions, setSelectedOptions] = useState(
-    defaultValue !== undefined
-      ? !isMulti
-        ? options.find((o) => o[setValueField] === defaultValue)
-        : options.filter((o) => defaultValue.includes(o[setValueField]))
-      : isMulti
-      ? []
-      : null
-  )
+  const [selectedOptions, setSelectedOptions] = useState(isMulti ? [] : null)
+
   const [filteredOptions, setFilteredOptions] = useState(options)
   const { show, nodeRef, triggerRef } = useDetectClickOut(false)
 
-  const isFirstRender = useIsFirstRender()
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
 
   useEffect(() => {
-    if (!isFirstRender && !_.isEqual(value, selectedOptions))
-      onChange(selectedOptions)
-  }, [selectedOptions])
-
-  useEffect(() => {
-    if (value !== undefined) setSelectedOptions(value)
+    if (value !== undefined) {
+      if (isOnlyValue) {
+        setSelectedOptions(
+          isMulti
+            ? options.filter((o) => value.includes(o.value))
+            : options.find((o) => value === o.value)
+        )
+      } else setSelectedOptions(value)
+    }
   }, [value])
 
   useEffect(() => {
@@ -86,34 +79,44 @@ const AppSelect = (props) => {
   }, [options])
 
   const handleClickOption = (opt) => {
+    let tempValue
     if (!isMulti) {
-      setSelectedOptions(opt)
+      tempValue = isOnlyValue ? opt.value || null : opt
+      // setSelectedOptions(opt)
       const body = document.getElementsByTagName('body')[0]
       body.click()
     } else if ('isOptGroup' in opt) {
-      let tempOptions = [...selectedOptions]
-      const optChildOptions = options.filter((o) =>
-        o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
-      )
-      const selectedTempOptions = tempOptions.filter((o) =>
-        o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
-      )
-
-      if (optChildOptions.length === selectedTempOptions.length) {
-        const diff = _.difference(selectedOptions, optChildOptions)
-        setSelectedOptions(diff)
-      } else {
-        tempOptions = [...selectedOptions, ...optChildOptions]
-        setSelectedOptions(_.uniqBy(tempOptions, setValueField))
-      }
+      // let tempOptions = [...selectedOptions]
+      // const optChildOptions = options.filter((o) =>
+      //   o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
+      // )
+      // const selectedTempOptions = tempOptions.filter((o) =>
+      //   o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
+      // )
+      //
+      // if (optChildOptions.length === selectedTempOptions.length) {
+      //   const diff = _.difference(selectedOptions, optChildOptions)
+      //   setSelectedOptions(diff)
+      // } else {
+      //   tempOptions = [...selectedOptions, ...optChildOptions]
+      //   setSelectedOptions(_.uniqBy(tempOptions, setValueField))
+      // }
     } else {
       const tempOptions = [...selectedOptions]
-      if (!tempOptions.includes(opt)) tempOptions.push(opt)
-      else {
+      console.log('TO', tempOptions)
+      console.log('OPT', opt)
+      if (tempOptions.filter((to) => to === opt).length > 0) {
+        // tempOptions.filter((o) => o !== opt)
         tempOptions.splice(_.findIndex(tempOptions, opt), 1)
-      }
-      setSelectedOptions(tempOptions)
+      } else tempOptions.push(opt)
+      if (isOnlyValue) {
+        tempValue = _.map(tempOptions, 'value')
+        tempValue = tempValue.length > 0 ? tempValue : []
+      } else tempValue = tempOptions
+
+      // setSelectedOptions(tempOptions)
     }
+    onChange(tempValue)
   }
 
   // > SEARCHBOX
@@ -308,7 +311,8 @@ const AppSelect = (props) => {
                               width: '10px',
                               height: '10px',
                               backgroundColor: opt.circle,
-                              borderRadius: '10px'
+                              borderRadius: '10px',
+                              padding: '0'
                             }}
                           />
                         )}
@@ -347,9 +351,9 @@ AppSelect.defaultProps = {
   hasSearchBox: false,
   hasSelectOptions: false,
   value: undefined,
-  defaultValue: undefined,
   setValueField: 'value',
-  setLabelField: 'label'
+  setLabelField: 'label',
+  isOnlyValue: false
 }
 
 const OptGroup = styled.span`
@@ -364,7 +368,7 @@ const Container = styled.div`
   flex: 1 auto;
   flex-direction: column;
   position: relative;
-  margin: 8px 0;
+  margin: 10px 0;
 `
 const ClearButton = styled.div`
   position: absolute;

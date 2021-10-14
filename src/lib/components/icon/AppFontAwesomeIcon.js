@@ -13,5 +13,6 @@ const AppFontAwesomeIcon = (props) => {
 export default AppFontAwesomeIcon
 AppFontAwesomeIcon.defaultProps = {
   icon: 'square',
-  variant: 's'
+  variant: 's',
+  className: ''
 }

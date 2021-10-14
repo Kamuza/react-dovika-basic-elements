@@ -18,6 +18,7 @@ const App = () => {
   const [showAppModal, setShowAppModal] = useState(false)
   const [showAppDeleteModal, setShowAppDeleteModal] = useState(false)
   const [image, setImage] = useState(null)
+  const [val, setVal] = useState([])
 
   const handleOpenNotification = () =>
     AppNotificationAlert({
@@ -97,21 +98,21 @@ const App = () => {
               }
               isReadOnly
             />
-            <AppSelect
-              title='AppSelect'
-              icon={<AppRemixIcon icon='checkbox-blank' />}
-              options={[
-                { label: 'Hola', isOptGroup: true },
-                { label: 'Hijo', value: 1, group: 'Hola' },
-                { label: 'Hijo2', value: 12, group: 'Hola' }
-              ]}
-              // isMulti
-              hasSearchBox
-              hasSelectOptions
-              onChange={(v) => console.log('ALGO', v)}
-              value={{ label: 'Hola', isOptGroup: true }}
-              isClearable
-            />
+            {/* <AppSelect */}
+            {/*  title='AppSelect' */}
+            {/*  icon={<AppRemixIcon icon='checkbox-blank' />} */}
+            {/*  options={[ */}
+            {/*    { label: 'Hola', isOptGroup: true }, */}
+            {/*    { label: 'Hijo', value: 1, group: 'Hola' }, */}
+            {/*    { label: 'Hijo2', value: 12, group: 'Hola' } */}
+            {/*  ]} */}
+            {/*  // isMulti */}
+            {/*  hasSearchBox */}
+            {/*  hasSelectOptions */}
+            {/*  onChange={(v) => console.log('ALGO', v)} */}
+            {/*  value={{ label: 'Hola', isOptGroup: true }} */}
+            {/*  isClearable */}
+            {/* /> */}
             <AppInputNumber
               title='AppInputNumber'
               icon={<AppRemixIcon icon='checkbox-blank' />}
@@ -128,6 +129,20 @@ const App = () => {
               onChange={(v) => console.log(v)}
               isMulti
             />
+
+            <AppSelect
+              options={[
+                { label: 'Opt1', value: 1 },
+                { label: 'Opt2', value: 2 },
+                { label: 'Opt3', value: 3 }
+              ]}
+              title='isOnlyValue'
+              icon={<AppRemixIcon icon='numbers' />}
+              value={val}
+              onChange={(opt) => setVal(opt)}
+              isMulti
+            />
+
             <AppImageCropper
               cropShape='rect'
               image={image}

@@ -16,5 +16,6 @@ export default AppRemixIcon
 AppRemixIcon.defaultProps = {
   icon: 'checkbox-blank',
   filled: false,
-  noVariants: false
+  noVariants: false,
+  className: ''
 }

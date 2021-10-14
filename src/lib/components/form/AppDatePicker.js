@@ -27,6 +27,8 @@ const AppDatePicker = (props) => {
     showMonthYearPicker,
     showYearPicker,
     locale,
+    popperClassName,
+    popperContainer
   } = props
 
   return (
@@ -45,6 +47,8 @@ const AppDatePicker = (props) => {
         showYearPicker={showYearPicker}
         filterDate={filterDate}
         dropdownMode={dropdownMode}
+        popperClassName={popperClassName}
+        popperContainer={popperContainer}
         customInput={
           <div>
             <span className={`outside  ${error ? 'error' : ''}`}>
@@ -89,7 +93,9 @@ AppDatePicker.defaultProps = {
   maxDate: false,
   filterDate: false,
   dropdownMode: 'scroll',
-  locale: window.dovikaBasicElementsColors || 'en'
+  locale: window.dovikaBasicElementsColors || 'en',
+  popperClassName: '',
+  popperContainer: () => {}
 }
 
 const Container = styled.div`

@@ -2,8 +2,16 @@ import React from 'react'
 import defaultTranslations from '../../constants/defaultTranslations'
 
 const AppFileUploader = (props) => {
-  const { id, isMulti, btnText, btnClass, onChange, isDisabled, ...others } =
-    props
+  const {
+    id,
+    isMulti,
+    btnText,
+    btnClass,
+    onChange,
+    isDisabled,
+    placeholder,
+    ...others
+  } = props
 
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
@@ -17,10 +25,11 @@ const AppFileUploader = (props) => {
       className='input-group file-uploader-group'
       style={isDisabled ? { backgroundColor: '#e9ecef' } : {}}
     >
+      <span className='form-control file-uploader'>{placeholder}</span>
       <input
         id={`upload-${id}`}
         type='file'
-        className='form-control file-uploader'
+        style={{ display: 'none' }}
         onChange={(e) => handleOnChange(e.target.files)}
         multiple={isMulti}
         disabled={isDisabled}
@@ -47,5 +56,6 @@ AppFileUploader.defaultProps = {
   isMulti: false,
   btnClass: 'btn-info',
   id: 0,
-  isDisabled: false
+  isDisabled: false,
+  placeholder: ''
 }
