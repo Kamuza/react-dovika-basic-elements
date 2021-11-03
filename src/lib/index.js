@@ -8,6 +8,7 @@ import AppTextArea from './components/form/AppTextArea'
 import AppFontAwesomeIcon from './components/icon/AppFontAwesomeIcon'
 import AppRemixIcon from './components/icon/AppRemixIcon'
 
+import AppNoInfo from './components/info/AppNoInfo'
 import AppNotificationAlert from './components/info/AppNotificationAlert'
 import AppPreventNavigation from './components/info/AppPreventNavigation'
 
@@ -32,6 +33,7 @@ export {
   AppPreventNavigation,
   AppCard,
   AppModal,
+  AppNoInfo,
   DovikaBasicLocale,
   DovikaBasicColors,
   DovikaBasicTranslations
