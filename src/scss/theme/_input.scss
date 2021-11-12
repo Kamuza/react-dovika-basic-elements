@@ -61,6 +61,7 @@ input:focus~.floating-label-outside input:not(:focus).has-value~.floating-label-
 }
 input:focus~.floating-label-outside,input.has-value~.floating-label-outside{
   top:-7px;
+  pointer-events: auto;
   opacity:1;
   font-size:10px;
   color: $primary;

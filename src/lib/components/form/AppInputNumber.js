@@ -90,8 +90,15 @@ const AppInputNumber = (props) => {
         {...others}
       />
       <span className='floating-label-outside'>
-        {title} {required && <span className='text-danger'>*</span>}{' '}
-        {error && <small className='text-danger'>{error}</small>}
+        <span title={title}>
+          {title}
+          {required && <span className='text-danger'>*</span>}
+        </span>
+        {error && (
+          <span className='text-danger input-error' title={error}>
+            {error}
+          </span>
+        )}
       </span>
       {placeholder && <span className='placeholder'>{placeholder}</span>}
       {icon && <span className='input-icon-outside'>{icon}</span>}
@@ -198,13 +205,18 @@ const Container = styled.div`
     font-weight: 400;
   }
   input:focus ~ .floating-label-outside,
-  input.has-value ~ .floating-label-outside {
-    top: -7px;
+  input.has-value ~ .floating-label-outside,
+  .input-error {
+    top: -6px;
     opacity: 1;
     font-size: 10px;
     color: ${colors.primary};
-    background: #fff;
+    background: transparent;
     padding: 0px 5px;
+    span {
+      background: white;
+      padding: 0 4px;
+    }
   }
   input:focus ~ .floating-label-outside,
   input:not(:focus).has-value ~ .floating-label-outside {
@@ -212,15 +224,19 @@ const Container = styled.div`
   }
   .floating-label-outside {
     position: absolute;
-    pointer-events: none;
+
     left: ${(props) => (props.hasIcon ? '40px' : '10px')};
     top: 8px;
+    right: 8px;
     transition: 0.2s ease all;
     color: #777;
     font-weight: 400;
     font-size: 12px;
     letter-spacing: 0.5px;
     z-index: 4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .input-icon-outside svg,
   .input-icon-outside span,

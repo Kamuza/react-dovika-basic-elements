@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker'
 import Moment from 'moment'
 import defaultColors from '../../constants/defaultColors'
 import AppRemixIcon from '../icon/AppRemixIcon'
+import { createPortal } from 'react-dom'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 const AppDatePicker = (props) => {
@@ -55,8 +56,15 @@ const AppDatePicker = (props) => {
               {value ? Moment(value).format(displayDateFormat) : ''}
             </span>
             <span className='floating-label-outside'>
-              {title} {required && <span className='text-danger'>*</span>}{' '}
-              {error && <small className='text-danger'>{error}</small>}
+              <span title={title}>
+                {title}
+                {required && <span className='text-danger'>*</span>}
+              </span>
+              {error && (
+                <span className='text-danger input-error' title={error}>
+                  {error}
+                </span>
+              )}
             </span>
             <span className='input-icon-outside'>{icon}</span>
             {placeholder && (
@@ -94,8 +102,8 @@ AppDatePicker.defaultProps = {
   filterDate: false,
   dropdownMode: 'scroll',
   locale: window.dovikaBasicElementsColors || 'en',
-  popperClassName: '',
-  popperContainer: () => {}
+  popperClassName: 'react-datepicker-popper-100',
+  popperContainer: ({ children }) => createPortal(children, document.body)
 }
 
 const Container = styled.div`
@@ -173,15 +181,22 @@ const Container = styled.div`
   }
   .floating-label-outside {
     position: absolute;
+    pointer-events: auto;
     top: -7px;
     left: 34px;
+    right: 8px;
     z-index: 4;
     font-size: 10px;
     color: ${colors.primary};
-    background: #fff;
+    background: transparent;
     padding: 0px 5px;
     white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    span {
+      background: white;
+      padding: 0 4px;
+    }
   }
   .clearable {
     position: absolute;

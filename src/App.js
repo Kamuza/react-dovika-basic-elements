@@ -13,12 +13,17 @@ import AppNotificationAlert from './lib/components/info/AppNotificationAlert'
 import AppImageCropper from './lib/components/form/AppImageCropper'
 import AppNoInfo from './lib/components/info/AppNoInfo'
 import AppDeleteModal from './lib/components/modal/AppDeleteModal'
+import AppSingleSelect from './lib/components/form/AppSingleSelect'
+import AppMultiSelect from './lib/components/form/AppMultiSelect'
+import AppCheckbox from './lib/components/form/AppCheckbox'
 
 const App = () => {
   const [showAppModal, setShowAppModal] = useState(false)
   const [showAppDeleteModal, setShowAppDeleteModal] = useState(false)
   const [image, setImage] = useState(null)
-  const [val, setVal] = useState([])
+  const [val, setVal] = useState(1)
+  const [valMulti, setValMulti] = useState([])
+  const [check, setCheck] = useState(false)
 
   const handleOpenNotification = () =>
     AppNotificationAlert({
@@ -38,36 +43,47 @@ const App = () => {
               title='AppInput1'
               icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => console.log(v)}
-              value='aa'
+              value=''
               isClearable
               tabIndex={2}
+              error='Esto es un error largo para ver como sale'
             />
             <AppInput
               title='AppInput2'
               icon={<AppRemixIcon icon='checkbox-blank' />}
-              onChange={(v) => console.log(v)}
-              value='aa'
+              onChange={(v) => setVal(v)}
+              value={val}
               isClearable
               tabIndex={1}
             />
             <AppTextArea
               title='AppTextArea'
               icon={<AppRemixIcon icon='checkbox-blank' />}
+              error='Un error con texto'
+              placeholder='hola'
+              required
               onChange={(v) => console.log(v)}
-              value=' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at felis eget dolor malesuada interdum. Cras ultrices nisi nec nisl vehicula ullamcorper. Nulla sit amet mauris condimentum, semper justo eu, fringilla nisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean consequat eu leo vitae iaculis. Vivamus placerat aliquam elit, sit amet iaculis elit hendrerit eleifend. Pellentesque bibendum, erat consequat tempor iaculis, felis nisl scelerisque neque, et laoreet justo lectus nec dui. Morbi imperdiet, nulla quis luctus dictum, est sem pellentesque ligula, ac aliquam ex nunc vel lectus. Nullam rutrum pretium enim, vitae pulvinar tellus finibus in. Nunc convallis lectus fringilla augue rhoncus efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse aliquet dignissim luctus. Integer at mi tortor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam posuere neque et augue rhoncus aliquam. Fusce augue lectus, scelerisque sed arcu vitae, interdum tempor ante.
-
-                     Sed consequat lobortis tempus. Sed elementum ligula ut sapien imperdiet, eget cursus tellus dictum. In ut nisl odio. Phasellus sed interdum urna. Sed tempor faucibus nibh, eget condimentum dolor facilisis sit amet. Phasellus metus augue, vestibulum dapibus hendrerit quis, tempus in dolor. Phasellus at elit elit. Nullam velit metus, lobortis nec fermentum sed, iaculis et dolor. Donec nec ex pulvinar tortor feugiat congue. Cras facilisis pretium lacus, id sollicitudin dui facilisis ac. Ut vitae dapibus dolor, sit amet gravida dolor. Suspendisse potenti.
-
-                     Aliquam finibus consectetur iaculis. Aliquam odio diam, fermentum sit amet felis et, fringilla pharetra neque. Donec a pretium orci. Mauris tincidunt orci a nunc venenatis egestas. Sed ut sagittis nisi. Vivamus convallis consequat porta. Aenean porttitor tincidunt aliquam. Phasellus sit amet leo finibus, iaculis lacus eget, suscipit ex. Sed tincidunt mollis purus, a ultricies urna auctor eget. In est ex, maximus in gravida non, porttitor eget lacus. Mauris semper porta quam, id placerat velit consectetur eu. Praesent ac tincidunt metus. Duis volutpat nisl sed dui cursus, et eleifend purus luctus. Nam convallis posuere nibh eget lacinia. Aliquam suscipit, justo in maximus eleifend, dolor quam rhoncus dui, ac consectetur est dolor non metus.
-
-                     Donec dapibus odio tellus, ut congue leo sollicitudin vitae. Suspendisse felis ante, gravida sit amet enim ac, maximus pharetra sem. In cursus nunc vel porttitor lobortis. Curabitur commodo pulvinar est ut venenatis. Praesent eget risus turpis. Sed nec semper turpis. Aenean nisl quam, pulvinar id ullamcorper vel, pellentesque non tortor. Vivamus sit amet justo luctus, tristique lectus ac, consequat nunc. '
-              isClearable
+              // value=' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at felis eget dolor malesuada interdum. Cras ultrices nisi nec nisl vehicula ullamcorper. Nulla sit amet mauris condimentum, semper justo eu, fringilla nisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean consequat eu leo vitae iaculis. Vivamus placerat aliquam elit, sit amet iaculis elit hendrerit eleifend. Pellentesque bibendum, erat consequat tempor iaculis, felis nisl scelerisque neque, et laoreet justo lectus nec dui. Morbi imperdiet, nulla quis luctus dictum, est sem pellentesque ligula, ac aliquam ex nunc vel lectus. Nullam rutrum pretium enim, vitae pulvinar tellus finibus in. Nunc convallis lectus fringilla augue rhoncus efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse aliquet dignissim luctus. Integer at mi tortor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam posuere neque et augue rhoncus aliquam. Fusce augue lectus, scelerisque sed arcu vitae, interdum tempor ante.
+              //
+              //        Sed consequat lobortis tempus. Sed elementum ligula ut sapien imperdiet, eget cursus tellus dictum. In ut nisl odio. Phasellus sed interdum urna. Sed tempor faucibus nibh, eget condimentum dolor facilisis sit amet. Phasellus metus augue, vestibulum dapibus hendrerit quis, tempus in dolor. Phasellus at elit elit. Nullam velit metus, lobortis nec fermentum sed, iaculis et dolor. Donec nec ex pulvinar tortor feugiat congue. Cras facilisis pretium lacus, id sollicitudin dui facilisis ac. Ut vitae dapibus dolor, sit amet gravida dolor. Suspendisse potenti.
+              //
+              //        Aliquam finibus consectetur iaculis. Aliquam odio diam, fermentum sit amet felis et, fringilla pharetra neque. Donec a pretium orci. Mauris tincidunt orci a nunc venenatis egestas. Sed ut sagittis nisi. Vivamus convallis consequat porta. Aenean porttitor tincidunt aliquam. Phasellus sit amet leo finibus, iaculis lacus eget, suscipit ex. Sed tincidunt mollis purus, a ultricies urna auctor eget. In est ex, maximus in gravida non, porttitor eget lacus. Mauris semper porta quam, id placerat velit consectetur eu. Praesent ac tincidunt metus. Duis volutpat nisl sed dui cursus, et eleifend purus luctus. Nam convallis posuere nibh eget lacinia. Aliquam suscipit, justo in maximus eleifend, dolor quam rhoncus dui, ac consectetur est dolor non metus.
+              //
+              //        Donec dapibus odio tellus, ut congue leo sollicitudin vitae. Suspendisse felis ante, gravida sit amet enim ac, maximus pharetra sem. In cursus nunc vel porttitor lobortis. Curabitur commodo pulvinar est ut venenatis. Praesent eget risus turpis. Sed nec semper turpis. Aenean nisl quam, pulvinar id ullamcorper vel, pellentesque non tortor. Vivamus sit amet justo luctus, tristique lectus ac, consequat nunc. '
+              // isClearable
               resize
+            />
+            <AppCheckbox
+              onChange={(v) => setCheck(v)}
+              value={check}
+              text='Hola!'
             />
             <AppTextArea
               title='AppTextArea'
               icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => console.log(v)}
+              error='Un error con texto'
+              required
               value={
                 <div>
                   Hola me llamo <b>Paco!!</b>
@@ -117,12 +133,17 @@ const App = () => {
               title='AppInputNumber'
               icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => console.log(v)}
-              value='1'
+              value=''
               isClearable
+              error='Esto es un error'
+              required
             />
             <AppDatePicker
               title='AppDatePicker'
               onChange={(v) => console.log(v)}
+              error='Un error largo'
+              required
+              placeholder='hola'
             />
             <AppFileUploader
               title='AppDatePicker'
@@ -130,17 +151,57 @@ const App = () => {
               isMulti
             />
 
-            <AppSelect
+            {/* <AppSelect */}
+            {/*  options={[ */}
+            {/*    { label: 'Opt1', value: 1 }, */}
+            {/*    { label: 'Opt2', value: 2 }, */}
+            {/*    { label: 'Opt3', value: 3 } */}
+            {/*  ]} */}
+            {/*  title='isOnlyValue' */}
+            {/*  icon={<AppRemixIcon icon='numbers' />} */}
+            {/*  value={val} */}
+            {/*  onChange={(opt) => { */}
+            {/*    setVal(opt) */}
+            {/*    console.log(opt) */}
+            {/*  }} */}
+            {/*  isMulti */}
+            {/* /> */}
+
+            <AppSingleSelect
               options={[
-                { label: 'Opt1', value: 1 },
-                { label: 'Opt2', value: 2 },
-                { label: 'Opt3', value: 3 }
+                { label: 'Grupo', isOptGroup: true },
+                { label: 'Opt1', value: 1, group: 'Grupo' },
+                { label: 'Opt2', value: 2, group: 'Grupo' },
+                { label: 'Opt3', value: 3, group: 'Grupo' }
               ]}
-              title='isOnlyValue'
+              title='Single Select'
               icon={<AppRemixIcon icon='numbers' />}
               value={val}
-              onChange={(opt) => setVal(opt)}
-              isMulti
+              onChange={(opt) => {
+                setVal(opt)
+              }}
+              isClearable
+              hasSearchBox
+              required
+              error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
+            />
+            {console.log('ValMulti', valMulti)}
+            <AppMultiSelect
+              options={[
+                { label: 'Grupo', isOptGroup: true },
+                { label: 'Opt1', value: 1, group: 'Grupo' },
+                { label: 'Opt2', value: 2, group: 'Grupo' },
+                { label: 'Opt3', value: 3 }
+              ]}
+              title='Multi Select'
+              icon={<AppRemixIcon icon='numbers' />}
+              value={valMulti}
+              onChange={(opt) => {
+                setValMulti(opt)
+              }}
+              isClearable
+              hasSearchBox
+              hasSelectOptions
             />
 
             <AppImageCropper

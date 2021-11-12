@@ -10,31 +10,31 @@ const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
  *   Elements: [
- *      title:                  Título del input, se mostrará sobre el input.
- *      options:                Opciones del selector. Debe ser un array con objetos en formato
- *                              {
+ *      title:                    Título del input, se mostrará sobre el input.
+ *      options:                  Opciones del selector. Debe ser un array con objetos en formato
+ *                                {
  *                                  label: 'Texto para mostrar',
  *                                  value: 'Valor que se enviará',
  *                                  isOptGroup: 'OPC. Si se incluye, se mostrará como grupo no seleccionable',
  *                                  group: 'OPC. Si se incluye, se podrá utilizar como filtro de texto para encontrar el elemento'
- *                              }
- *      onChange:               Función que ejecutará cada vez que se ejecute un cambio.
- *      value:                  Valor(es) seleccionado(s).
- *      className (OPC):        Clase para añadir al input. Por defecto 'pointer'.
- *      placeholder (OPC):      Texto informativo. Se muestra cuando no hay opciones seleccionadas.
- *      icon (OPC):             Icono a la izquierda. Si no se establece, queda el hueco.
- *      isMulti (OPC):          TRUE si se quieren poder seleccionar múltiples opciones. Por defecto FALSE.
- *      hasSearchBox (OPC):     TRUE si se quiere poder realizar búsquedas entre los elementos. Por defecto FALSE
- *      hasSelectOptions (OPC): TRUE si se quiere tener botón de Seleccionar Todo y Deseleccionar todo. Śeleccionará o deseleccionará todo lo visible (es decir, utilizará el filtro de hasSearchBox si existe)
- *      setValueField (OPC):    Nombre del campo Value dentro de los objetos en 'options'. Por defecto value.
- *      setLabelField (OPC):    Nombre del campo Label dentro de los objetos en 'options'. Por defecto label.
- *      isClearable (OPC):      TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
- *      isLoading (OPC):        TRUE si se quiere mostrar un Select en modo carga mientras se reciben los datos. Por defecto FALSE.
- *      isOnlyValue             TRUE si se quiere poder utilizar solo con value en vez de el objecto completo.
+ *                                }
+ *      onChange:                 Función que ejecutará cada vez que se ejecute un cambio.
+ *      value:                    Valor seleccionado.
+ *      className (OPC):          Clase para añadir al input. Por defecto 'pointer'.
+ *      placeholder (OPC):        Texto informativo. Se muestra cuando no hay opciones seleccionadas.
+ *      icon (OPC):               Icono a la izquierda. Si no se establece, queda el hueco.
+ *      hasSearchBox (OPC):       TRUE si se quiere poder realizar búsquedas entre los elementos. Por defecto FALSE
+ *      hasSelectOptions (OPC):   TRUE si se quiere tener botón de Seleccionar Todo y Deseleccionar todo. Śeleccionará o deseleccionará todo lo visible (es decir, utilizará el filtro de hasSearchBox si existe)
+ *      setValueField (OPC):      Nombre del campo Value dentro de los objetos en 'options'. Por defecto value.
+ *      setLabelField (OPC):      Nombre del campo Label dentro de los objetos en 'options'. Por defecto label.
+ *      isClearable (OPC):        TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
+ *      isLoading (OPC):          TRUE si se quiere mostrar un Select en modo carga mientras se reciben los datos. Por defecto FALSE.
+ *      loadingPlaceholder (OPC): Texto informativo mientras isLoading es true. Por defecto "Cargando..."
+ *      required (OPC):           Pone asterisco rojo y no permite deseleccionar una vez seleccionada una opción.
  *   ]
  * */
 
-const AppSelect = (props) => {
+const AppMultiSelect = (props) => {
   const {
     title,
     options,
@@ -43,35 +43,25 @@ const AppSelect = (props) => {
     className,
     placeholder,
     icon,
-    isMulti,
     hasSearchBox,
     hasSelectOptions,
     setValueField,
     setLabelField,
     isClearable,
     isLoading,
-    isOnlyValue,
+    loadingPlaceholder,
     required,
     error
   } = props
-  const [selectedOptions, setSelectedOptions] = useState(isMulti ? [] : null)
-
+  const [selectedOptions, setSelectedOptions] = useState([])
   const [filteredOptions, setFilteredOptions] = useState(options)
-  const { show, nodeRef, triggerRef } = useDetectClickOut(false)
-
+  const { show, nodeRef, triggerRef, setShow } = useDetectClickOut(false)
+  console.log('SO', selectedOptions)
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
 
   useEffect(() => {
-    if (value !== undefined) {
-      if (isOnlyValue) {
-        setSelectedOptions(
-          isMulti
-            ? options.filter((o) => value.includes(o.value))
-            : options.find((o) => value === o.value)
-        )
-      } else setSelectedOptions(value)
-    }
+    setSelectedOptions(value)
   }, [value])
 
   useEffect(() => {
@@ -79,42 +69,21 @@ const AppSelect = (props) => {
   }, [options])
 
   const handleClickOption = (opt) => {
-    let tempValue
-    if (!isMulti) {
-      tempValue = isOnlyValue ? opt.value || null : opt
-      // setSelectedOptions(opt)
-      const body = document.getElementsByTagName('body')[0]
-      body.click()
-    } else if ('isOptGroup' in opt) {
-      // let tempOptions = [...selectedOptions]
-      // const optChildOptions = options.filter((o) =>
-      //   o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
-      // )
-      // const selectedTempOptions = tempOptions.filter((o) =>
-      //   o.group?.toUpperCase().includes(opt[setLabelField].toUpperCase())
-      // )
-      //
-      // if (optChildOptions.length === selectedTempOptions.length) {
-      //   const diff = _.difference(selectedOptions, optChildOptions)
-      //   setSelectedOptions(diff)
-      // } else {
-      //   tempOptions = [...selectedOptions, ...optChildOptions]
-      //   setSelectedOptions(_.uniqBy(tempOptions, setValueField))
-      // }
+    if (!opt?.isOptGroup) {
+      if (selectedOptions.includes(opt[setValueField])) {
+        onChange(selectedOptions.filter((o) => o !== opt[setValueField]))
+      } else {
+        const tempSelectedOptions = [...selectedOptions]
+        tempSelectedOptions.push(opt[setValueField])
+        onChange(tempSelectedOptions)
+      }
     } else {
-      const tempOptions = [...selectedOptions]
-      if (tempOptions.filter((to) => to === opt).length > 0) {
-        // tempOptions.filter((o) => o !== opt)
-        tempOptions.splice(_.findIndex(tempOptions, opt), 1)
-      } else tempOptions.push(opt)
-      if (isOnlyValue) {
-        tempValue = _.map(tempOptions, 'value')
-        tempValue = tempValue.length > 0 ? tempValue : []
-      } else tempValue = tempOptions
+      let groupOptions = options.filter((o) => o.group === opt[setLabelField])
+      groupOptions = _.map(groupOptions, setValueField)
+      setSelectedOptions(_.uniq([...groupOptions, ...selectedOptions]))
 
-      // setSelectedOptions(tempOptions)
+      console.log('E', groupOptions)
     }
-    onChange(tempValue)
   }
 
   // > SEARCHBOX
@@ -142,17 +111,21 @@ const AppSelect = (props) => {
   // > SELECT OPTIONS
   const selectAll = () => {
     let options = null
-    if (isMulti) options = [...selectedOptions, ...filteredOptions]
-    else options = [...selectedOptions, ...filteredOptions[0]]
-    options = options.filter((o) => !o.hasOwnProperty('isOptGroup'))
-    setSelectedOptions(_.uniqBy(options, setValueField))
+    options = [...filteredOptions]
+    options = _.map(
+      options.filter((o) => !o.isOptGroup),
+      setValueField
+    )
+    setSelectedOptions(_.uniq([...options, ...selectedOptions]))
   }
 
   const deselectAll = () => {
-    const options = [...selectedOptions]
+    let options = [...selectedOptions]
     filteredOptions.forEach((fopt) => {
-      if (options.includes(fopt)) options.splice(_.findIndex(options, fopt), 1)
+      if (options.includes(fopt[setValueField]))
+        options = options.filter((o) => o !== fopt[setValueField])
     })
+    console.log('AA', options)
     setSelectedOptions(options)
   }
   // < SELECT OPTIONS
@@ -173,7 +146,7 @@ const AppSelect = (props) => {
               {title} {required && <span className='text-danger'>*</span>}
             </InputTitle>
           )}
-          <InputPlaceholder>{placeholder}</InputPlaceholder>
+          <InputPlaceholder>{loadingPlaceholder}</InputPlaceholder>
           <AppFontAwesomeIcon
             icon='caret-down'
             className='float-right'
@@ -202,23 +175,24 @@ const AppSelect = (props) => {
         {icon && <InputIcon>{icon}</InputIcon>}
         {title && (
           <InputTitle>
-            {title} {required && <span className='text-danger'>*</span>}
+            <span title={title}>
+              {title}
+              {required && <span className='text-danger'>*</span>}
+            </span>{' '}
+            {error && (
+              <span className='text-danger' title={error}>
+                {error}
+              </span>
+            )}
           </InputTitle>
         )}
-        {isMulti ? (
-          selectedOptions && selectedOptions.length === 0 ? (
-            <InputPlaceholder>{placeholder}</InputPlaceholder>
-          ) : (
-            <SelectedContainer>
-              {selectedOptions.length === 1
-                ? selectedOptions[0][setLabelField]
-                : `${selectedOptions.length}${translations.elementsSelected}`}
-            </SelectedContainer>
-          )
-        ) : // : `${selectedOptions.length} elementos seleccionados`
-        selectedOptions ? (
+        {selectedOptions.length > 0 ? (
           <SelectedContainer>
-            {selectedOptions[setLabelField]}
+            {selectedOptions.length > 1
+              ? `${selectedOptions.length}${translations.elementsSelected}`
+              : options.find((o) => selectedOptions.includes(o[setValueField]))[
+                  setLabelField
+                ]}
           </SelectedContainer>
         ) : (
           <InputPlaceholder>{placeholder}</InputPlaceholder>
@@ -230,13 +204,11 @@ const AppSelect = (props) => {
           style={{ marginTop: 3 }}
         />
       </Input>
-      {isClearable &&
-        ((isMulti && selectedOptions.length > 0) ||
-          (!isMulti && selectedOptions)) && (
-          <ClearButton onClick={() => setSelectedOptions(isMulti ? [] : null)}>
-            <AppRemixIcon icon='close-circle' color={colors.primary} />
-          </ClearButton>
-        )}
+      {isClearable && selectedOptions && !required && (
+        <ClearButton onClick={() => onChange([])}>
+          <AppRemixIcon icon='close-circle' color={colors.primary} />
+        </ClearButton>
+      )}
       {show && (
         <DropdownContainer style={{ minWidth: '300px' }} ref={nodeRef}>
           <DropdownContent>
@@ -252,12 +224,12 @@ const AppSelect = (props) => {
                 />
               </div>
             )}
-            {hasSelectOptions && isMulti && (
+            {hasSelectOptions && (
               <div className='m-2'>
                 <div className='row'>
                   <div className='col-lg-6'>
                     <span
-                      className='btn btn-outline-primary btn-block btn-xs'
+                      className='btn btn-outline-primary btn-block btn-xs mb-1'
                       onClick={selectAll}
                     >
                       {translations.selectAll}
@@ -279,7 +251,7 @@ const AppSelect = (props) => {
                 filteredOptions.map((opt, i) => (
                   <div key={i}>
                     {'isOptGroup' in opt ? (
-                      <li onClick={() => isMulti && handleClickOption(opt)}>
+                      <li onClick={() => handleClickOption(opt)}>
                         <OptGroup>{opt[setLabelField]}</OptGroup>
                       </li>
                     ) : (
@@ -290,12 +262,8 @@ const AppSelect = (props) => {
                         }}
                         onClick={() => handleClickOption(opt)}
                         className={
-                          (!isMulti &&
-                            selectedOptions !== null &&
-                            selectedOptions === opt) ||
-                          (isMulti &&
-                            selectedOptions !== null &&
-                            selectedOptions.includes(opt))
+                          selectedOptions &&
+                          selectedOptions[setValueField] === opt[setValueField]
                             ? 'selected'
                             : ''
                         }
@@ -315,17 +283,13 @@ const AppSelect = (props) => {
                           />
                         )}
                         {opt[setLabelField]}
-                        {((!isMulti &&
-                          selectedOptions !== null &&
-                          selectedOptions === opt) ||
-                          (isMulti &&
-                            selectedOptions !== null &&
-                            selectedOptions.includes(opt))) && (
-                          <AppRemixIcon
-                            icon='check'
-                            className='float-right ks-check'
-                          />
-                        )}
+                        {selectedOptions &&
+                          selectedOptions.includes(opt[setValueField]) && (
+                            <AppRemixIcon
+                              icon='check'
+                              className='float-right ks-check'
+                            />
+                          )}
                       </li>
                     )}
                   </div>
@@ -341,17 +305,18 @@ const AppSelect = (props) => {
   )
 }
 
-export default AppSelect
-AppSelect.defaultProps = {
+export default AppMultiSelect
+AppMultiSelect.defaultProps = {
   className: 'pointer',
   placeholder: 'Seleccionar',
-  isMulti: false,
+  loadingPlaceholder: 'Cargando...',
   hasSearchBox: false,
   hasSelectOptions: false,
-  value: undefined,
+  value: null,
   setValueField: 'value',
   setLabelField: 'label',
-  isOnlyValue: false
+  isOnlyValue: false,
+  required: false
 }
 
 const OptGroup = styled.span`
@@ -411,13 +376,20 @@ const InputIcon = styled.span`
 
 const InputTitle = styled.span`
   position: absolute;
-  top: -10px;
+  top: -8px;
   left: 34px;
+  right: 8px;
   z-index: 4;
   font-size: 10px;
   color: ${colors.primary};
-  background: #fff;
   padding: 0px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  span {
+    background: #fff;
+    padding: 0 4px;
+  }
 `
 
 const InputPlaceholder = styled.span`

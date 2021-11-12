@@ -37,7 +37,9 @@ const AppCheckbox = (props) => {
     ...others
   } = props
 
-  const handleOnChange = () => {}
+  const handleOnChange = () => {
+    onChange(!value)
+  }
 
   return (
     <div {...others} onClick={() => handleOnChange()}>
@@ -46,6 +48,7 @@ const AppCheckbox = (props) => {
       ) : (
         <AppRemixIcon icon={iconUncheck} color={color} />
       )}
+      <span>{text}</span>
     </div>
   )
 }
