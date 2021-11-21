@@ -213,6 +213,10 @@ const Container = styled.div`
       padding: 0 4px;
     }
   }
+  .read-only ~ span.floating-label-outside {
+    background: white;
+    right: auto;
+  }
   input:focus ~ .floating-label-outside,
   input:not(:focus).has-value ~ .floating-label-outside {
     left: 35px;

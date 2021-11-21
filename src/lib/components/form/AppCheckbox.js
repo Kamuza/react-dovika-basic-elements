@@ -26,11 +26,12 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  **/
 const AppCheckbox = (props) => {
   const {
-    text,
+    children,
     onChange,
     value,
     iconUncheck,
     iconCheck,
+    checkboxSize,
     error,
     isDisabled,
     color,
@@ -42,22 +43,30 @@ const AppCheckbox = (props) => {
   }
 
   return (
-    <div {...others} onClick={() => handleOnChange()}>
+    <CheckboxContainer {...others} onClick={() => handleOnChange()}>
       {value ? (
-        <AppRemixIcon icon={iconCheck} color={color} />
+        <AppRemixIcon icon={iconCheck} color={color} size={checkboxSize} />
       ) : (
-        <AppRemixIcon icon={iconUncheck} color={color} />
+        <AppRemixIcon icon={iconUncheck} color={color} size={checkboxSize} />
       )}
-      <span>{text}</span>
-    </div>
+      <span>{children}</span>
+    </CheckboxContainer>
   )
 }
 
 export default AppCheckbox
 
 AppCheckbox.defaultProps = {
-  name: '',
   iconCheck: 'checkbox',
   iconUncheck: 'checkbox-blank',
-  color: colors.primary
+  color: colors.primary,
+  checkboxSize: 16
 }
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  & > span {
+    padding-left: 6px;
+  }
+`

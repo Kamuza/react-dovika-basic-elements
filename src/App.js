@@ -55,6 +55,7 @@ const App = () => {
               value={val}
               isClearable
               tabIndex={1}
+              isReadOnly
             />
             <AppTextArea
               title='AppTextArea'
@@ -73,11 +74,9 @@ const App = () => {
               // isClearable
               resize
             />
-            <AppCheckbox
-              onChange={(v) => setCheck(v)}
-              value={check}
-              text='Hola!'
-            />
+            <AppCheckbox onChange={(v) => setCheck(v)} value={check}>
+              Hola!
+            </AppCheckbox>
             <AppTextArea
               title='AppTextArea'
               icon={<AppRemixIcon icon='checkbox-blank' />}

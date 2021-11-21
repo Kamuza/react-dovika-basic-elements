@@ -56,7 +56,7 @@ const AppMultiSelect = (props) => {
   const [selectedOptions, setSelectedOptions] = useState([])
   const [filteredOptions, setFilteredOptions] = useState(options)
   const { show, nodeRef, triggerRef, setShow } = useDetectClickOut(false)
-  console.log('SO', selectedOptions)
+
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
 
