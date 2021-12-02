@@ -102,7 +102,9 @@ const AppInput = (props) => {
   return (
     <Container className={`mb-2 ${isDisabled && 'disabled'}`}>
       <div className={`read-only ${noBorder && 'no-border'}`}>{value}</div>
-      <span className='floating-label-outside'>{title}</span>
+      <span className='floating-label-outside'>
+        <span>{title}</span>
+      </span>
       {icon && <span className='input-icon-outside'>{icon}</span>}
     </Container>
   )
@@ -138,11 +140,16 @@ const Container = styled.div`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin-bottom: -1px;
-    padding: 6px 10px 6px 40px;
+    padding: 6px 20px 6px 40px;
     -webkit-appearance: none;
     -moz-appearance: none;
     position: relative;
     z-index: 1;
+    white-space: nowrap;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &.no-border {
       border: none !important;
       padding: 10px 10px 2px 44px !important;
@@ -213,7 +220,7 @@ const Container = styled.div`
       padding: 0 4px;
     }
   }
-  .read-only ~ span.floating-label-outside {
+  .read-only ~ span.floating-label-outside > span {
     background: white;
     right: auto;
   }

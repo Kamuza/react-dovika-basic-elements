@@ -21,7 +21,7 @@ const App = () => {
   const [showAppModal, setShowAppModal] = useState(false)
   const [showAppDeleteModal, setShowAppDeleteModal] = useState(false)
   const [image, setImage] = useState(null)
-  const [val, setVal] = useState(1)
+  const [val, setVal] = useState('contenido interesante para maduritos')
   const [valMulti, setValMulti] = useState([])
   const [check, setCheck] = useState(false)
 
@@ -49,13 +49,13 @@ const App = () => {
               error='Esto es un error largo para ver como sale'
             />
             <AppInput
-              title='AppInput2'
+              title='AppInput2 con nombre larguito para cortarlo  y cortar tb el contenido'
               icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => setVal(v)}
               value={val}
               isClearable
               tabIndex={1}
-              isReadOnly
+              isReadOnly={false}
             />
             <AppTextArea
               title='AppTextArea'
@@ -197,6 +197,7 @@ const App = () => {
               value={valMulti}
               onChange={(opt) => {
                 setValMulti(opt)
+                console.log('CAMBIA!!!', opt)
               }}
               isClearable
               hasSearchBox

@@ -80,9 +80,7 @@ const AppMultiSelect = (props) => {
     } else {
       let groupOptions = options.filter((o) => o.group === opt[setLabelField])
       groupOptions = _.map(groupOptions, setValueField)
-      setSelectedOptions(_.uniq([...groupOptions, ...selectedOptions]))
-
-      console.log('E', groupOptions)
+      onChange(_.uniq([...groupOptions, ...selectedOptions]))
     }
   }
 
@@ -116,7 +114,7 @@ const AppMultiSelect = (props) => {
       options.filter((o) => !o.isOptGroup),
       setValueField
     )
-    setSelectedOptions(_.uniq([...options, ...selectedOptions]))
+    onChange(_.uniq([...options, ...selectedOptions]))
   }
 
   const deselectAll = () => {
@@ -125,8 +123,7 @@ const AppMultiSelect = (props) => {
       if (options.includes(fopt[setValueField]))
         options = options.filter((o) => o !== fopt[setValueField])
     })
-    console.log('AA', options)
-    setSelectedOptions(options)
+    onChange(options)
   }
   // < SELECT OPTIONS
 
@@ -143,7 +140,8 @@ const AppMultiSelect = (props) => {
           </InputIcon>
           {title && (
             <InputTitle>
-              {title} {required && <span className='text-danger'>*</span>}
+              <span title={title}>{title}</span>
+              {required && <span className='text-danger'>*</span>}
             </InputTitle>
           )}
           <InputPlaceholder>{loadingPlaceholder}</InputPlaceholder>

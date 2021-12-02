@@ -112,7 +112,8 @@ const AppSingleSelect = (props) => {
           </InputIcon>
           {title && (
             <InputTitle>
-              {title} {required && <span className='text-danger'>*</span>}
+              <span title={title}>{title}</span>
+              {required && <span className='text-danger'>*</span>}
             </InputTitle>
           )}
           <InputPlaceholder>{loadingPlaceholder}</InputPlaceholder>
