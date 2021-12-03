@@ -146,6 +146,7 @@ const App = () => {
             />
             <AppFileUploader
               title='AppDatePicker'
+              placeholder='Un nombre largo para cortar sin que se vaya de línea'
               onChange={(v) => console.log(v)}
               isMulti
             />
