@@ -6,6 +6,7 @@ import defaultColors from '../../constants/defaultColors'
 import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 import useDetectClickOut from '../../hooks/useDetectClickOut'
+import ReactDOMServer from 'react-dom/server'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -219,7 +220,9 @@ const AppMultiSelect = (props) => {
                 <SearchInput
                   type='text'
                   className='w-100'
-                  placeholder={translations.search}
+                  placeholder={ReactDOMServer.renderToString(
+                    translations.search
+                  )}
                   onKeyDown={keyUpSearchBox}
                   onChange={changeSearchBox}
                   autoFocus
