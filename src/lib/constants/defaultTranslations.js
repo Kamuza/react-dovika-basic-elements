@@ -4,5 +4,10 @@ export default {
   unselectAll: 'Deseleccionar todo',
   elementsSelected: ' elementos seleccionados',
   search: 'Buscar...',
-  noOptions: 'No hay opciones disponibles'
+  noOptions: 'No hay opciones disponibles',
+  removeSelectedElement: '¿Seguro que desea eliminar el elemento seleccionado?',
+  delete: 'Eliminar',
+  cancel: 'Cancelar',
+  loading: 'Cargando...',
+  select: 'Seleccionar'
 }

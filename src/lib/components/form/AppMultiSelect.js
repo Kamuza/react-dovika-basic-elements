@@ -144,7 +144,9 @@ const AppMultiSelect = (props) => {
               {required && <span className='text-danger'>*</span>}
             </InputTitle>
           )}
-          <InputPlaceholder>{loadingPlaceholder}</InputPlaceholder>
+          <InputPlaceholder>
+            {loadingPlaceholder || translations.loading}
+          </InputPlaceholder>
           <AppFontAwesomeIcon
             icon='caret-down'
             className='float-right'
@@ -193,7 +195,9 @@ const AppMultiSelect = (props) => {
                 ]}
           </SelectedContainer>
         ) : (
-          <InputPlaceholder>{placeholder}</InputPlaceholder>
+          <InputPlaceholder>
+            {placeholder || translations.select}
+          </InputPlaceholder>
         )}
         <AppFontAwesomeIcon
           icon='caret-down'
@@ -306,8 +310,6 @@ const AppMultiSelect = (props) => {
 export default AppMultiSelect
 AppMultiSelect.defaultProps = {
   className: 'pointer',
-  placeholder: 'Seleccionar',
-  loadingPlaceholder: 'Cargando...',
   hasSearchBox: false,
   hasSelectOptions: false,
   value: null,

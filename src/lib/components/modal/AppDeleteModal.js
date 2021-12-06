@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import AppRemixIcon from '../icon/AppRemixIcon'
 import defaultColors from '../../constants/defaultColors'
+import defaultTranslations from '../../constants/defaultTranslations'
 
 const colors = window.dovikaBasicElementsColors || defaultColors
 
@@ -19,6 +20,9 @@ const AppDeleteModal = (props) => {
   const handleClose = () => onClose(false)
   const handleConfirm = () => onConfirm()
   const [removeButtonDisabled, setRemoveButtonDisabled] = useState(sensitive)
+
+  const translations =
+    window.dovikaBasicElementsTranslations || defaultTranslations
 
   const handleSensitiveCase = (value) => {
     if (value === sensitiveWord) setRemoveButtonDisabled(false)
@@ -40,7 +44,7 @@ const AppDeleteModal = (props) => {
         </Modal.Header>
         <Modal.Body>
           <>
-            {text}
+            {text || translations.removeSelectedElement}
             <br />
             <br />
             {sensitive && (
@@ -63,14 +67,14 @@ const AppDeleteModal = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant='default' onClick={handleClose}>
-            Cancelar
+            {translations.cancel}
           </Button>
           <Button
             variant='danger'
             onClick={handleConfirm}
             disabled={removeButtonDisabled}
           >
-            Eliminar
+            {translations.delete}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -83,7 +87,6 @@ export default AppDeleteModal
 AppDeleteModal.defaultProps = {
   size: 'md',
   title: 'Confirmar eliminar',
-  text: '¿Seguro que desea eliminar el elemento seleccionado?',
   sensitive: false,
   sensitiveWord: 'delete me'
 }
