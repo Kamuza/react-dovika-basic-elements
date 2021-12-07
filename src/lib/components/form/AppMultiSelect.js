@@ -190,7 +190,9 @@ const AppMultiSelect = (props) => {
         {selectedOptions.length > 0 ? (
           <SelectedContainer>
             {selectedOptions.length > 1
-              ? `${selectedOptions.length}${translations.elementsSelected}`
+              ? `${selectedOptions.length}${ReactDOMServer.renderToString(
+                  translations.elementsSelected
+                )}`
               : options.find((o) => selectedOptions.includes(o[setValueField]))[
                   setLabelField
                 ]}
