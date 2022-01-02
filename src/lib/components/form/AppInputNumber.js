@@ -224,7 +224,7 @@ const Container = styled.div`
   }
   .floating-label-outside {
     position: absolute;
-
+    pointer-events: none;
     left: ${(props) => (props.hasIcon ? '40px' : '10px')};
     top: 8px;
     right: 8px;

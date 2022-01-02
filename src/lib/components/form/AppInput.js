@@ -242,6 +242,7 @@ const Container = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    pointer-events: none;
   }
   .input-icon-outside svg,
   .input-icon-outside span,
