@@ -59,8 +59,9 @@ const AppSingleSelect = (props) => {
     window.dovikaBasicElementsTranslations || defaultTranslations
 
   useEffect(() => {
-    setSelectedOption(options.find((o) => value === o[setValueField]))
-  }, [value])
+    if (options)
+      setSelectedOption(options.find((o) => value === o[setValueField]))
+  }, [value, options])
 
   useEffect(() => {
     setFilteredOptions(options)

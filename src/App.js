@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppInput, AppRemixIcon, AppSelect } from './lib'
 import ReactNotification from 'react-notifications-component'
 import styled from 'styled-components'
@@ -21,9 +21,10 @@ const App = () => {
   const [showAppModal, setShowAppModal] = useState(false)
   const [showAppDeleteModal, setShowAppDeleteModal] = useState(false)
   const [image, setImage] = useState(null)
-  const [val, setVal] = useState('contenido interesante para maduritos')
+  const [val, setVal] = useState(1)
   const [valMulti, setValMulti] = useState([])
   const [check, setCheck] = useState(false)
+  const [asyncOptions, setAsyncOptions] = useState()
 
   const handleOpenNotification = () =>
     AppNotificationAlert({
@@ -32,6 +33,19 @@ const App = () => {
       type: 'danger',
       duration: 5000
     })
+
+  const handleAddOptions = async () => {
+    setAsyncOptions([
+      { label: 'Grupo', isOptGroup: true },
+      { label: 'Opt1', value: 1, group: 'Grupo' },
+      { label: 'Opt2', value: 2, group: 'Grupo' },
+      { label: 'Opt3', value: 3, group: 'Grupo' }
+    ])
+  }
+
+  useEffect(() => {
+    handleAddOptions()
+  }, [])
 
   return (
     <Container>
@@ -166,6 +180,21 @@ const App = () => {
             {/*  }} */}
             {/*  isMulti */}
             {/* /> */}
+
+            <AppSingleSelect
+              options={asyncOptions}
+              title='Single Select con Loading'
+              icon={<AppRemixIcon icon='numbers' />}
+              value={val}
+              onChange={(opt) => {
+                setVal(opt)
+              }}
+              isClearable
+              hasSearchBox
+              required
+              isLoading={!asyncOptions}
+              error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
+            />
 
             <AppSingleSelect
               options={[
