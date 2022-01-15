@@ -18,6 +18,7 @@ import AppPreventNavigation from './components/info/AppPreventNavigation'
 import AppCard from './components/layout/AppCard'
 
 import AppModal from './components/modal/AppModal'
+import AppDeleteModal from './components/modal/AppDeleteModal'
 
 import DovikaBasicLocale from './components/dovikaBasicLocale'
 import DovikaBasicColors from './components/dovikaBasicColors'
@@ -39,6 +40,7 @@ export {
   AppPreventNavigation,
   AppCard,
   AppModal,
+  AppDeleteModal,
   AppNoInfo,
   DovikaBasicLocale,
   DovikaBasicColors,
