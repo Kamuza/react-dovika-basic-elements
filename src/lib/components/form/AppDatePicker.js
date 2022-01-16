@@ -13,6 +13,7 @@ const AppDatePicker = (props) => {
     onChange,
     title,
     placeholder,
+    className,
     icon,
     required,
     error,
@@ -40,7 +41,7 @@ const AppDatePicker = (props) => {
         selected={value}
         dateFormat={dateFormat}
         onChange={(date) => onChange(date)}
-        className='mb-2'
+        className={className}
         minDate={minDate}
         maxDate={maxDate}
         showMonthDropdown={showMonthDropdown}
@@ -90,6 +91,7 @@ export default AppDatePicker
 AppDatePicker.defaultProps = {
   name: '',
   autoFocus: false,
+  className: 'mb-2',
   append: '',
   onKeyDown: () => {},
   icon: <AppRemixIcon icon='calendar' />,
