@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import defaultColors from '../../constants/defaultColors'
 import { AppRemixIcon } from '../../index'
@@ -6,6 +6,7 @@ const colors = window.dovikaBasicElementsColors || defaultColors
 
 const AppModal = (props) => {
   const {
+    trigger,
     show,
     type,
     size,
@@ -21,8 +22,15 @@ const AppModal = (props) => {
     isCloseButton,
     ...others
   } = props
-  const handleClose = () => onClose(false)
-  const handleConfirm = () => onConfirm()
+  const [showModal, setShowModal] = useState()
+  const handleClose = () => {
+    onClose(false)
+    setShowModal(false)
+  }
+  const handleConfirm = () => {
+    onConfirm()
+    setShowModal(false)
+  }
 
   const iconType = () => {
     switch (type) {
@@ -34,10 +42,20 @@ const AppModal = (props) => {
         return ''
     }
   }
+  const ClickableComponent = (props) =>
+    React.cloneElement(props.trigger, {
+      onClick: () => setShowModal(true)
+    })
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} size={size} {...others}>
+      {trigger && <ClickableComponent trigger={trigger} />}
+      <Modal
+        show={trigger ? showModal : show}
+        onHide={handleClose}
+        size={size}
+        {...others}
+      >
         {(title || isCloseButton) && (
           <Modal.Header closeButton={isCloseButton}>
             <Modal.Title
@@ -79,6 +97,7 @@ const AppModal = (props) => {
 export default AppModal
 
 AppModal.defaultProps = {
+  trigger: null,
   size: 'md',
   isConfirmDisabled: false,
   isCloseButton: true,

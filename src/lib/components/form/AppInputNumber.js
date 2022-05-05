@@ -133,7 +133,7 @@ AppInputNumber.defaultProps = {
 }
 
 const Container = styled.div`
-  margin: 8px 0;
+  margin: 10px 0;
   position: relative;
   input.outside,
   input[type='text'].outside {
@@ -199,7 +199,7 @@ const Container = styled.div`
     input:not(:focus).has-value
     ~ .floating-label-outside {
     top: 12px;
-    left: ${(props) => (props.hasIcon ? '40px' : '10px')};
+    left: ${(props) => (props.hasIcon ? '40' : '10')}px;
     font-size: 10px;
     opacity: 1;
     font-weight: 400;
@@ -220,12 +220,12 @@ const Container = styled.div`
   }
   input:focus ~ .floating-label-outside,
   input:not(:focus).has-value ~ .floating-label-outside {
-    left: 35px;
+    left: ${(props) => (props.hasIcon ? '40' : '0')}px;
   }
   .floating-label-outside {
     position: absolute;
     pointer-events: none;
-    left: ${(props) => (props.hasIcon ? '40px' : '10px')};
+    left: ${(props) => (props.hasIcon ? '40' : '10')}px;
     top: 8px;
     right: 8px;
     transition: 0.2s ease all;

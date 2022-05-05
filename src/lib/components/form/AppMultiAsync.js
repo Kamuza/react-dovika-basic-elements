@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import defaultTranslations from '../../constants/defaultTranslations'
@@ -24,38 +24,31 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      className (OPC):          Clase para añadir al input. Por defecto 'pointer'.
  *      placeholder (OPC):        Texto informativo. Se muestra cuando no hay opciones seleccionadas.
  *      icon (OPC):               Icono a la izquierda. Si no se establece, queda el hueco.
- *      hasSearchBox (OPC):       TRUE si se quiere poder realizar búsquedas entre los elementos. Por defecto FALSE
- *      hasSelectOptions (OPC):   TRUE si se quiere tener botón de Seleccionar Todo y Deseleccionar todo. Śeleccionará o deseleccionará todo lo visible (es decir, utilizará el filtro de hasSearchBox si existe)
  *      setValueField (OPC):      Nombre del campo Value dentro de los objetos en 'options'. Por defecto value.
  *      setLabelField (OPC):      Nombre del campo Label dentro de los objetos en 'options'. Por defecto label.
- *      isClearable (OPC):        TRUE si se quiere poder dejar en blanco el campo con un botón a la derecha. Por defecto FALSE.
- *      isLoading (OPC):          TRUE si se quiere mostrar un Select en modo carga mientras se reciben los datos. Por defecto FALSE.
- *      loadingPlaceholder (OPC): Texto informativo mientras isLoading es true. Por defecto "Cargando..."
+ *      inputMinSearch (OPC):     Número mínimo de caracteres para comenzar la búsqueda. Por defecto 3.
  *      required (OPC):           Pone asterisco rojo y no permite deseleccionar una vez seleccionada una opción.
  *   ]
  * */
 
-const AppMultiSelect = (props) => {
+const AppMultiAsync = (props) => {
   const {
     title,
-    options,
+    asyncFunction,
     onChange,
     value,
     className,
     placeholder,
     icon,
-    hasSearchBox,
-    hasSelectOptions,
     setValueField,
     setLabelField,
-    isClearable,
-    isLoading,
-    loadingPlaceholder,
+    inputMinSearch,
     required,
     error
   } = props
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState([])
-  const [filteredOptions, setFilteredOptions] = useState(options)
+  const [options, setOptions] = useState([])
   const { show, nodeRef, triggerRef, setShow } = useDetectClickOut(false)
 
   const translations =
@@ -66,103 +59,72 @@ const AppMultiSelect = (props) => {
   }, [value])
 
   useEffect(() => {
-    setFilteredOptions(options)
+    setOptions(options)
   }, [options])
 
-  const handleClickOption = (opt) => {
-    if (!opt?.isOptGroup) {
-      if (selectedOptions.includes(opt[setValueField])) {
-        onChange(selectedOptions.filter((o) => o !== opt[setValueField]))
+  useEffect(() => {
+    if (!show) setOptions([])
+  }, [show])
+
+  const handleClickOption = useCallback(
+    (opt) => {
+      if (!opt?.isOptGroup) {
+        if (
+          _.map(selectedOptions, setValueField).includes(opt[setValueField])
+        ) {
+          onChange(
+            selectedOptions.filter(
+              (o) => o[setValueField] !== opt[setValueField]
+            )
+          )
+        } else {
+          onChange([...selectedOptions, opt])
+        }
       } else {
-        const tempSelectedOptions = [...selectedOptions]
-        tempSelectedOptions.push(opt[setValueField])
-        onChange(tempSelectedOptions)
+        const groupOptions = options.filter(
+          (o) =>
+            o.group === opt[setLabelField] &&
+            !_.map(selectedOptions, setValueField).includes(o[setValueField])
+        )
+        onChange(_.uniqBy([...groupOptions, ...selectedOptions]))
       }
-    } else {
-      let groupOptions = options.filter((o) => o.group === opt[setLabelField])
-      groupOptions = _.map(groupOptions, setValueField)
-      onChange(_.uniq([...groupOptions, ...selectedOptions]))
-    }
-  }
+    },
+    [selectedOptions, options, setLabelField, setValueField]
+  )
 
   // > SEARCHBOX
-  const changeSearchBox = (event) => {
-    const tempOptions = options.filter(
-      (o) =>
-        o[setLabelField]
-          .toUpperCase()
-          .includes(event.target.value.toUpperCase()) ||
-        (o.meta &&
-          o.meta.toUpperCase().includes(event.target.value.toUpperCase())) ||
-        o.group?.toUpperCase().includes(event.target.value.toUpperCase())
-    )
-    setFilteredOptions(tempOptions)
-  }
-  const keyUpSearchBox = (event) => {
-    if (event.keyCode === 27) {
-      // ESC
-      event.target.value = ''
-      changeSearchBox(event)
-    } else if (event.keyCode === 13) selectAll()
-  }
+  const changeSearchBox = useCallback(
+    async (event) => {
+      if (event.target.value.length < inputMinSearch) {
+        setOptions([])
+        return
+      }
+      setIsLoading(true)
+      setOptions(await asyncFunction(event.target.value))
+      setIsLoading(false)
+    },
+    [asyncFunction, inputMinSearch]
+  )
+
+  const keyUpSearchBox = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        // ESC
+        event.target.value = ''
+        changeSearchBox(event)
+      }
+    },
+    [changeSearchBox]
+  )
   // < SEARCHBOX
 
   // > SELECT OPTIONS
-  const selectAll = () => {
-    let options = null
-    options = [...filteredOptions]
-    options = _.map(
-      options.filter((o) => !o.isOptGroup),
-      setValueField
-    )
-    onChange(_.uniq([...options, ...selectedOptions]))
-  }
+  const selectAll = useCallback(() => {
+    onChange(options.filter((o) => !o.isOptGroup))
+  }, [options])
 
-  const deselectAll = () => {
-    let options = [...selectedOptions]
-    filteredOptions.forEach((fopt) => {
-      if (options.includes(fopt[setValueField]))
-        options = options.filter((o) => o !== fopt[setValueField])
-    })
-    onChange(options)
-  }
+  const deselectAll = useCallback(() => onChange([]), [])
   // < SELECT OPTIONS
-
-  if (isLoading) {
-    return (
-      <Container>
-        <Input className={`${className}`} hasIcon={!!icon} error={error}>
-          <InputIcon>
-            <AppRemixIcon
-              icon='loader-4'
-              className='fa-spin'
-              color={colors.primary}
-            />
-          </InputIcon>
-          {title && (
-            <InputTitle icon={icon}>
-              <span title={title}>{title}</span>
-              {required && <span className='text-danger'>*</span>}
-            </InputTitle>
-          )}
-          <InputPlaceholder>
-            {loadingPlaceholder || translations.loading}
-          </InputPlaceholder>
-          <AppFontAwesomeIcon
-            icon='caret-down'
-            className='float-right'
-            color={colors.primary}
-            style={{ marginTop: 3 }}
-          />
-          {/* <FaCaretDown */}
-          {/*  className='float-right' */}
-          {/*  color={colors.primary} */}
-          {/*  style={{ marginTop: 3 }} */}
-          {/* /> */}
-        </Input>
-      </Container>
-    )
-  }
 
   return (
     <Container>
@@ -173,7 +135,16 @@ const AppMultiSelect = (props) => {
         error={error}
         ref={triggerRef}
       >
-        {icon && <InputIcon>{icon}</InputIcon>}
+        {icon && !isLoading && <InputIcon>{icon}</InputIcon>}
+        {icon && isLoading && (
+          <InputIcon>
+            <AppRemixIcon
+              icon='loader-4'
+              className='fa-spin'
+              color={colors.primary}
+            />
+          </InputIcon>
+        )}
         {title && (
           <InputTitle icon={icon}>
             <span title={title}>
@@ -193,9 +164,7 @@ const AppMultiSelect = (props) => {
               ? `${selectedOptions.length}${ReactDOMServer.renderToString(
                   translations.elementsSelected
                 )}`
-              : options.find((o) => selectedOptions.includes(o[setValueField]))[
-                  setLabelField
-                ]}
+              : selectedOptions[0]?.[setLabelField]}
           </SelectedContainer>
         ) : (
           <InputPlaceholder>
@@ -209,7 +178,7 @@ const AppMultiSelect = (props) => {
           style={{ marginTop: 3 }}
         />
       </Input>
-      {isClearable && selectedOptions.length > 0 && !required && (
+      {selectedOptions.length > 0 && !required && (
         <ClearButton onClick={() => onChange([])}>
           <AppRemixIcon icon='close-circle' color={colors.primary} />
         </ClearButton>
@@ -217,45 +186,68 @@ const AppMultiSelect = (props) => {
       {show && (
         <DropdownContainer style={{ minWidth: '300px' }} ref={nodeRef}>
           <DropdownContent>
-            {hasSearchBox && (
-              <div className='m-2'>
-                <SearchInput
-                  type='text'
-                  className='w-100'
-                  placeholder={ReactDOMServer.renderToString(
-                    translations.search
-                  )}
-                  onKeyDown={keyUpSearchBox}
-                  onChange={changeSearchBox}
-                  autoFocus
-                />
-              </div>
-            )}
-            {hasSelectOptions && (
-              <div className='m-2'>
-                <div className='row'>
-                  <div className='col-lg-6'>
-                    <span
-                      className='btn btn-outline-primary btn-block btn-xs mb-1'
-                      onClick={selectAll}
-                    >
-                      {translations.selectAll}
-                    </span>
-                  </div>
-                  <div className='col-lg-6'>
-                    <span
-                      className='btn btn-outline-primary btn-block btn-xs'
-                      onClick={deselectAll}
-                    >
-                      {translations.unselectAll}
-                    </span>
-                  </div>
+            <div className='m-2'>
+              <SearchInput
+                type='text'
+                className='w-100'
+                placeholder={ReactDOMServer.renderToString(translations.search)}
+                onKeyDown={keyUpSearchBox}
+                onChange={changeSearchBox}
+                autoFocus
+              />
+            </div>
+            <ul>
+              {selectedOptions.map((opt, i) => (
+                <div key={i}>
+                  <li
+                    style={{
+                      backgroundColor: opt.bgColor,
+                      color: opt.fgColor
+                    }}
+                    onClick={() => handleClickOption(opt)}
+                  >
+                    {opt.icon}
+                    {opt.circle && (
+                      <span
+                        className='mr-2'
+                        style={{
+                          display: 'inline-block',
+                          width: '10px',
+                          height: '10px',
+                          backgroundColor: opt.circle,
+                          borderRadius: '10px',
+                          padding: '0'
+                        }}
+                      />
+                    )}
+                    {opt[setLabelField]}
+                  </li>
+                </div>
+              ))}
+            </ul>
+            <div className='m-2'>
+              <div className='row'>
+                <div className='col-lg-6'>
+                  <span
+                    className='btn btn-outline-primary btn-block btn-xs mb-1'
+                    onClick={selectAll}
+                  >
+                    {translations.selectAll}
+                  </span>
+                </div>
+                <div className='col-lg-6'>
+                  <span
+                    className='btn btn-outline-primary btn-block btn-xs'
+                    onClick={deselectAll}
+                  >
+                    {translations.unselectAll}
+                  </span>
                 </div>
               </div>
-            )}
+            </div>
             <ul>
-              {filteredOptions ? (
-                filteredOptions.map((opt, i) => (
+              {options.length > 0 ? (
+                options.map((opt, i) => (
                   <div key={i}>
                     {'isOptGroup' in opt ? (
                       <li onClick={() => handleClickOption(opt)}>
@@ -269,8 +261,9 @@ const AppMultiSelect = (props) => {
                         }}
                         onClick={() => handleClickOption(opt)}
                         className={
-                          selectedOptions &&
-                          selectedOptions.includes(opt[setValueField])
+                          _.map(selectedOptions, setValueField).includes(
+                            opt[setValueField]
+                          )
                             ? 'selected'
                             : ''
                         }
@@ -290,19 +283,20 @@ const AppMultiSelect = (props) => {
                           />
                         )}
                         {opt[setLabelField]}
-                        {selectedOptions &&
-                          selectedOptions.includes(opt[setValueField]) && (
-                            <AppRemixIcon
-                              icon='check'
-                              className='float-right ks-check'
-                            />
-                          )}
+                        {_.map(selectedOptions, setValueField).includes(
+                          opt[setValueField]
+                        ) && (
+                          <AppRemixIcon
+                            icon='check'
+                            className='float-right ks-check'
+                          />
+                        )}
                       </li>
                     )}
                   </div>
                 ))
               ) : (
-                <div>{translations.noOptions}</div>
+                <div className='m-2'>{translations.noOptions}</div>
               )}
             </ul>
           </DropdownContent>
@@ -312,15 +306,13 @@ const AppMultiSelect = (props) => {
   )
 }
 
-export default AppMultiSelect
-AppMultiSelect.defaultProps = {
+export default AppMultiAsync
+AppMultiAsync.defaultProps = {
   className: 'pointer',
-  hasSearchBox: false,
-  hasSelectOptions: false,
   value: null,
   setValueField: 'value',
   setLabelField: 'label',
-  isOnlyValue: false,
+  inputMinSearch: 3,
   required: false
 }
 

@@ -112,7 +112,7 @@ const AppSingleSelect = (props) => {
             />
           </InputIcon>
           {title && (
-            <InputTitle>
+            <InputTitle icon={icon}>
               <span title={title}>{title}</span>
               {required && <span className='text-danger'>*</span>}
             </InputTitle>
@@ -145,7 +145,7 @@ const AppSingleSelect = (props) => {
       >
         {icon && <InputIcon>{icon}</InputIcon>}
         {title && (
-          <InputTitle>
+          <InputTitle icon={icon}>
             <span title={title}>
               {title}
               {required && <span className='text-danger'>*</span>}
@@ -296,7 +296,7 @@ const SearchInput = styled.input`
   position: relative;
   border: #ddd solid 1px;
   padding: 2px 6px 2px 6px;
-  cursor: pointer;
+  cursor: text;
   &:active,
   &:focus {
     border: #ddd solid 1px;
@@ -321,7 +321,7 @@ const InputIcon = styled.span`
 const InputTitle = styled.span`
   position: absolute;
   top: -8px;
-  left: 34px;
+  left: ${(props) => (props.icon ? '34' : '0')}px;
   right: 8px;
   z-index: 4;
   font-size: 10px;

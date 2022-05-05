@@ -127,7 +127,7 @@ AppTextArea.defaultProps = {
 }
 
 const Container = styled.div`
-  margin: 8px 0;
+  margin: 10px 0;
   position: relative;
   textarea.outside,
   div.outside {
@@ -197,7 +197,7 @@ const Container = styled.div`
     textarea:not(:focus).has-value
     ~ .floating-label-outside {
     top: 12px;
-    left: ${(props) => (props.hasIcon ? '40px' : '10px')};
+    left: ${(props) => (props.hasIcon ? '40' : '10')}px;
     font-size: 10px;
     opacity: 1;
     font-weight: 400;
@@ -220,7 +220,7 @@ const Container = styled.div`
   }
   textarea:focus ~ .floating-label-outside,
   textarea:not(:focus).has-value ~ .floating-label-outside {
-    left: 35px;
+    left: ${(props) => (props.hasIcon ? '40' : '0')}px;
   }
   .floating-label-outside {
     position: absolute;

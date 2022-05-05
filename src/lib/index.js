@@ -7,6 +7,8 @@ import AppSingleSelect from './components/form/AppSingleSelect'
 import AppMultiSelect from './components/form/AppMultiSelect'
 import AppTextArea from './components/form/AppTextArea'
 import AppCheckbox from './components/form/AppCheckbox'
+import AppSingleAsync from './components/form/AppSingleAsync'
+import AppMultiAsync from './components/form/AppMultiAsync'
 
 import AppFontAwesomeIcon from './components/icon/AppFontAwesomeIcon'
 import AppRemixIcon from './components/icon/AppRemixIcon'
@@ -34,6 +36,8 @@ export {
   AppMultiSelect,
   AppTextArea,
   AppCheckbox,
+  AppSingleAsync,
+  AppMultiAsync,
   AppFontAwesomeIcon,
   AppRemixIcon,
   AppNotificationAlert,

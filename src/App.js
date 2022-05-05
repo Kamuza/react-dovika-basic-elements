@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
+import axios from 'axios'
 import { AppInput, AppRemixIcon, AppSelect } from './lib'
 import ReactNotification from 'react-notifications-component'
 import styled from 'styled-components'
@@ -16,6 +17,8 @@ import AppDeleteModal from './lib/components/modal/AppDeleteModal'
 import AppSingleSelect from './lib/components/form/AppSingleSelect'
 import AppMultiSelect from './lib/components/form/AppMultiSelect'
 import AppCheckbox from './lib/components/form/AppCheckbox'
+import AppSingleAsync from './lib/components/form/AppSingleAsync'
+import AppMultiAsync from './lib/components/form/AppMultiAsync'
 
 const App = () => {
   const [showAppModal, setShowAppModal] = useState(false)
@@ -25,6 +28,13 @@ const App = () => {
   const [valMulti, setValMulti] = useState([])
   const [check, setCheck] = useState(false)
   const [asyncOptions, setAsyncOptions] = useState()
+  const [asyncSingleVal, setAsyncSingleVal] = useState({
+    label: 'Opt1',
+    value: 1
+  })
+  const [asyncMultiVal, setAsyncMultiVal] = useState([
+    { label: 'Opt1', value: 1, group: 'Grupo' }
+  ])
 
   const handleOpenNotification = () =>
     AppNotificationAlert({
@@ -47,12 +57,40 @@ const App = () => {
     handleAddOptions()
   }, [])
 
+  // > LOAD ASYNC VALUES
+  const loadAsyncOptions = useCallback(async (input) => {
+    const options = await axios
+      .post('http://ip.jsontest.com/', { input })
+      .then((r) => {
+        // return r.data
+        return [
+          { label: 'Grupo', isOptGroup: true },
+          { label: 'Opt1', value: 1, group: 'Grupo' },
+          { label: 'Opt2', value: 2, group: 'Grupo' },
+          { label: 'Opt3', value: 3, group: 'Grupo' },
+          { label: 'Grupo 2', isOptGroup: true },
+          { label: 'Opt4', value: 4, group: 'Grupo 2' },
+          { label: 'Opt5', value: 5, group: 'Grupo 2' },
+          { label: 'Opt6', value: 6, group: 'Grupo 2' }
+        ]
+      })
+      .catch(() => [])
+    return options
+  }, [])
+  // > LOAD ASYNC VALUES
+
   return (
     <Container>
       <ReactNotification />
       <div className='row m-5'>
         <div className='col-lg-12'>
           <AppCard header='Ejemplo de componentes'>
+            <AppModal
+              title='Hola!'
+              trigger={<span className='btn btn-info'>Abrir</span>}
+            >
+              Hola este lleva trigger
+            </AppModal>
             <AppInput
               title='AppInput1'
               icon={<AppRemixIcon icon='checkbox-blank' />}
@@ -184,12 +222,10 @@ const App = () => {
             <AppSingleSelect
               options={asyncOptions}
               title='Single Select con Loading'
-              icon={<AppRemixIcon icon='numbers' />}
               value={val}
               onChange={(opt) => {
                 setVal(opt)
               }}
-              isClearable
               hasSearchBox
               required
               isLoading={!asyncOptions}
@@ -214,7 +250,6 @@ const App = () => {
               required
               error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
             />
-            {console.log('ValMulti', valMulti)}
             <AppMultiSelect
               options={[
                 { label: 'Grupo', isOptGroup: true },
@@ -233,7 +268,21 @@ const App = () => {
               hasSearchBox
               hasSelectOptions
             />
-
+            <AppSingleAsync
+              asyncFunction={loadAsyncOptions}
+              title='Single Async Select'
+              value={asyncSingleVal}
+              onChange={setAsyncSingleVal}
+              required
+            />
+            <AppMultiAsync
+              asyncFunction={loadAsyncOptions}
+              title='Multi Async Select'
+              icon={<AppRemixIcon icon='numbers' />}
+              value={asyncMultiVal}
+              onChange={setAsyncMultiVal}
+              isClearable
+            />
             <AppImageCropper
               cropShape='rect'
               image={image}

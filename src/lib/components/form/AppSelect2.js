@@ -169,7 +169,7 @@ const AppSelect = (props) => {
             />
           </InputIcon>
           {title && (
-            <InputTitle>
+            <InputTitle icon={icon}>
               {title} {required && <span className='text-danger'>*</span>}
             </InputTitle>
           )}
@@ -201,7 +201,7 @@ const AppSelect = (props) => {
       >
         {icon && <InputIcon>{icon}</InputIcon>}
         {title && (
-          <InputTitle>
+          <InputTitle icon={icon}>
             {title} {required && <span className='text-danger'>*</span>}
           </InputTitle>
         )}
@@ -412,7 +412,7 @@ const InputIcon = styled.span`
 const InputTitle = styled.span`
   position: absolute;
   top: -10px;
-  left: 34px;
+  left: ${(props) => (props.icon ? '34' : '0')}px;
   z-index: 4;
   font-size: 10px;
   color: ${colors.primary};

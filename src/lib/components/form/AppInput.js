@@ -226,11 +226,11 @@ const Container = styled.div`
   }
   input:focus ~ .floating-label-outside,
   input:not(:focus).has-value ~ .floating-label-outside {
-    left: 35px;
+    left: ${(props) => (props.hasIcon ? '40' : '0')}px;
   }
   .floating-label-outside {
     position: absolute;
-    left: 40px;
+    left: ${(props) => (props.hasIcon ? '40' : '10')}px;
     top: 8px;
     right: 8px;
     transition: 0.2s ease all;
