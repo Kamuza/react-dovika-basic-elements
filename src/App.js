@@ -237,7 +237,11 @@ const App = () => {
                 { label: 'Grupo', isOptGroup: true },
                 { label: 'Opt1', value: 1, group: 'Grupo' },
                 { label: 'Opt2', value: 2, group: 'Grupo' },
-                { label: 'Opt3', value: 3, group: 'Grupo' }
+                { label: 'Opt3', value: 3, group: 'Grupo' },
+                { label: 'Grupo 2', isOptGroup: true },
+                { label: 'Opcion4', value: 4, group: 'Grupo 2' },
+                { label: 'Opcion5', value: 5, group: 'Grupo 2' },
+                { label: 'Opcion6', value: 6, group: 'Grupo 2' }
               ]}
               title='Single Select'
               icon={<AppRemixIcon icon='numbers' />}
@@ -255,7 +259,11 @@ const App = () => {
                 { label: 'Grupo', isOptGroup: true },
                 { label: 'Opt1', value: 1, group: 'Grupo' },
                 { label: 'Opt2', value: 2, group: 'Grupo' },
-                { label: 'Opt3', value: 3 }
+                { label: 'Opt3', value: 3, group: 'Grupo' },
+                { label: 'Grupo 2', isOptGroup: true },
+                { label: 'Opcion4', value: 4, group: 'Grupo 2' },
+                { label: 'Opcion5', value: 5, group: 'Grupo 2' },
+                { label: 'Opcion6', value: 6, group: 'Grupo 2' }
               ]}
               title='Multi Select'
               icon={<AppRemixIcon icon='numbers' />}

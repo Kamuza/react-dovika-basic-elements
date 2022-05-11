@@ -6,6 +6,7 @@ import defaultColors from '../../constants/defaultColors'
 import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 import useDetectClickOut from '../../hooks/useDetectClickOut'
+import { useIsFirstRender } from '../../hooks/isFirstRender'
 import ReactDOMServer from 'react-dom/server'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
@@ -54,6 +55,7 @@ const AppMultiSelect = (props) => {
     required,
     error
   } = props
+  const isFirstRender = useIsFirstRender()
   const [selectedOptions, setSelectedOptions] = useState([])
   const [filteredOptions, setFilteredOptions] = useState(options)
   const { show, nodeRef, triggerRef, setShow } = useDetectClickOut(false)
@@ -68,6 +70,12 @@ const AppMultiSelect = (props) => {
   useEffect(() => {
     setFilteredOptions(options)
   }, [options])
+
+  useEffect(() => {
+    if (!isFirstRender && !show) {
+      setFilteredOptions(options)
+    }
+  }, [show])
 
   const handleClickOption = (opt) => {
     if (!opt?.isOptGroup) {
