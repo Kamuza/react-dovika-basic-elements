@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
-import { AppInput, AppRemixIcon, AppSelect } from './lib'
+import { AppInput, AppRemixIcon } from './lib'
 import ReactNotification from 'react-notifications-component'
 import styled from 'styled-components'
 import AppTextArea from './lib/components/form/AppTextArea'
@@ -26,6 +26,7 @@ const App = () => {
   const [image, setImage] = useState(null)
   const [val, setVal] = useState(1)
   const [valMulti, setValMulti] = useState([])
+  const [date, setDate] = useState('')
   const [check, setCheck] = useState(false)
   const [asyncOptions, setAsyncOptions] = useState()
   const [asyncSingleVal, setAsyncSingleVal] = useState({
@@ -189,15 +190,8 @@ const App = () => {
               error='Esto es un error'
               required
             />
-            <AppDatePicker
-              title='AppDatePicker'
-              onChange={(v) => console.log(v)}
-              error='Un error largo'
-              required
-              placeholder='hola'
-            />
             <AppFileUploader
-              title='AppDatePicker'
+              title='Archivo'
               placeholder='Un nombre largo para cortar sin que se vaya de línea'
               onChange={(v) => console.log(v)}
               isMulti
@@ -290,6 +284,22 @@ const App = () => {
               value={asyncMultiVal}
               onChange={setAsyncMultiVal}
               isClearable
+            />
+            <AppDatePicker
+              title='Fecha manual'
+              onChange={(v) => setDate(v)}
+              required
+              value={date}
+              isManual
+              isClearable
+            />
+            <AppDatePicker
+              title='Fecha'
+              onChange={(v) => setDate(v)}
+              required
+              placeholder='hola'
+              isManual
+              value={date}
             />
             <AppImageCropper
               cropShape='rect'

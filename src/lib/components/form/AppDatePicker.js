@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
+import InputMask from 'react-input-mask'
 import Moment from 'moment'
+import { createPortal } from 'react-dom'
 import defaultColors from '../../constants/defaultColors'
 import AppRemixIcon from '../icon/AppRemixIcon'
-import { createPortal } from 'react-dom'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 const AppDatePicker = (props) => {
@@ -28,60 +29,142 @@ const AppDatePicker = (props) => {
     showYearDropdown,
     showMonthYearPicker,
     showYearPicker,
+    isManual,
+    isSetManual,
+    mask,
     locale,
     popperClassName,
     popperContainer,
     ...others
   } = props
 
+  const [toggleManual, setToggleManual] = useState(isSetManual)
+  const [date, setDate] = useState(value)
+
+  useEffect(() => {
+    if (!isSetManual) {
+      setDate(
+        value && Moment(value, displayDateFormat).isValid()
+          ? Moment(value, displayDateFormat).toDate()
+          : ''
+      )
+    }
+  }, [value])
+
+  const handleBlur = useCallback(() => {
+    if (
+      value &&
+      (value.includes('_') || !Moment(value, displayDateFormat).isValid())
+    )
+      onChange('')
+  }, [value])
+
+  const handleOnChange = useCallback((date) => {
+    const stringDate = Moment(date).format(displayDateFormat)
+    onChange(stringDate)
+  }, [])
+
   return (
-    <Container>
-      <DatePicker
-        locale={locale}
-        selected={value}
-        dateFormat={dateFormat}
-        onChange={(date) => onChange(date)}
-        className={className}
-        minDate={minDate}
-        maxDate={maxDate}
-        showMonthDropdown={showMonthDropdown}
-        showYearDropdown={showYearDropdown}
-        showMonthYearPicker={showMonthYearPicker}
-        showYearPicker={showYearPicker}
-        filterDate={filterDate}
-        dropdownMode={dropdownMode}
-        popperClassName={popperClassName}
-        popperContainer={popperContainer}
-        customInput={
-          <div>
-            <span className={`outside  ${error ? 'error' : ''}`}>
-              {value ? Moment(value).format(displayDateFormat) : ''}
+    <Container hasPointer={!toggleManual}>
+      {isManual && toggleManual ? (
+        <div className={className}>
+          <span className={`outside${error ? ' error' : ''}`}>
+            <InputMask
+              mask={mask}
+              onChange={(e) => onChange(e.target.value)}
+              value={value}
+              placeholder={placeholder}
+              onBlur={handleBlur}
+            />
+          </span>
+          <span className='floating-label-outside'>
+            <span title={title}>
+              {title}
+              {required && <span className='text-danger'>*</span>}
             </span>
-            <span className='floating-label-outside'>
-              <span title={title}>
-                {title}
-                {required && <span className='text-danger'>*</span>}
-              </span>
-              {error && (
-                <span className='text-danger input-error' title={error}>
-                  {error}
-                </span>
-              )}
-            </span>
-            <span className='input-icon-outside'>{icon}</span>
-            {placeholder && (
-              <span className={`placeholder ${value ? 'has-value' : ''}`}>
-                {placeholder}
+            {error && (
+              <span className='text-danger input-error' title={error}>
+                {error}
               </span>
             )}
-          </div>
-        }
-        {...others}
-      />
-      {value && isClearable && (
-        <span className='clearable' onClick={() => onChange(undefined)}>
-          <AppRemixIcon icon='close-circle' />
-        </span>
+          </span>
+          <span className='input-icon-outside'>{icon}</span>
+          {value && isClearable && (
+            <span className='clearable' onClick={() => onChange('')}>
+              <AppRemixIcon icon='close-circle' />
+            </span>
+          )}
+          {isManual && (
+            <span
+              className='toggle-edit'
+              onClick={() => setToggleManual(!toggleManual)}
+            >
+              <AppRemixIcon icon='edit' />
+            </span>
+          )}
+        </div>
+      ) : (
+        <>
+          <DatePicker
+            locale={locale}
+            selected={
+              date && Moment(date, displayDateFormat).isValid()
+                ? Moment(date, displayDateFormat).toDate()
+                : ''
+            }
+            dateFormat={dateFormat}
+            onChange={handleOnChange}
+            className={className}
+            minDate={minDate}
+            maxDate={maxDate}
+            showMonthDropdown={showMonthDropdown}
+            showYearDropdown={showYearDropdown}
+            showMonthYearPicker={showMonthYearPicker}
+            showYearPicker={showYearPicker}
+            filterDate={filterDate}
+            dropdownMode={dropdownMode}
+            popperClassName={popperClassName}
+            popperContainer={popperContainer}
+            customInput={
+              <div>
+                <span className={`outside${error ? ' error' : ''}`}>
+                  {date ? Moment(date).format(displayDateFormat) : ''}
+                </span>
+                <span className='floating-label-outside'>
+                  <span title={title}>
+                    {title}
+                    {required && <span className='text-danger'>*</span>}
+                  </span>
+                  {error && (
+                    <span className='text-danger input-error' title={error}>
+                      {error}
+                    </span>
+                  )}
+                </span>
+                <span className='input-icon-outside'>{icon}</span>
+                {placeholder && (
+                  <span className={`placeholder ${value ? 'has-value' : ''}`}>
+                    {placeholder}
+                  </span>
+                )}
+              </div>
+            }
+            {...others}
+          />
+          {isManual && (
+            <span
+              className='toggle-edit'
+              onClick={() => setToggleManual(!toggleManual)}
+            >
+              <AppRemixIcon icon='edit' />
+            </span>
+          )}
+          {value && isClearable && (
+            <span className='clearable' onClick={() => onChange(undefined)}>
+              <AppRemixIcon icon='close-circle' />
+            </span>
+          )}
+        </>
       )}
     </Container>
   )
@@ -105,6 +188,9 @@ AppDatePicker.defaultProps = {
   maxDate: false,
   filterDate: false,
   dropdownMode: 'scroll',
+  isManual: false,
+  isSetManual: false,
+  mask: '99/99/9999',
   locale: window.dovikaBasicElementsColors || 'en',
   popperClassName: 'react-datepicker-popper-100',
   popperContainer: ({ children }) => createPortal(children, document.body)
@@ -117,13 +203,13 @@ const Container = styled.div`
   position: relative;
   margin: 10px 0 0 0;
   width: 100%;
-  cursor: pointer;
+  cursor: ${(props) => (props.hasPointer ? 'pointer' : 'default')};
   .outside {
     display: block;
     color: #555;
     width: 100%;
     font-size: 15px;
-    height: 36px;
+    height: 35px;
     line-height: normal;
     border: #ddd solid 1px;
     border-radius: 0;
@@ -176,7 +262,7 @@ const Container = styled.div`
   }
   .input-icon-outside span,
   .input-icon-outside i {
-    top: 8px;
+    top: 6px;
   }
 
   .has-value.placeholder {
@@ -202,6 +288,15 @@ const Container = styled.div`
       padding: 0 4px;
     }
   }
+  .toggle-edit {
+    position: absolute;
+    right: 25px;
+    top: 2px;
+    z-index: 4;
+    cursor: pointer;
+    padding: 4px;
+    color: ${colors.primary};
+  }
   .clearable {
     position: absolute;
     right: 2px;
@@ -210,5 +305,10 @@ const Container = styled.div`
     cursor: pointer;
     padding: 4px;
     color: ${colors.primary};
+  }
+  input {
+    border: 0px;
+    color: #555 !important;
+    padding: 0;
   }
 `
