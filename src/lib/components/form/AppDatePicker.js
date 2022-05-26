@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 import InputMask from 'react-input-mask'
@@ -29,8 +29,8 @@ const AppDatePicker = (props) => {
     showYearDropdown,
     showMonthYearPicker,
     showYearPicker,
-    isManual,
-    isSetManual,
+    hasToggleType,
+    isTypeMode,
     mask,
     locale,
     popperClassName,
@@ -38,11 +38,12 @@ const AppDatePicker = (props) => {
     ...others
   } = props
 
-  const [toggleManual, setToggleManual] = useState(isSetManual)
+  const [typeMode, setTypeMode] = useState(isTypeMode)
   const [date, setDate] = useState(value)
+  const inputManual = useRef(null)
 
   useEffect(() => {
-    if (!isSetManual) {
+    if (!isTypeMode) {
       setDate(
         value && Moment(value, displayDateFormat).isValid()
           ? Moment(value, displayDateFormat).toDate()
@@ -50,6 +51,13 @@ const AppDatePicker = (props) => {
       )
     }
   }, [value])
+
+  useEffect(async () => {
+    if (typeMode) {
+      await onChange('')
+      inputManual.current.focus()
+    }
+  }, [typeMode])
 
   const handleBlur = useCallback(() => {
     if (
@@ -59,14 +67,17 @@ const AppDatePicker = (props) => {
       onChange('')
   }, [value])
 
-  const handleOnChange = useCallback((date) => {
-    const stringDate = Moment(date).format(displayDateFormat)
-    onChange(stringDate)
-  }, [])
+  const handleOnChange = useCallback(
+    (date) => {
+      const stringDate = Moment(date).format(displayDateFormat)
+      onChange(stringDate)
+    },
+    [onChange]
+  )
 
   return (
-    <Container hasPointer={!toggleManual}>
-      {isManual && toggleManual ? (
+    <Container hasPointer={!typeMode}>
+      {hasToggleType && typeMode ? (
         <div className={className}>
           <span className={`outside${error ? ' error' : ''}`}>
             <InputMask
@@ -75,6 +86,7 @@ const AppDatePicker = (props) => {
               value={value}
               placeholder={placeholder}
               onBlur={handleBlur}
+              ref={inputManual}
             />
           </span>
           <span className='floating-label-outside'>
@@ -94,10 +106,10 @@ const AppDatePicker = (props) => {
               <AppRemixIcon icon='close-circle' />
             </span>
           )}
-          {isManual && (
+          {hasToggleType && (
             <span
-              className='toggle-edit'
-              onClick={() => setToggleManual(!toggleManual)}
+              className='toggle-edit text-primary'
+              onClick={() => setTypeMode(!typeMode)}
             >
               <AppRemixIcon icon='edit' />
             </span>
@@ -151,10 +163,10 @@ const AppDatePicker = (props) => {
             }
             {...others}
           />
-          {isManual && (
+          {hasToggleType && (
             <span
-              className='toggle-edit'
-              onClick={() => setToggleManual(!toggleManual)}
+              className='toggle-edit text-light'
+              onClick={() => setTypeMode(!typeMode)}
             >
               <AppRemixIcon icon='edit' />
             </span>
@@ -188,8 +200,8 @@ AppDatePicker.defaultProps = {
   maxDate: false,
   filterDate: false,
   dropdownMode: 'scroll',
-  isManual: false,
-  isSetManual: false,
+  hasToggleType: false,
+  isTypeMode: false,
   mask: '99/99/9999',
   locale: window.dovikaBasicElementsColors || 'en',
   popperClassName: 'react-datepicker-popper-100',
@@ -240,7 +252,7 @@ const Container = styled.div`
   .placeholder {
     position: absolute;
     pointer-events: none;
-    top: 8px;
+    top: 5px;
     left: 42px;
     right: 8px;
     color: #aaa;
@@ -310,5 +322,10 @@ const Container = styled.div`
     border: 0px;
     color: #555 !important;
     padding: 0;
+    width: 100%;
+    &::placeholder {
+      font-size: 14px !important;
+      margin-left: 100px !important;
+    }
   }
 `

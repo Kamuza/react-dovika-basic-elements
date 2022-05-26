@@ -100,7 +100,7 @@ const AppInput = (props) => {
     )
 
   return (
-    <Container className={`mb-2 ${isDisabled && 'disabled'}`}>
+    <Container className={`mb-2 ${isDisabled && 'disabled'}`} hasIcon={!!icon}>
       <div className={`read-only ${noBorder && 'no-border'}`}>{value}</div>
       <span className='floating-label-outside'>
         <span>{title}</span>
@@ -140,7 +140,7 @@ const Container = styled.div`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin-bottom: -1px;
-    padding: 6px 20px 6px 40px;
+    padding: 6px 10px 6px ${(props) => (props.hasIcon ? '40px' : '10px')};
     -webkit-appearance: none;
     -moz-appearance: none;
     position: relative;
@@ -200,7 +200,7 @@ const Container = styled.div`
     input:not(:focus).has-value
     ~ .floating-label-outside {
     top: 12px;
-    left: 40px;
+    left: ${(props) => (props.hasIcon ? '40' : '10')}px;
     font-size: 10px;
     opacity: 1;
     font-weight: 400;

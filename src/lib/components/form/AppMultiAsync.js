@@ -7,6 +7,7 @@ import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 import useDetectClickOut from '../../hooks/useDetectClickOut'
 import ReactDOMServer from 'react-dom/server'
+import TagName from '../layout/TagName'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -200,10 +201,16 @@ const AppMultiAsync = (props) => {
               {selectedOptions.map((opt, i) => (
                 <div key={i}>
                   <li
-                    style={{
-                      backgroundColor: opt.bgColor,
-                      color: opt.fgColor
-                    }}
+                    style={
+                      opt.tag
+                        ? {
+                            backgroundColor: '#dfe2e5'
+                          }
+                        : {
+                            backgroundColor: opt.bgColor || '#dfe2e5',
+                            color: opt.fgColor
+                          }
+                    }
                     onClick={() => handleClickOption(opt)}
                   >
                     {opt.icon}
@@ -220,7 +227,17 @@ const AppMultiAsync = (props) => {
                         }}
                       />
                     )}
-                    {opt[setLabelField]}
+                    {opt.tag ? (
+                      <TagName bgColor={opt.bgColor} tag={opt.tag}>
+                        {opt[setLabelField]}
+                      </TagName>
+                    ) : (
+                      opt[setLabelField]
+                    )}
+                    <AppRemixIcon
+                      icon='check'
+                      className='float-right ks-check'
+                    />
                   </li>
                 </div>
               ))}
@@ -255,10 +272,14 @@ const AppMultiAsync = (props) => {
                       </li>
                     ) : (
                       <li
-                        style={{
-                          backgroundColor: opt.bgColor,
-                          color: opt.fgColor
-                        }}
+                        style={
+                          opt.tag
+                            ? {}
+                            : {
+                                backgroundColor: opt.bgColor,
+                                color: opt.fgColor
+                              }
+                        }
                         onClick={() => handleClickOption(opt)}
                         className={
                           _.map(selectedOptions, setValueField).includes(
@@ -282,7 +303,13 @@ const AppMultiAsync = (props) => {
                             }}
                           />
                         )}
-                        {opt[setLabelField]}
+                        {opt.tag ? (
+                          <TagName bgColor={opt.bgColor} tag={opt.tag}>
+                            {opt[setLabelField]}
+                          </TagName>
+                        ) : (
+                          opt[setLabelField]
+                        )}
                         {_.map(selectedOptions, setValueField).includes(
                           opt[setValueField]
                         ) && (

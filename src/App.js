@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
-import { AppInput, AppRemixIcon } from './lib'
+import { AppRemixIcon } from './lib'
 import ReactNotification from 'react-notifications-component'
 import styled from 'styled-components'
 import AppTextArea from './lib/components/form/AppTextArea'
 import './scss/App.scss'
 import AppCard from './lib/components/layout/AppCard'
+import AppInput from './lib/components/form/AppInput'
 import AppInputNumber from './lib/components/form/AppInputNumber'
 import AppDatePicker from './lib/components/form/AppDatePicker'
 import AppFileUploader from './lib/components/form/AppFileUploader'
@@ -66,11 +67,22 @@ const App = () => {
         // return r.data
         return [
           { label: 'Grupo', isOptGroup: true },
-          { label: 'Opt1', value: 1, group: 'Grupo' },
-          { label: 'Opt2', value: 2, group: 'Grupo' },
+          {
+            label: 'Opt2',
+            value: 2,
+            group: 'Grupo',
+            tag: '#003942',
+            bgColor: '#00a0b9'
+          },
           { label: 'Opt3', value: 3, group: 'Grupo' },
           { label: 'Grupo 2', isOptGroup: true },
-          { label: 'Opt4', value: 4, group: 'Grupo 2' },
+          {
+            label: 'Opt4',
+            value: 4,
+            group: 'Grupo 2',
+            tag: '#FF077B',
+            bgColor: '#FF99C8'
+          },
           { label: 'Opt5', value: 5, group: 'Grupo 2' },
           { label: 'Opt6', value: 6, group: 'Grupo 2' }
         ]
@@ -100,15 +112,15 @@ const App = () => {
               isClearable
               tabIndex={2}
               error='Esto es un error largo para ver como sale'
+              required
             />
             <AppInput
               title='AppInput2 con nombre larguito para cortarlo  y cortar tb el contenido'
-              icon={<AppRemixIcon icon='checkbox-blank' />}
               onChange={(v) => setVal(v)}
               value={val}
               isClearable
               tabIndex={1}
-              isReadOnly={false}
+              isReadOnly
             />
             <AppTextArea
               title='AppTextArea'
@@ -117,14 +129,6 @@ const App = () => {
               placeholder='hola'
               required
               onChange={(v) => console.log(v)}
-              // value=' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at felis eget dolor malesuada interdum. Cras ultrices nisi nec nisl vehicula ullamcorper. Nulla sit amet mauris condimentum, semper justo eu, fringilla nisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean consequat eu leo vitae iaculis. Vivamus placerat aliquam elit, sit amet iaculis elit hendrerit eleifend. Pellentesque bibendum, erat consequat tempor iaculis, felis nisl scelerisque neque, et laoreet justo lectus nec dui. Morbi imperdiet, nulla quis luctus dictum, est sem pellentesque ligula, ac aliquam ex nunc vel lectus. Nullam rutrum pretium enim, vitae pulvinar tellus finibus in. Nunc convallis lectus fringilla augue rhoncus efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse aliquet dignissim luctus. Integer at mi tortor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam posuere neque et augue rhoncus aliquam. Fusce augue lectus, scelerisque sed arcu vitae, interdum tempor ante.
-              //
-              //        Sed consequat lobortis tempus. Sed elementum ligula ut sapien imperdiet, eget cursus tellus dictum. In ut nisl odio. Phasellus sed interdum urna. Sed tempor faucibus nibh, eget condimentum dolor facilisis sit amet. Phasellus metus augue, vestibulum dapibus hendrerit quis, tempus in dolor. Phasellus at elit elit. Nullam velit metus, lobortis nec fermentum sed, iaculis et dolor. Donec nec ex pulvinar tortor feugiat congue. Cras facilisis pretium lacus, id sollicitudin dui facilisis ac. Ut vitae dapibus dolor, sit amet gravida dolor. Suspendisse potenti.
-              //
-              //        Aliquam finibus consectetur iaculis. Aliquam odio diam, fermentum sit amet felis et, fringilla pharetra neque. Donec a pretium orci. Mauris tincidunt orci a nunc venenatis egestas. Sed ut sagittis nisi. Vivamus convallis consequat porta. Aenean porttitor tincidunt aliquam. Phasellus sit amet leo finibus, iaculis lacus eget, suscipit ex. Sed tincidunt mollis purus, a ultricies urna auctor eget. In est ex, maximus in gravida non, porttitor eget lacus. Mauris semper porta quam, id placerat velit consectetur eu. Praesent ac tincidunt metus. Duis volutpat nisl sed dui cursus, et eleifend purus luctus. Nam convallis posuere nibh eget lacinia. Aliquam suscipit, justo in maximus eleifend, dolor quam rhoncus dui, ac consectetur est dolor non metus.
-              //
-              //        Donec dapibus odio tellus, ut congue leo sollicitudin vitae. Suspendisse felis ante, gravida sit amet enim ac, maximus pharetra sem. In cursus nunc vel porttitor lobortis. Curabitur commodo pulvinar est ut venenatis. Praesent eget risus turpis. Sed nec semper turpis. Aenean nisl quam, pulvinar id ullamcorper vel, pellentesque non tortor. Vivamus sit amet justo luctus, tristique lectus ac, consequat nunc. '
-              // isClearable
               resize
             />
             <AppCheckbox onChange={(v) => setCheck(v)} value={check}>
@@ -189,6 +193,7 @@ const App = () => {
               isClearable
               error='Esto es un error'
               required
+              readOnly
             />
             <AppFileUploader
               title='Archivo'
@@ -225,17 +230,10 @@ const App = () => {
               isLoading={!asyncOptions}
               error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
             />
-
             <AppSingleSelect
               options={[
-                { label: 'Grupo', isOptGroup: true },
-                { label: 'Opt1', value: 1, group: 'Grupo' },
-                { label: 'Opt2', value: 2, group: 'Grupo' },
-                { label: 'Opt3', value: 3, group: 'Grupo' },
-                { label: 'Grupo 2', isOptGroup: true },
-                { label: 'Opcion4', value: 4, group: 'Grupo 2' },
-                { label: 'Opcion5', value: 5, group: 'Grupo 2' },
-                { label: 'Opcion6', value: 6, group: 'Grupo 2' }
+                { label: 'Opt1', value: 1, tag: '#FF077B', bgColor: '#FF99C8' },
+                { label: 'Opt2', value: 2, tag: '#003942', bgColor: '#00a0b9' }
               ]}
               title='Single Select'
               icon={<AppRemixIcon icon='numbers' />}
@@ -245,14 +243,25 @@ const App = () => {
               }}
               isClearable
               hasSearchBox
-              required
               error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
             />
             <AppMultiSelect
               options={[
                 { label: 'Grupo', isOptGroup: true },
-                { label: 'Opt1', value: 1, group: 'Grupo' },
-                { label: 'Opt2', value: 2, group: 'Grupo' },
+                {
+                  label: 'Opt1',
+                  value: 1,
+                  group: 'Grupo',
+                  tag: '#FF077B',
+                  bgColor: '#FF99C8'
+                },
+                {
+                  label: 'Opt2',
+                  value: 2,
+                  group: 'Grupo',
+                  tag: '#003942',
+                  bgColor: '#00a0b9'
+                },
                 { label: 'Opt3', value: 3, group: 'Grupo' },
                 { label: 'Grupo 2', isOptGroup: true },
                 { label: 'Opcion4', value: 4, group: 'Grupo 2' },
@@ -262,20 +271,17 @@ const App = () => {
               title='Multi Select'
               icon={<AppRemixIcon icon='numbers' />}
               value={valMulti}
-              onChange={(opt) => {
-                setValMulti(opt)
-                console.log('CAMBIA!!!', opt)
-              }}
+              onChange={(opt) => setValMulti(opt)}
               isClearable
               hasSearchBox
               hasSelectOptions
+              required
             />
             <AppSingleAsync
               asyncFunction={loadAsyncOptions}
               title='Single Async Select'
               value={asyncSingleVal}
               onChange={setAsyncSingleVal}
-              required
             />
             <AppMultiAsync
               asyncFunction={loadAsyncOptions}
@@ -284,6 +290,7 @@ const App = () => {
               value={asyncMultiVal}
               onChange={setAsyncMultiVal}
               isClearable
+              required
             />
             <AppDatePicker
               title='Fecha manual'
@@ -298,7 +305,7 @@ const App = () => {
               onChange={(v) => setDate(v)}
               required
               placeholder='hola'
-              isManual
+              hasToggleType
               value={date}
             />
             <AppImageCropper

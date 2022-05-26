@@ -7,6 +7,7 @@ import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 import useDetectClickOut from '../../hooks/useDetectClickOut'
 import { useIsFirstRender } from '../../hooks/isFirstRender'
+import TagName from '../layout/TagName'
 import ReactDOMServer from 'react-dom/server'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
@@ -271,10 +272,14 @@ const AppMultiSelect = (props) => {
                       </li>
                     ) : (
                       <li
-                        style={{
-                          backgroundColor: opt.bgColor,
-                          color: opt.fgColor
-                        }}
+                        style={
+                          opt.tag
+                            ? {}
+                            : {
+                                backgroundColor: opt.bgColor,
+                                color: opt.fgColor
+                              }
+                        }
                         onClick={() => handleClickOption(opt)}
                         className={
                           selectedOptions &&
@@ -297,7 +302,13 @@ const AppMultiSelect = (props) => {
                             }}
                           />
                         )}
-                        {opt[setLabelField]}
+                        {opt.tag ? (
+                          <TagName bgColor={opt.bgColor} tag={opt.tag}>
+                            {opt[setLabelField]}
+                          </TagName>
+                        ) : (
+                          opt[setLabelField]
+                        )}
                         {selectedOptions &&
                           selectedOptions.includes(opt[setValueField]) && (
                             <AppRemixIcon

@@ -7,6 +7,7 @@ import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 import useDetectClickOut from '../../hooks/useDetectClickOut'
 import { useIsFirstRender } from '../../hooks/isFirstRender'
+import TagName from '../layout/TagName'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -207,10 +208,14 @@ const AppSingleSelect = (props) => {
                       </li>
                     ) : (
                       <li
-                        style={{
-                          backgroundColor: opt.bgColor,
-                          color: opt.fgColor
-                        }}
+                        style={
+                          opt.tag
+                            ? {}
+                            : {
+                                backgroundColor: opt.bgColor,
+                                color: opt.fgColor
+                              }
+                        }
                         onClick={() => handleClickOption(opt)}
                         className={
                           selectedOption &&
@@ -233,7 +238,13 @@ const AppSingleSelect = (props) => {
                             }}
                           />
                         )}
-                        {opt[setLabelField]}
+                        {opt.tag ? (
+                          <TagName bgColor={opt.bgColor} tag={opt.tag}>
+                            {opt[setLabelField]}
+                          </TagName>
+                        ) : (
+                          opt[setLabelField]
+                        )}
                         {selectedOption &&
                           selectedOption[setValueField] ===
                             opt[setValueField] && (
@@ -396,3 +407,11 @@ const DropdownContent = styled.div`
     }
   }
 `
+
+// const TagName = styled.span`
+//   padding: 2px 4px;
+//   border: 1px solid ${(props) => props.tag};
+//   border-radius: 2px;
+//   color: ${(props) => props.tag};
+//   background-color: ${(props) => props.bgColor};
+// `

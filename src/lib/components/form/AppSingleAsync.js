@@ -6,6 +6,7 @@ import defaultColors from '../../constants/defaultColors'
 import AppRemixIcon from '../icon/AppRemixIcon'
 import AppFontAwesomeIcon from '../icon/AppFontAwesomeIcon'
 import useDetectClickOut from '../../hooks/useDetectClickOut'
+import TagName from '../layout/TagName'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
 /**
@@ -94,13 +95,24 @@ const AppSingleAsync = (props) => {
 
   const keyUpSearchBox = useCallback(
     (event) => {
+      if (event.keyCode === 13) {
+        // Enter
+        if (options) {
+          for (var i = 0; i < options.length; i++) {
+            if (options[i]?.value) {
+              handleClickOption(options[i])
+              break
+            }
+          }
+        }
+      }
       if (event.keyCode === 27) {
         // ESC
         event.target.value = ''
         changeSearchBox(event)
       }
     },
-    [changeSearchBox]
+    [changeSearchBox, options]
   )
   // < SEARCHBOX
 
@@ -148,7 +160,7 @@ const AppSingleAsync = (props) => {
           style={{ marginTop: 3 }}
         />
       </Input>
-      {selectedOption && (
+      {selectedOption && !required && (
         <ClearButton onClick={() => handleClickOption(null)}>
           <AppRemixIcon icon='close-circle' color={colors.primary} />
         </ClearButton>
@@ -176,10 +188,14 @@ const AppSingleAsync = (props) => {
                       </li>
                     ) : (
                       <li
-                        style={{
-                          backgroundColor: opt.bgColor,
-                          color: opt.fgColor
-                        }}
+                        style={
+                          opt.tag
+                            ? {}
+                            : {
+                                backgroundColor: opt.bgColor,
+                                color: opt.fgColor
+                              }
+                        }
                         onClick={() => handleClickOption(opt)}
                         className={
                           selectedOption &&
@@ -202,7 +218,13 @@ const AppSingleAsync = (props) => {
                             }}
                           />
                         )}
-                        {opt[setLabelField]}
+                        {opt.tag ? (
+                          <TagName bgColor={opt.bgColor} tag={opt.tag}>
+                            {opt[setLabelField]}
+                          </TagName>
+                        ) : (
+                          opt[setLabelField]
+                        )}
                         {selectedOption &&
                           selectedOption[setValueField] ===
                             opt[setValueField] && (
