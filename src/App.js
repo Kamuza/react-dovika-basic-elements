@@ -61,33 +61,54 @@ const App = () => {
 
   // > LOAD ASYNC VALUES
   const loadAsyncOptions = useCallback(async (input) => {
-    const options = await axios
-      .post('http://ip.jsontest.com/', { input })
-      .then((r) => {
-        // return r.data
-        return [
-          { label: 'Grupo', isOptGroup: true },
-          {
-            label: 'Opt2',
-            value: 2,
-            group: 'Grupo',
-            tag: '#003942',
-            bgColor: '#00a0b9'
-          },
-          { label: 'Opt3', value: 3, group: 'Grupo' },
-          { label: 'Grupo 2', isOptGroup: true },
-          {
-            label: 'Opt4',
-            value: 4,
-            group: 'Grupo 2',
-            tag: '#FF077B',
-            bgColor: '#FF99C8'
-          },
-          { label: 'Opt5', value: 5, group: 'Grupo 2' },
-          { label: 'Opt6', value: 6, group: 'Grupo 2' }
-        ]
-      })
-      .catch(() => [])
+    const options = await [
+        { label: 'Grupo', isOptGroup: true },
+        {
+          label: 'Opt2',
+          value: 2,
+          group: 'Grupo',
+          tag: '#003942',
+          bgColor: '#00a0b9'
+        },
+        { label: 'Opt3', value: 3, group: 'Grupo' },
+        { label: 'Grupo 2', isOptGroup: true },
+        {
+          label: 'Opt4',
+          value: 4,
+          group: 'Grupo 2',
+          tag: '#FF077B',
+          bgColor: '#FF99C8'
+        },
+        { label: 'Opt5', value: 5, group: 'Grupo 2' },
+        { label: 'Opt6', value: 6, group: 'Grupo 2' }
+      ]
+    // const options = await axios
+    //   .post('http://ip.jsontest.com/', { input })
+    //   .then((r) => {
+    //     // return r.data
+    //     return [
+    //       { label: 'Grupo', isOptGroup: true },
+    //       {
+    //         label: 'Opt2',
+    //         value: 2,
+    //         group: 'Grupo',
+    //         tag: '#003942',
+    //         bgColor: '#00a0b9'
+    //       },
+    //       { label: 'Opt3', value: 3, group: 'Grupo' },
+    //       { label: 'Grupo 2', isOptGroup: true },
+    //       {
+    //         label: 'Opt4',
+    //         value: 4,
+    //         group: 'Grupo 2',
+    //         tag: '#FF077B',
+    //         bgColor: '#FF99C8'
+    //       },
+    //       { label: 'Opt5', value: 5, group: 'Grupo 2' },
+    //       { label: 'Opt6', value: 6, group: 'Grupo 2' }
+    //     ]
+    //   })
+    //   .catch(() => [])
     return options
   }, [])
   // > LOAD ASYNC VALUES

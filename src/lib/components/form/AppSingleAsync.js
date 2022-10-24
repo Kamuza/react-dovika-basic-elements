@@ -48,7 +48,7 @@ const AppSingleAsync = (props) => {
   } = props
   const [isLoading, setIsLoading] = useState(false)
   const [selectedOption, setSelectedOption] = useState(null)
-  const [options, setOptions] = useState(null)
+  const [options, setOptions] = useState([])
   const { show, nodeRef, triggerRef, setShow } = useDetectClickOut(false)
 
   const translations =
@@ -59,7 +59,7 @@ const AppSingleAsync = (props) => {
   }, [value, options])
 
   useEffect(() => {
-    if (!show) setOptions(null)
+    if (!show) setOptions([])
   }, [show])
 
   const handleClickOption = useCallback(
@@ -81,13 +81,13 @@ const AppSingleAsync = (props) => {
 
   // > SEARCHBOX
   const changeSearchBox = useCallback(
-    async (event) => {
-      if (event.target.value.length < inputMinSearch) {
-        setOptions(null)
+    async (input) => {
+      if (input.length < inputMinSearch) {
+        setOptions([])
         return
       }
       setIsLoading(true)
-      setOptions(await asyncFunction(event.target.value))
+      setOptions(await asyncFunction(input))
       setIsLoading(false)
     },
     [asyncFunction, inputMinSearch]
@@ -109,7 +109,7 @@ const AppSingleAsync = (props) => {
       if (event.keyCode === 27) {
         // ESC
         event.target.value = ''
-        changeSearchBox(event)
+        changeSearchBox(event.target.value)
       }
     },
     [changeSearchBox, options]
@@ -174,7 +174,9 @@ const AppSingleAsync = (props) => {
                 className='w-100'
                 placeholder={translations.search}
                 onKeyDown={keyUpSearchBox}
-                onChange={_.debounce(changeSearchBox, 800)}
+                onChange={(e) =>
+                  _.debounce(changeSearchBox, 800)(e.target.value)
+                }
                 autoFocus
               />
             </div>

@@ -95,13 +95,13 @@ const AppMultiAsync = (props) => {
 
   // > SEARCHBOX
   const changeSearchBox = useCallback(
-    async (event) => {
-      if (event.target.value.length < inputMinSearch) {
+    async (input) => {
+      if (input.length < inputMinSearch) {
         setOptions([])
         return
       }
       setIsLoading(true)
-      setOptions(await asyncFunction(event.target.value))
+      setOptions(await asyncFunction(input))
       setIsLoading(false)
     },
     [asyncFunction, inputMinSearch]
@@ -112,7 +112,7 @@ const AppMultiAsync = (props) => {
       if (event.keyCode === 27) {
         // ESC
         event.target.value = ''
-        changeSearchBox(event)
+        changeSearchBox(event.target.value)
       }
     },
     [changeSearchBox]
@@ -193,7 +193,9 @@ const AppMultiAsync = (props) => {
                 className='w-100'
                 placeholder={ReactDOMServer.renderToString(translations.search)}
                 onKeyDown={keyUpSearchBox}
-                onChange={changeSearchBox}
+                onChange={(e) =>
+                  _.debounce(changeSearchBox, 800)(e.target.value)
+                }
                 autoFocus
               />
             </div>
