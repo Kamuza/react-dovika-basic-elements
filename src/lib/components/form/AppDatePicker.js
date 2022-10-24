@@ -52,12 +52,14 @@ const AppDatePicker = (props) => {
     }
   }, [value])
 
-  useEffect(async () => {
+  const handleTypeMode = useCallback(async () => {
     if (typeMode) {
       await onChange('')
       inputManual.current.focus()
     }
-  }, [typeMode])
+  }, [typeMode, inputManual])
+
+  useEffect(() => handleTypeMode(), [typeMode])
 
   const handleBlur = useCallback(() => {
     if (
