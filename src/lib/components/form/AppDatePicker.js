@@ -52,14 +52,16 @@ const AppDatePicker = (props) => {
     }
   }, [value])
 
-  const handleTypeMode = useCallback(async () => {
-    if (typeMode) {
+  const handleTypeMode = async () => {
+    if (typeMode && inputManual?.current) {
       await onChange('')
       inputManual.current.focus()
     }
-  }, [typeMode, inputManual])
+  }
 
-  useEffect(() => handleTypeMode(), [typeMode])
+  useEffect(() => {
+    handleTypeMode()
+  }, [typeMode, inputManual])
 
   const handleBlur = useCallback(() => {
     if (
@@ -77,109 +79,116 @@ const AppDatePicker = (props) => {
     [onChange]
   )
 
+  const setInputRef = (el) => {
+    if (!inputManual.current) {
+      inputManual.current = el
+    }
+  }
+
   return (
     <Container hasPointer={!typeMode}>
-      {hasToggleType && typeMode ? (
-        <div className={className}>
-          <span className={`outside${error ? ' error' : ''}`}>
-            <InputMask
-              mask={mask}
-              onChange={(e) => onChange(e.target.value)}
-              value={value}
-              placeholder={placeholder}
-              onBlur={handleBlur}
-              ref={inputManual}
-            />
+      <div
+        className={`${
+          hasToggleType && typeMode ? 'd-flex' : 'd-none'
+        } ${className}`}
+      >
+        <span className={`outside${error ? ' error' : ''}`}>
+          <InputMask
+            mask={mask}
+            onChange={(e) => onChange(e.target.value)}
+            value={value || ''}
+            placeholder={placeholder}
+            onBlur={handleBlur}
+            ref={setInputRef}
+          />
+        </span>
+        <span className='floating-label-outside'>
+          <span title={title}>
+            {title}
+            {required && <span className='text-danger'>*</span>}
           </span>
-          <span className='floating-label-outside'>
-            <span title={title}>
-              {title}
-              {required && <span className='text-danger'>*</span>}
+          {error && (
+            <span className='text-danger input-error' title={error}>
+              {error}
             </span>
-            {error && (
-              <span className='text-danger input-error' title={error}>
-                {error}
+          )}
+        </span>
+        <span className='input-icon-outside'>{icon}</span>
+        {value && isClearable && (
+          <span className='clearable' onClick={() => onChange('')}>
+            <AppRemixIcon icon='close-circle' />
+          </span>
+        )}
+        {hasToggleType && (
+          <span
+            className='toggle-edit text-primary'
+            onClick={() => setTypeMode(!typeMode)}
+          >
+            <AppRemixIcon icon='edit' />
+          </span>
+        )}
+      </div>
+      <DatePickerWrapper show={!hasToggleType || !typeMode}>
+        <DatePicker
+          locale={locale}
+          selected={
+            date && Moment(date, displayDateFormat).isValid()
+              ? Moment(date, displayDateFormat).toDate()
+              : ''
+          }
+          dateFormat={dateFormat}
+          onChange={handleOnChange}
+          className={className}
+          minDate={minDate}
+          maxDate={maxDate}
+          showMonthDropdown={showMonthDropdown}
+          showYearDropdown={showYearDropdown}
+          showMonthYearPicker={showMonthYearPicker}
+          showYearPicker={showYearPicker}
+          filterDate={filterDate}
+          dropdownMode={dropdownMode}
+          popperClassName={popperClassName}
+          popperContainer={popperContainer}
+          customInput={
+            <div>
+              <span className={`outside${error ? ' error' : ''}`}>
+                {date ? Moment(date).format(displayDateFormat) : ''}
               </span>
-            )}
-          </span>
-          <span className='input-icon-outside'>{icon}</span>
-          {value && isClearable && (
-            <span className='clearable' onClick={() => onChange('')}>
-              <AppRemixIcon icon='close-circle' />
-            </span>
-          )}
-          {hasToggleType && (
-            <span
-              className='toggle-edit text-primary'
-              onClick={() => setTypeMode(!typeMode)}
-            >
-              <AppRemixIcon icon='edit' />
-            </span>
-          )}
-        </div>
-      ) : (
-        <>
-          <DatePicker
-            locale={locale}
-            selected={
-              date && Moment(date, displayDateFormat).isValid()
-                ? Moment(date, displayDateFormat).toDate()
-                : ''
-            }
-            dateFormat={dateFormat}
-            onChange={handleOnChange}
-            className={className}
-            minDate={minDate}
-            maxDate={maxDate}
-            showMonthDropdown={showMonthDropdown}
-            showYearDropdown={showYearDropdown}
-            showMonthYearPicker={showMonthYearPicker}
-            showYearPicker={showYearPicker}
-            filterDate={filterDate}
-            dropdownMode={dropdownMode}
-            popperClassName={popperClassName}
-            popperContainer={popperContainer}
-            customInput={
-              <div>
-                <span className={`outside${error ? ' error' : ''}`}>
-                  {date ? Moment(date).format(displayDateFormat) : ''}
+              <span className='floating-label-outside'>
+                <span title={title}>
+                  {title}
+                  {required && <span className='text-danger'>*</span>}
                 </span>
-                <span className='floating-label-outside'>
-                  <span title={title}>
-                    {title}
-                    {required && <span className='text-danger'>*</span>}
-                  </span>
-                  {error && (
-                    <span className='text-danger input-error' title={error}>
-                      {error}
-                    </span>
-                  )}
-                </span>
-                <span className='input-icon-outside'>{icon}</span>
-                {placeholder && (
-                  <span className={`placeholder ${value ? 'has-value' : ''}`}>
-                    {placeholder}
+                {error && (
+                  <span className='text-danger input-error' title={error}>
+                    {error}
                   </span>
                 )}
-              </div>
-            }
-            {...others}
-          />
-          {hasToggleType && (
-            <span
-              className='toggle-edit text-light'
-              onClick={() => setTypeMode(!typeMode)}
-            >
-              <AppRemixIcon icon='edit' />
-            </span>
-          )}
-          {value && isClearable && (
-            <span className='clearable' onClick={() => onChange(undefined)}>
-              <AppRemixIcon icon='close-circle' />
-            </span>
-          )}
-        </>
-      )}
+              </span>
+              <span className='input-icon-outside'>{icon}</span>
+              {placeholder && (
+                <span className={`placeholder ${value ? 'has-value' : ''}`}>
+                  {placeholder}
+                </span>
+              )}
+            </div>
+          }
+          {...others}
+        />
+        {hasToggleType && (
+          <span
+            className='toggle-edit text-light'
+            onClick={() => setTypeMode(!typeMode)}
+          >
+            <AppRemixIcon icon='edit' />
+          </span>
+        )}
+        {value && isClearable && (
+          <span className='clearable' onClick={() => onChange(undefined)}>
+            <AppRemixIcon icon='close-circle' />
+          </span>
+        )}
+      </DatePickerWrapper>
     </Container>
   )
 }
@@ -205,7 +214,7 @@ AppDatePicker.defaultProps = {
   hasToggleType: false,
   isTypeMode: false,
   mask: '99/99/9999',
-  locale: window.dovikaBasicElementsColors || 'en',
+  locale: 'en',
   popperClassName: 'react-datepicker-popper-100',
   popperContainer: ({ children }) => createPortal(children, document.body)
 }
@@ -329,5 +338,12 @@ const Container = styled.div`
       font-size: 14px !important;
       margin-left: 100px !important;
     }
+  }
+`
+
+const DatePickerWrapper = styled.div`
+  display: ${(props) => (props.show ? 'flex' : 'none')};
+  .react-datepicker-wrapper {
+    width: 100%;
   }
 `
