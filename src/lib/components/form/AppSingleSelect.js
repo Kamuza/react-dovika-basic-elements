@@ -79,9 +79,8 @@ const AppSingleSelect = (props) => {
   const handleClickOption = (opt) => {
     if (opt) {
       if (!opt?.isOptGroup) {
-        if (selectedOption?.[setValueField] === opt[setValueField] && !required)
-          onChange(null)
-        else onChange(opt[setValueField])
+        if (selectedOption?.[setValueField] !== opt[setValueField])
+          onChange(opt[setValueField])
       }
     } else onChange(null)
     setShow(false)
