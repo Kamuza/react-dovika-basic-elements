@@ -51,6 +51,7 @@ const AppMultiSelect = (props) => {
     setValueField,
     setLabelField,
     isClearable,
+    isDisabled,
     isLoading,
     loadingPlaceholder,
     required,
@@ -140,7 +141,11 @@ const AppMultiSelect = (props) => {
   if (isLoading) {
     return (
       <Container>
-        <Input className={`${className}`} hasIcon={!!icon} error={error}>
+        <Input
+          className={`${className}${isDisabled ? ' disabled' : ''}`}
+          hasIcon={!!icon}
+          error={error}
+        >
           <InputIcon>
             <AppRemixIcon
               icon='loader-4'
@@ -163,11 +168,6 @@ const AppMultiSelect = (props) => {
             color={colors.primary}
             style={{ marginTop: 3 }}
           />
-          {/* <FaCaretDown */}
-          {/*  className='float-right' */}
-          {/*  color={colors.primary} */}
-          {/*  style={{ marginTop: 3 }} */}
-          {/* /> */}
         </Input>
       </Container>
     )
@@ -177,10 +177,10 @@ const AppMultiSelect = (props) => {
     <Container>
       <Input
         active={selectedOptions}
-        className={`${className}`}
+        className={`${className}${isDisabled ? ' disabled' : ''}`}
         hasIcon={!!icon}
         error={error}
-        ref={triggerRef}
+        ref={!isDisabled ? triggerRef : undefined}
       >
         {icon && <InputIcon>{icon}</InputIcon>}
         {title && (
@@ -218,7 +218,7 @@ const AppMultiSelect = (props) => {
           style={{ marginTop: 3 }}
         />
       </Input>
-      {isClearable && selectedOptions.length > 0 && !required && (
+      {isClearable && selectedOptions.length > 0 && !required && !isDisabled && (
         <ClearButton onClick={() => onChange([])}>
           <AppRemixIcon icon='close-circle' color={colors.primary} />
         </ClearButton>
@@ -333,14 +333,16 @@ const AppMultiSelect = (props) => {
 
 export default AppMultiSelect
 AppMultiSelect.defaultProps = {
-  className: 'pointer',
+  className: '',
   hasSearchBox: false,
   hasSelectOptions: false,
   value: null,
   setValueField: 'value',
   setLabelField: 'label',
   isOnlyValue: false,
-  required: false
+  required: false,
+  isClearable: false,
+  isDisabled: false
 }
 
 const OptGroup = styled.span`
@@ -370,6 +372,10 @@ const Input = styled.div`
   border: ${(props) => (props.error ? 'red' : '#ddd')} solid 1px;
   padding: 6px 6px 1px ${(props) => (props.hasIcon ? '40px' : '10px')};
   cursor: pointer;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `
 
 const SearchInput = styled.input`
@@ -422,6 +428,7 @@ const InputPlaceholder = styled.span`
   overflow: hidden;
   white-space: nowrap;
   width: calc(100% - 50px);
+  height: 21.5px;
 `
 
 const SelectedContainer = styled.span`
@@ -429,6 +436,7 @@ const SelectedContainer = styled.span`
   overflow: hidden;
   white-space: nowrap;
   width: calc(100% - 50px);
+  height: 21.5px;
 `
 
 const DropdownContainer = styled.div`

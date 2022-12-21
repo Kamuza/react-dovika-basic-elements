@@ -9,5 +9,8 @@ export default {
   delete: 'Eliminar',
   cancel: 'Cancelar',
   loading: 'Cargando...',
-  select: 'Seleccionar'
+  select: 'Seleccionar',
+  /* AppFileUpload */
+  selectSingleFile: 'Selecciona un archivo...',
+  selectMultipleFiles: 'Selecciona uno o varios archivos...'
 }

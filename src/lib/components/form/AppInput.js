@@ -100,8 +100,11 @@ const AppInput = (props) => {
     )
 
   return (
-    <Container className={`mb-2 ${isDisabled && 'disabled'}`} hasIcon={!!icon}>
-      <div className={`read-only ${noBorder && 'no-border'}`}>{value}</div>
+    <Container
+      className={`mb-2${isDisabled ? ' disabled' : ''}`}
+      hasIcon={!!icon}
+    >
+      <div className={`read-only${noBorder ? ' no-border' : ''}`}>{value}</div>
       <span className='floating-label-outside'>
         <span>{title}</span>
       </span>

@@ -19,6 +19,7 @@ const AppDatePicker = (props) => {
     required,
     error,
     isClearable,
+    isDisabled,
     minDate,
     maxDate,
     dateFormat,
@@ -86,12 +87,11 @@ const AppDatePicker = (props) => {
   }
 
   return (
-    <Container hasPointer={!typeMode}>
-      <div
-        className={`${
-          hasToggleType && typeMode ? 'd-flex' : 'd-none'
-        } ${className}`}
-      >
+    <Container
+      hasPointer={!typeMode}
+      className={`${className}${isDisabled ? ' disabled' : ''}`}
+    >
+      <div className={`${hasToggleType && typeMode ? 'd-flex' : 'd-none'}`}>
         <span className={`outside${error ? ' error' : ''}`}>
           <InputMask
             mask={mask}
@@ -100,6 +100,7 @@ const AppDatePicker = (props) => {
             placeholder={placeholder}
             onBlur={handleBlur}
             ref={setInputRef}
+            disabled={isDisabled}
           />
         </span>
         <span className='floating-label-outside'>
@@ -119,7 +120,7 @@ const AppDatePicker = (props) => {
             <AppRemixIcon icon='close-circle' />
           </span>
         )}
-        {hasToggleType && (
+        {hasToggleType && !isDisabled && (
           <span
             className='toggle-edit text-primary'
             onClick={() => setTypeMode(!typeMode)}
@@ -138,7 +139,6 @@ const AppDatePicker = (props) => {
           }
           dateFormat={dateFormat}
           onChange={handleOnChange}
-          className={className}
           minDate={minDate}
           maxDate={maxDate}
           showMonthDropdown={showMonthDropdown}
@@ -149,6 +149,7 @@ const AppDatePicker = (props) => {
           dropdownMode={dropdownMode}
           popperClassName={popperClassName}
           popperContainer={popperContainer}
+          disabled={isDisabled}
           customInput={
             <div>
               <span className={`outside${error ? ' error' : ''}`}>
@@ -175,7 +176,7 @@ const AppDatePicker = (props) => {
           }
           {...others}
         />
-        {hasToggleType && (
+        {hasToggleType && !isDisabled && (
           <span
             className='toggle-edit text-light'
             onClick={() => setTypeMode(!typeMode)}
@@ -197,8 +198,9 @@ export default AppDatePicker
 AppDatePicker.defaultProps = {
   name: '',
   autoFocus: false,
-  className: 'mb-2',
+  className: '',
   append: '',
+  isDisabled: false,
   onKeyDown: () => {},
   icon: <AppRemixIcon icon='calendar' />,
   showMonthDropdown: false,
@@ -224,16 +226,20 @@ const Container = styled.div`
   flex: 1 auto;
   flex-direction: column;
   position: relative;
-  margin: 10px 0 0 0;
+  margin: 10px 0;
   width: 100%;
   cursor: ${(props) => (props.hasPointer ? 'pointer' : 'default')};
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   .outside {
     display: block;
     color: #555;
     width: 100%;
-    font-size: 15px;
-    height: 35px;
-    line-height: normal;
+    font-size: 14px;
+    height: 36px;
+    line-height: 1.6;
     border: #ddd solid 1px;
     border-radius: 0;
     box-sizing: border-box;
@@ -263,9 +269,12 @@ const Container = styled.div`
   .placeholder {
     position: absolute;
     pointer-events: none;
-    top: 5px;
-    left: 42px;
-    right: 8px;
+    height: 36px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 6px 10px 6px 40px;
     color: #aaa;
     z-index: 3;
     opacity: 1;

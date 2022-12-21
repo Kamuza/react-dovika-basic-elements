@@ -6,6 +6,7 @@ import colors from '../colors'
 const AppFileUploader = (props) => {
   const {
     id,
+    value,
     isMulti,
     btnText,
     btnClass,
@@ -19,32 +20,29 @@ const AppFileUploader = (props) => {
   const translations =
     window.dovikaBasicElementsTranslations || defaultTranslations
 
-  const handleOnChange = (files) => {
-    onChange(files)
-  }
-
   return (
-    <Container className='input-group' isDisabled={isDisabled} error={error}>
-      <span className='form-control file-uploader' title={placeholder}>
-        {placeholder}
-      </span>
+    <Container
+      className={`${isDisabled ? ' disabled' : ''}`}
+      error={error}
+      htmlFor={`upload-${id}`}
+    >
+      <div className='file-uploader'>
+        {placeholder ||
+          (isMulti
+            ? defaultTranslations.selectMultipleFiles
+            : defaultTranslations.selectSingleFile)}
+      </div>
       <input
         id={`upload-${id}`}
         type='file'
         style={{ display: 'none' }}
-        onChange={(e) => handleOnChange(e.target.files)}
+        onChange={(e) => onChange(e.target.files)}
         multiple={isMulti}
         disabled={isDisabled}
         {...others}
       />
-      {/* <label htmlFor={`upload-${id}`} className="file-uploader-label font-weight-light text-truncate"> */}
-      {/*    {selectedFilesName} */}
-      {/* </label> */}
-      <div className='input-group-append'>
-        <label
-          htmlFor={`upload-${id}`}
-          className={`m-0 btn ${isDisabled ? 'btn-secondary' : btnClass}`}
-        >
+      <div className='upload-btn'>
+        <label className={`m-0 btn ${isDisabled ? 'btn-secondary' : btnClass}`}>
           {btnText || translations.search}
         </label>
       </div>
@@ -62,8 +60,16 @@ AppFileUploader.defaultProps = {
   placeholder: ''
 }
 
-const Container = styled.div`
-  background-color: ${(props) => (props.isDisabled ? '#e9ecef' : 'white')};
+const Container = styled.label`
+  position: relative;
+  display: flex;
+  width: 100%;
+  background-color: white;
+  cursor: pointer;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   border: ${(props) => (props.error ? colors.danger : '#ddd')} solid 1px;
   border-right: 0;
   box-sizing: border-box;
@@ -73,24 +79,24 @@ const Container = styled.div`
     border-radius: 0 !important;
   }
   .file-uploader {
+    flex: 1 auto;
+    padding: 4px 10px;
+    position: relative;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: none !important;
-    font-size: 15px !important;
+    font-size: 14px;
+    pointer-events: none;
+    color: #aaa;
+    line-height: 1.8;
   }
-
-  .file-uploader-label {
-    position: absolute;
-    top: 50%;
-    left: 0.5rem;
-    transform: translateY(-50%);
-    width: calc(100% - 100px);
-  }
-
-  .input-group-append {
+  .upload-btn {
     label {
+      pointer-events: none;
       z-index: 0;
+      &.btn {
+        padding: 4px 10px;
+      }
     }
   }
 `

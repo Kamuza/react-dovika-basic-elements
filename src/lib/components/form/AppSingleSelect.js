@@ -48,6 +48,7 @@ const AppSingleSelect = (props) => {
     setValueField,
     setLabelField,
     isClearable,
+    isDisabled,
     isLoading,
     loadingPlaceholder,
     required,
@@ -111,7 +112,11 @@ const AppSingleSelect = (props) => {
   if (isLoading) {
     return (
       <Container>
-        <Input className={`${className}`} hasIcon={!!icon} error={error}>
+        <Input
+          className={`${className}${isDisabled ? ' disabled' : ''}`}
+          hasIcon={!!icon}
+          error={error}
+        >
           <InputIcon>
             <AppRemixIcon
               icon='loader-4'
@@ -132,11 +137,6 @@ const AppSingleSelect = (props) => {
             color={colors.primary}
             style={{ marginTop: 3 }}
           />
-          {/* <FaCaretDown */}
-          {/*  className='float-right' */}
-          {/*  color={colors.primary} */}
-          {/*  style={{ marginTop: 3 }} */}
-          {/* /> */}
         </Input>
       </Container>
     )
@@ -146,10 +146,10 @@ const AppSingleSelect = (props) => {
     <Container>
       <Input
         active={selectedOption}
-        className={`${className}`}
+        className={`${className}${isDisabled ? ' disabled' : ''}`}
         hasIcon={!!icon}
         error={error}
-        ref={triggerRef}
+        ref={!isDisabled ? triggerRef : undefined}
       >
         {icon && <InputIcon>{icon}</InputIcon>}
         {title && (
@@ -177,7 +177,7 @@ const AppSingleSelect = (props) => {
           style={{ marginTop: 3 }}
         />
       </Input>
-      {isClearable && selectedOption && !required && (
+      {isClearable && selectedOption && !required && !isDisabled && (
         <ClearButton onClick={() => handleClickOption(null)}>
           <AppRemixIcon icon='close-circle' color={colors.primary} />
         </ClearButton>
@@ -269,7 +269,7 @@ const AppSingleSelect = (props) => {
 
 export default AppSingleSelect
 AppSingleSelect.defaultProps = {
-  className: 'pointer',
+  className: '',
   placeholder: 'Seleccionar',
   loadingPlaceholder: 'Cargando...',
   hasSearchBox: false,
@@ -278,7 +278,9 @@ AppSingleSelect.defaultProps = {
   setValueField: 'value',
   setLabelField: 'label',
   isOnlyValue: false,
-  required: false
+  required: false,
+  isClearable: false,
+  isDisabled: false
 }
 
 const OptGroup = styled.span`
@@ -308,6 +310,10 @@ const Input = styled.div`
   border: ${(props) => (props.error ? 'red' : '#ddd')} solid 1px;
   padding: 6px 6px 1px ${(props) => (props.hasIcon ? '40px' : '10px')};
   cursor: pointer;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `
 
 const SearchInput = styled.input`
@@ -360,6 +366,7 @@ const InputPlaceholder = styled.span`
   overflow: hidden;
   white-space: nowrap;
   width: calc(100% - 50px);
+  height: 21.5px;
 `
 
 const SelectedContainer = styled.span`
@@ -367,6 +374,7 @@ const SelectedContainer = styled.span`
   overflow: hidden;
   white-space: nowrap;
   width: calc(100% - 50px);
+  height: 21.5px;
 `
 
 const DropdownContainer = styled.div`

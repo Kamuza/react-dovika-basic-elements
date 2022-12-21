@@ -3,6 +3,7 @@ import axios from 'axios'
 import { AppRemixIcon } from './lib'
 import ReactNotification from 'react-notifications-component'
 import styled from 'styled-components'
+import defaultTranslations from './lib/constants/defaultTranslations'
 import AppTextArea from './lib/components/form/AppTextArea'
 import './scss/App.scss'
 import AppCard from './lib/components/layout/AppCard'
@@ -29,6 +30,7 @@ const App = () => {
   const [valMulti, setValMulti] = useState([])
   const [date, setDate] = useState('')
   const [check, setCheck] = useState(false)
+  const [fileValue, setFileValue] = useState()
   const [asyncOptions, setAsyncOptions] = useState()
   const [asyncSingleVal, setAsyncSingleVal] = useState({
     label: 'Opt1',
@@ -62,26 +64,26 @@ const App = () => {
   // > LOAD ASYNC VALUES
   const loadAsyncOptions = useCallback(async (input) => {
     const options = await [
-        { label: 'Grupo', isOptGroup: true },
-        {
-          label: 'Opt2',
-          value: 2,
-          group: 'Grupo',
-          tag: '#003942',
-          bgColor: '#00a0b9'
-        },
-        { label: 'Opt3', value: 3, group: 'Grupo' },
-        { label: 'Grupo 2', isOptGroup: true },
-        {
-          label: 'Opt4',
-          value: 4,
-          group: 'Grupo 2',
-          tag: '#FF077B',
-          bgColor: '#FF99C8'
-        },
-        { label: 'Opt5', value: 5, group: 'Grupo 2' },
-        { label: 'Opt6', value: 6, group: 'Grupo 2' }
-      ]
+      { label: 'Grupo', isOptGroup: true },
+      {
+        label: 'Opt2',
+        value: 2,
+        group: 'Grupo',
+        tag: '#003942',
+        bgColor: '#00a0b9'
+      },
+      { label: 'Opt3', value: 3, group: 'Grupo' },
+      { label: 'Grupo 2', isOptGroup: true },
+      {
+        label: 'Opt4',
+        value: 4,
+        group: 'Grupo 2',
+        tag: '#FF077B',
+        bgColor: '#FF99C8'
+      },
+      { label: 'Opt5', value: 5, group: 'Grupo 2' },
+      { label: 'Opt6', value: 6, group: 'Grupo 2' }
+    ]
     // const options = await axios
     //   .post('http://ip.jsontest.com/', { input })
     //   .then((r) => {
@@ -152,7 +154,7 @@ const App = () => {
               onChange={(v) => console.log(v)}
               resize
             />
-            <AppCheckbox onChange={(v) => setCheck(v)} value={check}>
+            <AppCheckbox onChange={(v) => setCheck(v)} value={check} hasBorder isDisabled>
               Hola!
             </AppCheckbox>
             <AppTextArea
@@ -191,21 +193,6 @@ const App = () => {
               }
               isReadOnly
             />
-            {/* <AppSelect */}
-            {/*  title='AppSelect' */}
-            {/*  icon={<AppRemixIcon icon='checkbox-blank' />} */}
-            {/*  options={[ */}
-            {/*    { label: 'Hola', isOptGroup: true }, */}
-            {/*    { label: 'Hijo', value: 1, group: 'Hola' }, */}
-            {/*    { label: 'Hijo2', value: 12, group: 'Hola' } */}
-            {/*  ]} */}
-            {/*  // isMulti */}
-            {/*  hasSearchBox */}
-            {/*  hasSelectOptions */}
-            {/*  onChange={(v) => console.log('ALGO', v)} */}
-            {/*  value={{ label: 'Hola', isOptGroup: true }} */}
-            {/*  isClearable */}
-            {/* /> */}
             <AppInputNumber
               title='AppInputNumber'
               icon={<AppRemixIcon icon='checkbox-blank' />}
@@ -218,27 +205,15 @@ const App = () => {
             />
             <AppFileUploader
               title='Archivo'
-              placeholder='Un nombre largo para cortar sin que se vaya de línea'
-              onChange={(v) => console.log(v)}
+              placeholder={
+                fileValue?.length > 0
+                  ? `${fileValue?.length}${defaultTranslations.elementsSelected}`
+                  : defaultTranslations.selectMultipleFiles
+              }
+              onChange={setFileValue}
               isMulti
+              //   isDisabled
             />
-
-            {/* <AppSelect */}
-            {/*  options={[ */}
-            {/*    { label: 'Opt1', value: 1 }, */}
-            {/*    { label: 'Opt2', value: 2 }, */}
-            {/*    { label: 'Opt3', value: 3 } */}
-            {/*  ]} */}
-            {/*  title='isOnlyValue' */}
-            {/*  icon={<AppRemixIcon icon='numbers' />} */}
-            {/*  value={val} */}
-            {/*  onChange={(opt) => { */}
-            {/*    setVal(opt) */}
-            {/*    console.log(opt) */}
-            {/*  }} */}
-            {/*  isMulti */}
-            {/* /> */}
-
             <AppSingleSelect
               options={asyncOptions}
               title='Single Select con Loading'
@@ -249,7 +224,7 @@ const App = () => {
               hasSearchBox
               required
               isLoading={!asyncOptions}
-              error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
+              //   error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
             />
             <AppSingleSelect
               options={[
@@ -328,6 +303,7 @@ const App = () => {
               placeholder='hola'
               hasToggleType
               value={date}
+              isDisabled
             />
             <AppImageCropper
               cropShape='rect'
