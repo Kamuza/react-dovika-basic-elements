@@ -39,15 +39,13 @@ const AppCheckbox = (props) => {
     ...others
   } = props
 
-  const handleOnChange = () => {}
-
   return (
     <Container
       {...others}
       hasBorder={hasBorder}
       error={error}
       className={`${isDisabled ? ' disabled' : ''}`}
-      onClick={() => (!isDisabled ? handleOnChange() : undefined)}
+      onClick={() => (!isDisabled ? onChange(!value) : undefined)}
     >
       {value ? (
         <AppRemixIcon
@@ -74,13 +72,14 @@ AppCheckbox.defaultProps = {
   iconUncheck: 'checkbox-blank',
   color: colors.primary,
   checkboxSize: 16,
-  hasBorder: false,
+  hasBorder: true,
   isDisabled: false
 }
 const Container = styled.div`
+  margin: 10px 0;
   display: flex;
   align-items: center;
-  padding: ${(props) => (props.hasBorder ? '5px 0 5px 12px' : '6px 0')};
+  padding: ${(props) => (props.hasBorder ? '5px 5px 5px 12px' : '6px 0')};
   border: ${(props) => (props.hasBorder ? '#ddd solid 1px' : 'none')};
   border-color: ${(props) =>
     props.error && props.hasBorder ? colors.danger : '#ddd'};

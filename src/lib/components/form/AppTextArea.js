@@ -54,7 +54,7 @@ const AppTextArea = (props) => {
 
   return (
     <Container
-      className='mb-2'
+      className={`mb-2${isDisabled ? ' disabled' : ''}`}
       resize={resize}
       height={height}
       maxHeight={maxHeight}
@@ -98,7 +98,7 @@ const AppTextArea = (props) => {
       </span>
       {placeholder && <span className='placeholder'>{placeholder}</span>}
       {icon && <span className='input-icon-outside'>{icon}</span>}
-      {value && isClearable && (
+      {value && isClearable && !isDisabled && (
         <span
           className='clearable'
           onClick={() => {
@@ -123,12 +123,17 @@ AppTextArea.defaultProps = {
   resize: 'none',
   maxHeight: null,
   height: '80px',
-  isReadOnly: false
+  isReadOnly: false,
+  isDisabled: false
 }
 
 const Container = styled.div`
-  margin: 10px 0;
   position: relative;
+  margin: 10px 0;
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   textarea.outside,
   div.outside {
     color: #555;

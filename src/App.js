@@ -148,13 +148,14 @@ const App = () => {
             <AppTextArea
               title='AppTextArea'
               icon={<AppRemixIcon icon='checkbox-blank' />}
-              error='Un error con texto'
+            //   error='Un error con texto'
               placeholder='hola'
               required
               onChange={(v) => console.log(v)}
               resize
+              isDisabled
             />
-            <AppCheckbox onChange={(v) => setCheck(v)} value={check} hasBorder isDisabled>
+            <AppCheckbox onChange={(v) => setCheck(v)} value={check} hasBorder>
               Hola!
             </AppCheckbox>
             <AppTextArea
