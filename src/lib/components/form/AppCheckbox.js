@@ -72,7 +72,7 @@ AppCheckbox.defaultProps = {
   iconUncheck: 'checkbox-blank',
   color: colors.primary,
   checkboxSize: 16,
-  hasBorder: true,
+  hasBorder: false,
   isDisabled: false
 }
 const Container = styled.div`
