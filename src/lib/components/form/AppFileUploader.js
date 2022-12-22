@@ -65,6 +65,7 @@ const Container = styled.label`
   display: flex;
   width: 100%;
   background-color: white;
+  margin: 10px 0;
   cursor: pointer;
   &.disabled {
     opacity: 0.5;

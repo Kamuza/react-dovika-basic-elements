@@ -74,7 +74,8 @@ const AppTextArea = (props) => {
             setHasValue(e.target.value)
           }}
           autoFocus={autoFocus}
-          readOnly={isDisabled}
+          readOnly={isReadOnly}
+          disabled={isDisabled}
           onKeyDown={(e) => {
             onKeyDown(e)
             _.forEach(onPressKeyList, (key) => {
@@ -132,6 +133,9 @@ const Container = styled.div`
   margin: 10px 0;
   &.disabled {
     opacity: 0.5;
+    textarea {
+      cursor: not-allowed;
+    }
     cursor: not-allowed;
   }
   textarea.outside,
@@ -190,8 +194,7 @@ const Container = styled.div`
     opacity: 1;
   }
 
-  textarea:focus,
-  select:focus {
+  textarea:focus {
     outline: 0 !important;
     color: #555 !important;
     border-color: #9e9e9e;
@@ -247,7 +250,7 @@ const Container = styled.div`
   .input-icon-outside span,
   .input-icon-outside i {
     position: absolute;
-    top: 12px;
+    top: 8px;
     left: 15px;
     z-index: 3;
     color: #727272;
@@ -278,40 +281,5 @@ const Container = styled.div`
     height: 35px;
     min-width: 15px;
     z-index: 5;
-  }
-
-  .inputDropDown {
-    position: relative;
-    border: #ddd solid 1px;
-    background-color: ${colors.grey200};
-    text-align: right;
-    .selected-value {
-      line-height: 34px;
-      margin: 0 8px;
-      font-size: 12px;
-    }
-    .caret {
-      margin-top: 35px;
-    }
-    .inputDropDown-options {
-      position: absolute;
-      background-color: white;
-      border: #ddd solid 1px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      top: 35px;
-      right: 0;
-      z-index: 6;
-      li {
-        text-align: left;
-        padding: 4px 12px;
-        min-width: 200px;
-        max-width: 400px;
-        &:hover {
-          background-color: ${colors.grey200};
-        }
-      }
-    }
   }
 `
