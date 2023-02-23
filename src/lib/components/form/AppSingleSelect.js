@@ -183,7 +183,7 @@ const AppSingleSelect = (props) => {
         </ClearButton>
       )}
       {show && (
-        <DropdownContainer style={{ minWidth: '300px' }} ref={nodeRef}>
+        <DropdownContainer ref={nodeRef}>
           <DropdownContent>
             {hasSearchBox && (
               <div className='m-2'>

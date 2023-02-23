@@ -166,7 +166,7 @@ const AppSingleAsync = (props) => {
         </ClearButton>
       )}
       {show && (
-        <DropdownContainer style={{ minWidth: '300px' }} ref={nodeRef}>
+        <DropdownContainer ref={nodeRef}>
           <DropdownContent>
             <div className='m-2'>
               <SearchInput
