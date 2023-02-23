@@ -365,6 +365,7 @@ const InputPlaceholder = styled.span`
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
   width: calc(100% - 50px);
   height: 21.5px;
 `
@@ -373,6 +374,7 @@ const SelectedContainer = styled.span`
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
   width: calc(100% - 50px);
   height: 21.5px;
 `

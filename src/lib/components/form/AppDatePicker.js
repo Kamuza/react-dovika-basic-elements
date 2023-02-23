@@ -281,6 +281,7 @@ const Container = styled.div`
     transition: all ease 0.3s;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
   }
   .input-icon-outside svg,
   .input-icon-outside span,
