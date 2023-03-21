@@ -90,7 +90,7 @@ const AppMultiSelect = (props) => {
         onChange(tempSelectedOptions)
       }
     } else {
-      let groupOptions = options.filter((o) => o.group === opt[setLabelField])
+      let groupOptions = options.filter((o) => o.group === opt[setLabelField] && !o.disabled)
       groupOptions = _.map(groupOptions, setValueField)
       onChange(_.uniq([...groupOptions, ...selectedOptions]))
     }
@@ -123,7 +123,7 @@ const AppMultiSelect = (props) => {
     let options = null
     options = [...filteredOptions]
     options = _.map(
-      options.filter((o) => !o.isOptGroup),
+      options.filter((o) => !o.isOptGroup && !o.disabled),
       setValueField
     )
     onChange(_.uniq([...options, ...selectedOptions]))
@@ -132,8 +132,10 @@ const AppMultiSelect = (props) => {
   const deselectAll = () => {
     let options = [...selectedOptions]
     filteredOptions.forEach((fopt) => {
-      if (options.includes(fopt[setValueField]))
-        options = options.filter((o) => o !== fopt[setValueField])
+      if (!fopt.disabled && options.includes(fopt[setValueField]))
+        options = options.filter(
+          (o) => o !== fopt[setValueField] && !fopt.disabled
+        )
     })
     onChange(options)
   }
@@ -472,9 +474,6 @@ const DropdownContent = styled.div`
       color: #003d47;
       &:hover {
         background: #e9ecef;
-        &.opt-disabled {
-          background: white;
-        }
       }
       &.selected {
         background: #dfe2e5;

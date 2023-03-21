@@ -407,9 +407,6 @@ const DropdownContent = styled.div`
       color: #003d47;
       &:hover {
         background: #e9ecef;
-        &.opt-disabled {
-          background: white;
-        }
       }
       &.selected {
         background: #dfe2e5;
