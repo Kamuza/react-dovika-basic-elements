@@ -148,7 +148,7 @@ const App = () => {
             <AppTextArea
               title='AppTextArea'
               icon={<AppRemixIcon icon='checkbox-blank' />}
-            //   error='Un error con texto'
+              //   error='Un error con texto'
               placeholder='hola'
               required
               onChange={(v) => console.log(v)}
@@ -230,7 +230,13 @@ const App = () => {
             <AppSingleSelect
               options={[
                 { label: 'Opt1', value: 1, tag: '#FF077B', bgColor: '#FF99C8' },
-                { label: 'Opt2', value: 2, tag: '#003942', bgColor: '#00a0b9' }
+                {
+                  label: 'Opt2',
+                  value: 2,
+                  tag: '#003942',
+                  bgColor: '#00a0b9',
+                  disabled: true
+                }
               ]}
               title='Single Select'
               icon={<AppRemixIcon icon='numbers' />}
@@ -261,7 +267,12 @@ const App = () => {
                 },
                 { label: 'Opt3', value: 3, group: 'Grupo' },
                 { label: 'Grupo 2', isOptGroup: true },
-                { label: 'Opcion4', value: 4, group: 'Grupo 2' },
+                {
+                  label: 'Opcion4',
+                  value: 4,
+                  group: 'Grupo 2',
+                  disabled: true
+                },
                 { label: 'Opcion5', value: 5, group: 'Grupo 2' },
                 { label: 'Opcion6', value: 6, group: 'Grupo 2' }
               ]}

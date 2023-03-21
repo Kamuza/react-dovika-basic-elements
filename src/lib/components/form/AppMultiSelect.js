@@ -20,6 +20,7 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *                                  value: 'Valor que se enviará',
  *                                  isOptGroup: 'OPC. Si se incluye, se mostrará como grupo no seleccionable',
  *                                  group: 'OPC. Si se incluye, se podrá utilizar como filtro de texto para encontrar el elemento'
+ *                                  disabled: 'OPC. Si se incluye, se mostrará como disabled no seleccionable'
  *                                }
  *      onChange:                 Función que ejecutará cada vez que se ejecute un cambio.
  *      value:                    Valor seleccionado.
@@ -218,11 +219,14 @@ const AppMultiSelect = (props) => {
           style={{ marginTop: 3 }}
         />
       </Input>
-      {isClearable && selectedOptions.length > 0 && !required && !isDisabled && (
-        <ClearButton onClick={() => onChange([])}>
-          <AppRemixIcon icon='close-circle' color={colors.primary} />
-        </ClearButton>
-      )}
+      {isClearable &&
+        selectedOptions.length > 0 &&
+        !required &&
+        !isDisabled && (
+          <ClearButton onClick={() => onChange([])}>
+            <AppRemixIcon icon='close-circle' color={colors.primary} />
+          </ClearButton>
+        )}
       {show && (
         <DropdownContainer ref={nodeRef}>
           <DropdownContent>
@@ -280,13 +284,13 @@ const AppMultiSelect = (props) => {
                                 color: opt.fgColor
                               }
                         }
-                        onClick={() => handleClickOption(opt)}
-                        className={
+                        onClick={() => !opt.disabled && handleClickOption(opt)}
+                        className={`${
                           selectedOptions &&
                           selectedOptions.includes(opt[setValueField])
                             ? 'selected'
                             : ''
-                        }
+                        } ${opt.disabled ? 'opt-disabled' : ''}`}
                       >
                         {opt.icon}
                         {opt.circle && (
@@ -468,12 +472,19 @@ const DropdownContent = styled.div`
       color: #003d47;
       &:hover {
         background: #e9ecef;
+        &.opt-disabled {
+          background: white;
+        }
       }
       &.selected {
         background: #dfe2e5;
       }
       .ks-check {
         margin-top: 4px;
+      }
+      &.opt-disabled {
+        color: #ccc;
+        cursor: default;
       }
     }
   }
