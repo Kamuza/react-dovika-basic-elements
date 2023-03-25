@@ -48,7 +48,7 @@ const AppInputNumber = (props) => {
   } = props
   const [hasValue, setHasValue] = useState(value)
   const isFirstRender = useIsFirstRender()
-  const regex = `^(\\d+)${decimals === 0 ? '' : '?[,.]'}?(\\d{0,${decimals}})?$`
+  const regex = `^-?(\\d+)${decimals === 0 ? '' : '?[,.]'}?(\\d{0,${decimals}})?$`
   const re = new RegExp(regex)
   const [formattedValue, setFormattedValue] = useState(
     value ? value.toString() : ''

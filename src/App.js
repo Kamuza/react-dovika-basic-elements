@@ -31,6 +31,7 @@ const App = () => {
   const [date, setDate] = useState('')
   const [check, setCheck] = useState(false)
   const [fileValue, setFileValue] = useState()
+  const [inputNumber, setInputNumber] = useState('')
   const [asyncOptions, setAsyncOptions] = useState()
   const [asyncSingleVal, setAsyncSingleVal] = useState({
     label: 'Opt1',
@@ -197,12 +198,11 @@ const App = () => {
             <AppInputNumber
               title='AppInputNumber'
               icon={<AppRemixIcon icon='checkbox-blank' />}
-              onChange={(v) => console.log(v)}
-              value=''
+              onChange={(v) => setInputNumber(v)}
+              value={inputNumber}
               isClearable
               error='Esto es un error'
               required
-              readOnly
             />
             <AppFileUploader
               title='Archivo'
