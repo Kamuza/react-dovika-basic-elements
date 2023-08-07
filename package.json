@@ -1,6 +1,6 @@
 {
   "name": "react-dovika-basic-elements",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "description": "Dobika Basic Components ",
   "author": "Kamuza",
   "license": "MIT",
@@ -63,7 +63,7 @@
     "bootstrap": "4.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.26.0",
-    "node-sass": "8.*",
+   "node-sass": "^4.13.1",
     "react-bootstrap": "1.6.1",
     "react-datepicker": "4.2.0",
     "react-dom": "^17.0.2",
