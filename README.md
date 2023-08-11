@@ -7,3 +7,8 @@
 # Start yarn inside 'web' container
 # Start yarn startExample to run the server
 # Open browser and go to localhost
+
+
+## Removed node-sass
+# For update App.scss:
+# npx node-sass src/scss/App.scss src/css/App.css --include-path ./node_modules
