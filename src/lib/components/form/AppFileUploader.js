@@ -14,6 +14,7 @@ const AppFileUploader = (props) => {
     isDisabled,
     placeholder,
     error,
+    containerClassName,
     ...others
   } = props
 
@@ -22,7 +23,7 @@ const AppFileUploader = (props) => {
 
   return (
     <Container
-      className={`${isDisabled ? ' disabled' : ''}`}
+      className={`${containerClassName}${isDisabled ? ' disabled' : ''}`}
       error={error}
       htmlFor={`upload-${id}`}
     >
@@ -57,7 +58,8 @@ AppFileUploader.defaultProps = {
   btnClass: 'btn-info',
   id: 0,
   isDisabled: false,
-  placeholder: ''
+  placeholder: '',
+  containerClassName: ''
 }
 
 const Container = styled.label`

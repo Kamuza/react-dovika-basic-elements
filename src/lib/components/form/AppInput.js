@@ -44,13 +44,14 @@ const AppInput = (props) => {
     isReadOnly,
     isDisabled,
     noBorder,
+    containerClassName,
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
 
   if (!isReadOnly && !isDisabled)
     return (
-      <Container className='mb-2' hasIcon={!!icon}>
+      <Container className={containerClassName} hasIcon={!!icon}>
         <input
           type={!isPassword ? 'text' : 'password'}
           name={name}
@@ -101,7 +102,7 @@ const AppInput = (props) => {
 
   return (
     <Container
-      className={`mb-2${isDisabled ? ' disabled' : ''}`}
+      className={`${containerClassName}${isDisabled ? ' disabled' : ''}`}
       hasIcon={!!icon}
     >
       <div className={`read-only${noBorder ? ' no-border' : ''}`}>{value}</div>
@@ -119,7 +120,8 @@ AppInput.defaultProps = {
   autoFocus: false,
   append: '',
   onKeyDown: () => {},
-  ref: null
+  ref: null,
+  containerClassName: 'mb-2'
 }
 
 const Container = styled.div`

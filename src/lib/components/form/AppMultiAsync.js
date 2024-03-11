@@ -45,6 +45,7 @@ const AppMultiAsync = (props) => {
     setLabelField,
     inputMinSearch,
     required,
+    containerClassName,
     error
   } = props
   const [isLoading, setIsLoading] = useState(false)
@@ -128,7 +129,7 @@ const AppMultiAsync = (props) => {
   // < SELECT OPTIONS
 
   return (
-    <Container>
+    <Container className={containerClassName}>
       <Input
         active={selectedOptions}
         className={`${className}`}
@@ -342,7 +343,8 @@ AppMultiAsync.defaultProps = {
   setValueField: 'value',
   setLabelField: 'label',
   inputMinSearch: 3,
-  required: false
+  required: false,
+  containerClassName: ''
 }
 
 const OptGroup = styled.span`

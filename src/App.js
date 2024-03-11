@@ -235,7 +235,8 @@ const App = () => {
                   value: 2,
                   tag: '#003942',
                   bgColor: '#00a0b9',
-                  disabled: true
+                  disabled: true,
+                  padding: 200
                 }
               ]}
               title='Single Select'
@@ -249,6 +250,7 @@ const App = () => {
               error='Tiene uhj error larguísimo uy que bla bla bla bla bla bla sadfjklhsd jklhsdaf jsdfsj dhfsdjkf hdsjkfh ds'
             />
             <AppMultiSelect
+              containerClassName='mb-4'
               options={[
                 { label: 'Grupo', isOptGroup: true },
                 {
@@ -273,8 +275,10 @@ const App = () => {
                   group: 'Grupo 2',
                   disabled: true
                 },
-                { label: 'Opcion5', value: 5, group: 'Grupo 2' },
-                { label: 'Opcion6', value: 6, group: 'Grupo 2' }
+                { label: 'Opcion0', value: 5, group: 'Grupo 2', level: 0 },
+                { label: 'Opcion1', value: 5, group: 'Grupo 2', level: 1 },
+                { label: 'Opcion2', value: 5, group: 'Grupo 2', level: 2 },
+                { label: 'Opcion3', value: 6, group: 'Grupo 2', level: 3 }
               ]}
               title='Multi Select'
               icon={<AppRemixIcon icon='numbers' />}

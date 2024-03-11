@@ -15,6 +15,7 @@ const AppDatePicker = (props) => {
     title,
     placeholder,
     className,
+    containerClassName,
     icon,
     required,
     error,
@@ -89,7 +90,9 @@ const AppDatePicker = (props) => {
   return (
     <Container
       hasPointer={!typeMode}
-      className={`${className}${isDisabled ? ' disabled' : ''}`}
+      className={`${className}${
+        isDisabled ? ' disabled' : ''
+      } ${containerClassName}`}
     >
       <div className={`${hasToggleType && typeMode ? 'd-flex' : 'd-none'}`}>
         <span className={`outside${error ? ' error' : ''}`}>
@@ -199,6 +202,7 @@ AppDatePicker.defaultProps = {
   name: '',
   autoFocus: false,
   className: '',
+  containerClassName: '',
   append: '',
   isDisabled: false,
   onKeyDown: () => {},

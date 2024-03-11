@@ -44,6 +44,7 @@ const AppSingleAsync = (props) => {
     setLabelField,
     inputMinSearch,
     required,
+    containerClassName,
     error
   } = props
   const [isLoading, setIsLoading] = useState(false)
@@ -117,7 +118,7 @@ const AppSingleAsync = (props) => {
   // < SEARCHBOX
 
   return (
-    <Container>
+    <Container className={containerClassName}>
       <Input
         active={selectedOption}
         className={`${className}`}
@@ -260,7 +261,8 @@ AppSingleAsync.defaultProps = {
   setValueField: 'value',
   setLabelField: 'label',
   inputMinSearch: 3,
-  required: false
+  required: false,
+  containerClassName: ''
 }
 
 const OptGroup = styled.span`

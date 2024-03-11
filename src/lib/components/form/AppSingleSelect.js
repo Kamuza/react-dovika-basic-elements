@@ -43,6 +43,7 @@ const AppSingleSelect = (props) => {
     onChange,
     value,
     className,
+    containerClassName,
     placeholder,
     icon,
     hasSearchBox,
@@ -112,7 +113,7 @@ const AppSingleSelect = (props) => {
 
   if (isLoading) {
     return (
-      <Container>
+      <Container className={containerClassName}>
         <Input
           className={`${className}${isDisabled ? ' disabled' : ''}`}
           hasIcon={!!icon}
@@ -144,7 +145,7 @@ const AppSingleSelect = (props) => {
   }
 
   return (
-    <Container>
+    <Container className={containerClassName}>
       <Input
         active={selectedOption}
         className={`${className}${isDisabled ? ' disabled' : ''}`}
@@ -208,14 +209,20 @@ const AppSingleSelect = (props) => {
                       </li>
                     ) : (
                       <li
-                        style={
-                          opt.tag
+                        style={{
+                          ...(opt.tag
                             ? {}
                             : {
                                 backgroundColor: opt.bgColor,
                                 color: opt.fgColor
-                              }
-                        }
+                              }),
+                          ...(opt.padding
+                            ? { paddingLeft: `${opt.padding}px` }
+                            : {}),
+                          ...(opt.level
+                            ? { paddingLeft: `${10 + opt.level * 14}px` }
+                            : {})
+                        }}
                         onClick={() => !opt.disabled && handleClickOption(opt)}
                         className={`${
                           selectedOption &&
@@ -281,7 +288,8 @@ AppSingleSelect.defaultProps = {
   isOnlyValue: false,
   required: false,
   isClearable: false,
-  isDisabled: false
+  isDisabled: false,
+  containerClassName: ''
 }
 
 const OptGroup = styled.span`

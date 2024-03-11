@@ -48,13 +48,14 @@ const AppTextArea = (props) => {
     maxHeight,
     isReadOnly,
     isDisabled,
+    containerClassName,
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
 
   return (
     <Container
-      className={`mb-2${isDisabled ? ' disabled' : ''}`}
+      className={`${containerClassName}${isDisabled ? ' disabled' : ''}`}
       resize={resize}
       height={height}
       maxHeight={maxHeight}
@@ -124,6 +125,7 @@ AppTextArea.defaultProps = {
   resize: 'none',
   maxHeight: null,
   height: '80px',
+  containerClassName: 'mb-2',
   isReadOnly: false,
   isDisabled: false
 }

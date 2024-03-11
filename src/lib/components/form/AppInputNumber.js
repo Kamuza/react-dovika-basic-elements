@@ -44,6 +44,7 @@ const AppInputNumber = (props) => {
     autoFocus,
     readOnly,
     decimals,
+    containerClassName,
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
@@ -70,7 +71,7 @@ const AppInputNumber = (props) => {
   }
 
   return (
-    <Container className='mb-2' hasIcon={!!icon}>
+    <Container className={containerClassName} hasIcon={!!icon}>
       <input
         type='text'
         name={name}
@@ -129,7 +130,8 @@ AppInputNumber.defaultProps = {
   min: null,
   max: null,
   decimals: 3,
-  readOnly: false
+  readOnly: false,
+  containerClassName: 'mb-2'
 }
 
 const Container = styled.div`

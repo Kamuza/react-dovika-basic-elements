@@ -30,6 +30,7 @@ const AppCheckbox = (props) => {
     onChange,
     value,
     iconUncheck,
+    containerClassName,
     iconCheck,
     checkboxSize,
     error,
@@ -44,7 +45,7 @@ const AppCheckbox = (props) => {
       {...others}
       hasBorder={hasBorder}
       error={error}
-      className={`${isDisabled ? ' disabled' : ''}`}
+      className={`${isDisabled ? ' disabled' : ''} ${containerClassName}`}
       onClick={() => (!isDisabled ? onChange(!value) : undefined)}
     >
       {value ? (
@@ -73,7 +74,8 @@ AppCheckbox.defaultProps = {
   color: colors.primary,
   checkboxSize: 16,
   hasBorder: false,
-  isDisabled: false
+  isDisabled: false,
+  containerClassName: ''
 }
 const Container = styled.div`
   margin: 10px 0;

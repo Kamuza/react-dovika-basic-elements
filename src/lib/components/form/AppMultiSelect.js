@@ -21,6 +21,8 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *                                  isOptGroup: 'OPC. Si se incluye, se mostrará como grupo no seleccionable',
  *                                  group: 'OPC. Si se incluye, se podrá utilizar como filtro de texto para encontrar el elemento'
  *                                  disabled: 'OPC. Si se incluye, se mostrará como disabled no seleccionable'
+ *                                  padding: 'OPC. int. Si se incluye, se mostrará un padding a la izquierda de X px'
+ *                                  level: 'OPC. int. Si se incluye, multiplicará el padding por el nivel'
  *                                }
  *      onChange:                 Función que ejecutará cada vez que se ejecute un cambio.
  *      value:                    Valor seleccionado.
@@ -45,6 +47,7 @@ const AppMultiSelect = (props) => {
     onChange,
     value,
     className,
+    containerClassName,
     placeholder,
     icon,
     hasSearchBox,
@@ -90,7 +93,9 @@ const AppMultiSelect = (props) => {
         onChange(tempSelectedOptions)
       }
     } else {
-      let groupOptions = options.filter((o) => o.group === opt[setLabelField] && !o.disabled)
+      let groupOptions = options.filter(
+        (o) => o.group === opt[setLabelField] && !o.disabled
+      )
       groupOptions = _.map(groupOptions, setValueField)
       onChange(_.uniq([...groupOptions, ...selectedOptions]))
     }
@@ -143,7 +148,7 @@ const AppMultiSelect = (props) => {
 
   if (isLoading) {
     return (
-      <Container>
+      <Container className={containerClassName}>
         <Input
           className={`${className}${isDisabled ? ' disabled' : ''}`}
           hasIcon={!!icon}
@@ -177,7 +182,7 @@ const AppMultiSelect = (props) => {
   }
 
   return (
-    <Container>
+    <Container className={containerClassName}>
       <Input
         active={selectedOptions}
         className={`${className}${isDisabled ? ' disabled' : ''}`}
@@ -278,14 +283,20 @@ const AppMultiSelect = (props) => {
                       </li>
                     ) : (
                       <li
-                        style={
-                          opt.tag
+                        style={{
+                          ...(opt.tag
                             ? {}
                             : {
                                 backgroundColor: opt.bgColor,
                                 color: opt.fgColor
-                              }
-                        }
+                              }),
+                          ...(opt.padding
+                            ? { paddingLeft: `${opt.padding}px` }
+                            : {}),
+                          ...(opt.level
+                            ? { paddingLeft: `${10 + opt.level * 14}px` }
+                            : {})
+                        }}
                         onClick={() => !opt.disabled && handleClickOption(opt)}
                         className={`${
                           selectedOptions &&
@@ -348,7 +359,8 @@ AppMultiSelect.defaultProps = {
   isOnlyValue: false,
   required: false,
   isClearable: false,
-  isDisabled: false
+  isDisabled: false,
+  containerClassName: ''
 }
 
 const OptGroup = styled.span`
