@@ -159,6 +159,16 @@ const App = () => {
             <AppCheckbox onChange={(v) => setCheck(v)} value={check} hasBorder>
               Hola!
             </AppCheckbox>
+            <AppCheckbox
+              onChange={(v) => setCheck(v)}
+              value={check}
+              className=''
+            >
+              adios!
+            </AppCheckbox>
+            <AppCheckbox onChange={(v) => setCheck(v)} value={check}>
+              adios2!
+            </AppCheckbox>
             <AppTextArea
               title='AppTextArea'
               icon={<AppRemixIcon icon='checkbox-blank' />}
