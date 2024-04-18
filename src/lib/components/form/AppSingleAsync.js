@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
+import ReactDOMServer from 'react-dom/server'
 import defaultTranslations from '../../constants/defaultTranslations'
 import defaultColors from '../../constants/defaultColors'
 import AppRemixIcon from '../icon/AppRemixIcon'
@@ -173,7 +174,7 @@ const AppSingleAsync = (props) => {
               <SearchInput
                 type='text'
                 className='w-100'
-                placeholder={translations.search}
+                placeholder={ReactDOMServer.renderToString(translations.search)}
                 onKeyDown={keyUpSearchBox}
                 onChange={(e) =>
                   _.debounce(changeSearchBox, 800)(e.target.value)
