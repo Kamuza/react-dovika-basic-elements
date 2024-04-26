@@ -21,6 +21,7 @@ import AppCard from './components/layout/AppCard'
 
 import AppModal from './components/modal/AppModal'
 import AppDeleteModal from './components/modal/AppDeleteModal'
+import AppHelpModal from './components/modal/AppHelpModal'
 
 import DovikaBasicLocale from './components/dovikaBasicLocale'
 import DovikaBasicColors from './components/dovikaBasicColors'
@@ -45,6 +46,7 @@ export {
   AppCard,
   AppModal,
   AppDeleteModal,
+  AppHelpModal,
   AppNoInfo,
   DovikaBasicLocale,
   DovikaBasicColors,
