@@ -35,23 +35,23 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *   ]
  * */
 
-const AppSelect = (props) => {
+export default function AppSelect(props) {
   const {
     title,
     options,
     onChange,
     value,
-    className,
-    placeholder,
+    className = 'pointer',
+    placeholder = 'Seleccionar',
     icon,
-    isMulti,
-    hasSearchBox,
-    hasSelectOptions,
-    setValueField,
-    setLabelField,
+    isMulti = false,
+    hasSearchBox = false,
+    hasSelectOptions = false,
+    setValueField = 'value',
+    setLabelField = 'label',
     isClearable,
     isLoading,
-    isOnlyValue,
+    isOnlyValue = false,
     required,
     error
   } = props
@@ -342,19 +342,6 @@ const AppSelect = (props) => {
       )}
     </Container>
   )
-}
-
-export default AppSelect
-AppSelect.defaultProps = {
-  className: 'pointer',
-  placeholder: 'Seleccionar',
-  isMulti: false,
-  hasSearchBox: false,
-  hasSelectOptions: false,
-  value: undefined,
-  setValueField: 'value',
-  setLabelField: 'label',
-  isOnlyValue: false
 }
 
 const OptGroup = styled.span`

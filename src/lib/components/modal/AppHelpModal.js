@@ -5,14 +5,14 @@ import defaultColors from '../../constants/defaultColors'
 
 const colors = window.dovikaBasicElementsColors || defaultColors
 
-const AppHelpModal = (props) => {
+export default function AppHelpModal(props) {
   const {
     children,
-    size,
+    size = 'md',
     iconClassName,
-    title,
+    title = 'Ayuda',
     customSelector,
-    confirmBtnText,
+    confirmBtnText = 'Entendido',
     ...others
   } = props
   const [show, setShow] = useState(false)
@@ -46,13 +46,4 @@ const AppHelpModal = (props) => {
       )}
     </>
   )
-}
-
-export default AppHelpModal
-
-AppHelpModal.defaultProps = {
-  size: 'md',
-  className: '',
-  title: 'Ayuda',
-  confirmBtnText: 'Entendido'
 }

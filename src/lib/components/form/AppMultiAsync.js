@@ -32,20 +32,20 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *   ]
  * */
 
-const AppMultiAsync = (props) => {
+export default function AppMultiAsync(props) {
   const {
     title,
     asyncFunction,
     onChange,
-    value,
-    className,
+    value = null,
+    className = 'pointer',
     placeholder,
     icon,
-    setValueField,
-    setLabelField,
-    inputMinSearch,
-    required,
-    containerClassName,
+    setValueField = 'value',
+    setLabelField = 'label',
+    inputMinSearch = 3,
+    required = false,
+    containerClassName = '',
     error
   } = props
   const [isLoading, setIsLoading] = useState(false)
@@ -334,17 +334,6 @@ const AppMultiAsync = (props) => {
       )}
     </Container>
   )
-}
-
-export default AppMultiAsync
-AppMultiAsync.defaultProps = {
-  className: 'pointer',
-  value: null,
-  setValueField: 'value',
-  setLabelField: 'label',
-  inputMinSearch: 3,
-  required: false,
-  containerClassName: ''
 }
 
 const OptGroup = styled.span`

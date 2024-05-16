@@ -27,28 +27,28 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      others (OPC):           Añadirá cualquiero otro campo al INPUT.
  *   ]
  * */
-const AppTextArea = (props) => {
+export default function AppTextArea(props) {
   const {
     title,
     onChange,
     value,
     placeholder,
     icon,
-    name,
-    onKeyDown,
+    name = '',
+    onKeyDown = () => {},
     onPressKey,
     onPressKeyList,
     required,
     error,
     isClearable,
-    append,
-    autoFocus,
-    resize,
-    height,
-    maxHeight,
-    isReadOnly,
-    isDisabled,
-    containerClassName,
+    append = '',
+    autoFocus = false,
+    resize = 'none',
+    height = '80px',
+    maxHeight = null,
+    isReadOnly = false,
+    isDisabled = false,
+    containerClassName = 'mb-2',
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
@@ -114,20 +114,6 @@ const AppTextArea = (props) => {
       {append && <div className='input-append'>{append}</div>}
     </Container>
   )
-}
-
-export default AppTextArea
-AppTextArea.defaultProps = {
-  name: '',
-  autoFocus: false,
-  append: '',
-  onKeyDown: () => {},
-  resize: 'none',
-  maxHeight: null,
-  height: '80px',
-  containerClassName: 'mb-2',
-  isReadOnly: false,
-  isDisabled: false
 }
 
 const Container = styled.div`

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import defaultColors from '../../constants/defaultColors'
@@ -24,19 +24,19 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      others (OPC):           Añadirá cualquiero otro campo al INPUT.
  *   ]
  **/
-const AppCheckbox = (props) => {
+export default function AppCheckbox(props) {
   const {
     children,
     onChange,
     value,
-    iconUncheck,
-    containerClassName,
-    iconCheck,
-    checkboxSize,
+    iconUncheck = 'checkbox-blank',
+    containerClassName = '',
+    iconCheck = 'checkbox',
+    checkboxSize = 16,
     error,
-    hasBorder,
-    isDisabled,
-    color,
+    hasBorder = false,
+    isDisabled = false,
+    color = colors.primary,
     ...others
   } = props
 
@@ -66,17 +66,6 @@ const AppCheckbox = (props) => {
   )
 }
 
-export default AppCheckbox
-
-AppCheckbox.defaultProps = {
-  iconCheck: 'checkbox',
-  iconUncheck: 'checkbox-blank',
-  color: colors.primary,
-  checkboxSize: 16,
-  hasBorder: false,
-  isDisabled: false,
-  containerClassName: ''
-}
 const Container = styled.div`
   margin: 10px 0;
   display: flex;

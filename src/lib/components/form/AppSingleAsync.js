@@ -32,20 +32,20 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *   ]
  * */
 
-const AppSingleAsync = (props) => {
+export default function AppSingleAsync(props) {
   const {
     title,
     asyncFunction,
     onChange,
-    value,
-    className,
-    placeholder,
+    value = null,
+    className = 'pointer',
+    placeholder = 'Seleccionar',
     icon,
-    setValueField,
-    setLabelField,
-    inputMinSearch,
-    required,
-    containerClassName,
+    setValueField = 'value',
+    setLabelField = 'label',
+    inputMinSearch = 3,
+    required = false,
+    containerClassName = '',
     error
   } = props
   const [isLoading, setIsLoading] = useState(false)
@@ -250,20 +250,6 @@ const AppSingleAsync = (props) => {
       )}
     </Container>
   )
-}
-
-export default AppSingleAsync
-AppSingleAsync.defaultProps = {
-  className: 'pointer',
-  placeholder: 'Seleccionar',
-  loadingPlaceholder: 'Cargando...',
-  hasSelectOptions: false,
-  value: null,
-  setValueField: 'value',
-  setLabelField: 'label',
-  inputMinSearch: 3,
-  required: false,
-  containerClassName: ''
 }
 
 const OptGroup = styled.span`

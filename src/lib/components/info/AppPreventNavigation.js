@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import { Prompt } from 'react-router-dom'
 
-const AppPreventNavigation = (props) => {
-  const { message } = props
+export default function AppPreventNavigation(props) {
+  const {
+    message = '¿Seguro que quiere salir de la página? Se perderán los datos no guardados.'
+  } = props
   useEffect(() => {
     let isSubscribed = true
     if (isSubscribed) window.onbeforeunload = () => true
@@ -13,10 +15,4 @@ const AppPreventNavigation = (props) => {
   }, [])
 
   return <Prompt when message={message} />
-}
-
-export default AppPreventNavigation
-AppPreventNavigation.defaultProps = {
-  message:
-    '¿Seguro que quiere salir de la página? Se perderán los datos no guardados.'
 }

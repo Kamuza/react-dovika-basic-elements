@@ -8,35 +8,35 @@ import defaultColors from '../../constants/defaultColors'
 import AppRemixIcon from '../icon/AppRemixIcon'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
-const AppDatePicker = (props) => {
+export default function AppDatePicker(props){
   const {
     value,
     onChange,
     title,
     placeholder,
-    className,
-    containerClassName,
-    icon,
+    className = '',
+    containerClassName = '',
+    icon = <AppRemixIcon icon='calendar' />,
     required,
     error,
     isClearable,
-    isDisabled,
-    minDate,
-    maxDate,
-    dateFormat,
-    displayDateFormat,
-    filterDate,
-    dropdownMode,
-    showMonthDropdown,
-    showYearDropdown,
-    showMonthYearPicker,
-    showYearPicker,
-    hasToggleType,
-    isTypeMode,
-    mask,
-    locale,
-    popperClassName,
-    popperContainer,
+    isDisabled = false,
+    minDate = false,
+    maxDate = false,
+    dateFormat = 'dd/MM/yyyy',
+    displayDateFormat = 'DD/MM/YYYY',
+    filterDate = false,
+    dropdownMode = 'scroll',
+    showMonthDropdown = false,
+    showYearDropdown = false,
+    showMonthYearPicker = false,
+    showYearPicker = false,
+    hasToggleType = false,
+    isTypeMode = false,
+    mask = '99/99/9999',
+    locale = 'en',
+    popperClassName = 'react-datepicker-popper-100',
+    popperContainer = ({ children }) => createPortal(children, document.body),
     ...others
   } = props
 
@@ -197,33 +197,6 @@ const AppDatePicker = (props) => {
   )
 }
 
-export default AppDatePicker
-AppDatePicker.defaultProps = {
-  name: '',
-  autoFocus: false,
-  className: '',
-  containerClassName: '',
-  append: '',
-  isDisabled: false,
-  onKeyDown: () => {},
-  icon: <AppRemixIcon icon='calendar' />,
-  showMonthDropdown: false,
-  showYearDropdown: false,
-  showMonthYearPicker: false,
-  showYearPicker: false,
-  dateFormat: 'dd/MM/yyyy',
-  displayDateFormat: 'DD/MM/YYYY',
-  minDate: false,
-  maxDate: false,
-  filterDate: false,
-  dropdownMode: 'scroll',
-  hasToggleType: false,
-  isTypeMode: false,
-  mask: '99/99/9999',
-  locale: 'en',
-  popperClassName: 'react-datepicker-popper-100',
-  popperContainer: ({ children }) => createPortal(children, document.body)
-}
 
 const Container = styled.div`
   display: flex;

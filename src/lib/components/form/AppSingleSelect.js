@@ -37,24 +37,24 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *   ]
  * */
 
-const AppSingleSelect = (props) => {
+export default function AppSingleSelect(props) {
   const {
     title,
     options,
     onChange,
-    value,
-    className,
-    containerClassName,
-    placeholder,
+    value = null,
+    className = '',
+    containerClassName = '',
+    placeholder = 'Seleccionar',
     icon,
-    hasSearchBox,
-    setValueField,
-    setLabelField,
-    isClearable,
-    isDisabled,
+    hasSearchBox = false,
+    setValueField = 'value',
+    setLabelField = 'label',
+    isClearable = false,
+    isDisabled = false,
     isLoading,
-    loadingPlaceholder,
-    required,
+    loadingPlaceholder = 'Cargando...',
+    required = false,
     error
   } = props
   const isFirstRender = useIsFirstRender()
@@ -276,23 +276,6 @@ const AppSingleSelect = (props) => {
       )}
     </Container>
   )
-}
-
-export default AppSingleSelect
-AppSingleSelect.defaultProps = {
-  className: '',
-  placeholder: 'Seleccionar',
-  loadingPlaceholder: 'Cargando...',
-  hasSearchBox: false,
-  hasSelectOptions: false,
-  value: null,
-  setValueField: 'value',
-  setLabelField: 'label',
-  isOnlyValue: false,
-  required: false,
-  isClearable: false,
-  isDisabled: false,
-  containerClassName: ''
 }
 
 const OptGroup = styled.span`

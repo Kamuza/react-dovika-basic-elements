@@ -4,22 +4,22 @@ import defaultColors from '../../constants/defaultColors'
 import { AppRemixIcon } from '../../index'
 const colors = window.dovikaBasicElementsColors || defaultColors
 
-const AppModal = (props) => {
+export default function AppModal(props) {
   const {
-    trigger,
+    trigger = null,
     show,
     type,
-    size,
+    size = 'md',
     title,
     children,
     isConfirmBtn,
     isCancelBtn,
     confirmBtnText,
     cancelBtnText,
-    onClose,
+    onClose = () => {},
     onConfirm,
-    isConfirmDisabled,
-    isCloseButton,
+    isConfirmDisabled = false,
+    isCloseButton = true,
     ...others
   } = props
   const [showModal, setShowModal] = useState()
@@ -92,14 +92,4 @@ const AppModal = (props) => {
       </Modal>
     </>
   )
-}
-
-export default AppModal
-
-AppModal.defaultProps = {
-  trigger: null,
-  size: 'md',
-  isConfirmDisabled: false,
-  isCloseButton: true,
-  onClose: () => {}
 }

@@ -1,14 +1,14 @@
 import React from 'react'
 
-const AppCard = (props) => {
+export default function AppCard(props) {
   const {
-    header,
+    header = null,
     children,
-    footer,
+    footer = null,
     className,
-    bodyClassName,
-    headerClassName,
-    footerClassName,
+    bodyClassName = '',
+    headerClassName = '',
+    footerClassName = '',
     ...others
   } = props
   return (
@@ -24,14 +24,4 @@ const AppCard = (props) => {
       )}
     </div>
   )
-}
-
-export default AppCard
-AppCard.defaultProps = {
-  header: null,
-  footer: null,
-  className: '',
-  bodyClassName: '',
-  headerClassName: '',
-  footerClassName: ''
 }

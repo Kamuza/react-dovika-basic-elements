@@ -6,16 +6,16 @@ import defaultTranslations from '../../constants/defaultTranslations'
 
 const colors = window.dovikaBasicElementsColors || defaultColors
 
-const AppDeleteModal = (props) => {
+export default function AppDeleteModal(props) {
   const {
     show,
-    size,
-    title,
+    size = 'md',
+    title = 'Confirmar eliminar',
     text,
     onClose,
     onConfirm,
-    sensitive,
-    sensitiveWord
+    sensitive = false,
+    sensitiveWord = 'delete me'
   } = props
   const handleClose = () => onClose(false)
   const handleConfirm = () => onConfirm()
@@ -80,13 +80,4 @@ const AppDeleteModal = (props) => {
       </Modal>
     </>
   )
-}
-
-export default AppDeleteModal
-
-AppDeleteModal.defaultProps = {
-  size: 'md',
-  title: 'Confirmar eliminar',
-  sensitive: false,
-  sensitiveWord: 'delete me'
 }

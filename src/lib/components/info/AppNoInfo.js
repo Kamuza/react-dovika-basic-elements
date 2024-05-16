@@ -5,17 +5,17 @@ import AppRemixIcon from '../icon/AppRemixIcon'
 
 const colors = window.dovikaBasicElementsColors || defaultColors
 
-const AppNoInfo = (props) => {
+export default function AppNoInfo(props) {
   const {
     icon,
     text,
-    color,
-    spin,
+    color = colors.primary,
+    spin = false,
     button,
     buttonOnClick,
     minHeight,
-    iconSize,
-    separation
+    iconSize = 34,
+    separation = '20px'
   } = props
 
   return (
@@ -41,14 +41,6 @@ const AppNoInfo = (props) => {
       )}
     </Container>
   )
-}
-
-export default AppNoInfo
-AppNoInfo.defaultProps = {
-  color: colors.primary,
-  iconSize: 34,
-  spin: false,
-  separation: '20px'
 }
 
 const Container = styled.div`

@@ -26,30 +26,32 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      others (OPC):           Añadirá cualquiero otro campo al INPUT.
  *   ]
  **/
-const AppInputNumber = (props) => {
+export default function AppInputNumber(props) {
   const {
     title,
     onChange,
     value,
     placeholder,
     icon,
-    name,
-    onKeyDown,
+    name = '',
+    onKeyDown = () => {},
     onPressKey,
     onPressKeyList,
     required,
     error,
     isClearable,
-    append,
-    autoFocus,
-    readOnly,
-    decimals,
-    containerClassName,
+    append = '',
+    autoFocus = false,
+    readOnly = false,
+    decimals = 3,
+    containerClassName = 'mb-2',
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
   const isFirstRender = useIsFirstRender()
-  const regex = `^-?(\\d+)${decimals === 0 ? '' : '?[,.]'}?(\\d{0,${decimals}})?$`
+  const regex = `^-?(\\d+)${
+    decimals === 0 ? '' : '?[,.]'
+  }?(\\d{0,${decimals}})?$`
   const re = new RegExp(regex)
   const [formattedValue, setFormattedValue] = useState(
     value ? value.toString() : ''
@@ -119,19 +121,6 @@ const AppInputNumber = (props) => {
       {append && <div className='input-append'>{append}</div>}
     </Container>
   )
-}
-
-export default AppInputNumber
-AppInputNumber.defaultProps = {
-  name: '',
-  autoFocus: false,
-  append: '',
-  onKeyDown: () => {},
-  min: null,
-  max: null,
-  decimals: 3,
-  readOnly: false,
-  containerClassName: 'mb-2'
 }
 
 const Container = styled.div`

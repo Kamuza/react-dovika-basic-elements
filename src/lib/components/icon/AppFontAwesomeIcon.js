@@ -1,7 +1,14 @@
 import React from 'react'
 
-const AppFontAwesomeIcon = (props) => {
-  const { icon, variant, size, color, className, ...others } = props
+export default function AppFontAwesomeIcon(props) {
+  const {
+    icon = 'square',
+    variant = 's',
+    size,
+    color,
+    className = '',
+    ...others
+  } = props
   return (
     <i
       className={`${className} fa${variant} fa-${icon}`}
@@ -9,10 +16,4 @@ const AppFontAwesomeIcon = (props) => {
       {...others}
     />
   )
-}
-export default AppFontAwesomeIcon
-AppFontAwesomeIcon.defaultProps = {
-  icon: 'square',
-  variant: 's',
-  className: ''
 }

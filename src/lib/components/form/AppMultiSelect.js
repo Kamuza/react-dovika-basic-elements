@@ -40,25 +40,25 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *   ]
  * */
 
-const AppMultiSelect = (props) => {
+export default function AppMultiSelect(props) {
   const {
     title,
     options,
     onChange,
-    value,
-    className,
-    containerClassName,
+    value = null,
+    className = '',
+    containerClassName = '',
     placeholder,
     icon,
-    hasSearchBox,
-    hasSelectOptions,
-    setValueField,
-    setLabelField,
-    isClearable,
-    isDisabled,
+    hasSearchBox = false,
+    hasSelectOptions = false,
+    setValueField = 'value',
+    setLabelField = 'label',
+    isClearable = false,
+    isDisabled = false,
     isLoading,
     loadingPlaceholder,
-    required,
+    required = false,
     error
   } = props
   const isFirstRender = useIsFirstRender()
@@ -346,21 +346,6 @@ const AppMultiSelect = (props) => {
       )}
     </Container>
   )
-}
-
-export default AppMultiSelect
-AppMultiSelect.defaultProps = {
-  className: '',
-  hasSearchBox: false,
-  hasSelectOptions: false,
-  value: null,
-  setValueField: 'value',
-  setLabelField: 'label',
-  isOnlyValue: false,
-  required: false,
-  isClearable: false,
-  isDisabled: false,
-  containerClassName: ''
 }
 
 const OptGroup = styled.span`

@@ -1,7 +1,15 @@
 import React from 'react'
 
-const AppRemixIcon = (props) => {
-  const { icon, size, color, filled, noVariants, className, ...others } = props
+export default function AppRemixIcon(props) {
+  const {
+    icon = 'checkbox-blank',
+    size,
+    color,
+    filled = false,
+    noVariants = false,
+    className = '',
+    ...others
+  } = props
   return (
     <i
       className={`${className} ri-${icon}${
@@ -11,11 +19,4 @@ const AppRemixIcon = (props) => {
       {...others}
     />
   )
-}
-export default AppRemixIcon
-AppRemixIcon.defaultProps = {
-  icon: 'checkbox-blank',
-  filled: false,
-  noVariants: false,
-  className: ''
 }

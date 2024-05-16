@@ -6,9 +6,16 @@ import defaultColors from '../../constants/defaultColors'
 
 const colors = window.dovikaBasicElementsColors || defaultColors
 
-const AppImageCropper = (props) => {
-  const { image, width, height, onSave, cropShape, showDeleteButton, bgImage } =
-    props
+export default function AppImageCropper(props) {
+  const {
+    image,
+    width,
+    height,
+    onSave,
+    cropShape,
+    showDeleteButton = true,
+    bgImage = require('../../images/noUser.png')
+  } = props
   const [isEditingAvatar, setIsEditingAvatar] = useState(false)
   const [isImgHover, setIsImgHover] = useState(false)
   const [isImgLoading, setIsImgLoading] = useState(false)
@@ -235,12 +242,6 @@ const AppImageCropper = (props) => {
       <canvas className='d-none' ref={canvasRef} />
     </>
   )
-}
-
-export default AppImageCropper
-AppImageCropper.defaultProps = {
-  bgImage: require('../../images/noUser.png'),
-  showDeleteButton: true
 }
 
 const Container = styled.div`

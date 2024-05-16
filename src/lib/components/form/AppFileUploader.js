@@ -3,18 +3,18 @@ import defaultTranslations from '../../constants/defaultTranslations'
 import styled from 'styled-components'
 import colors from '../colors'
 
-const AppFileUploader = (props) => {
+export default function AppFileUploader(props) {
   const {
-    id,
+    id = 0,
     value,
-    isMulti,
+    isMulti = false,
     btnText,
-    btnClass,
+    btnClass = 'btn-info',
     onChange,
-    isDisabled,
-    placeholder,
+    isDisabled = false,
+    placeholder = '',
     error,
-    containerClassName,
+    containerClassName = '',
     ...others
   } = props
 
@@ -49,17 +49,6 @@ const AppFileUploader = (props) => {
       </div>
     </Container>
   )
-}
-
-export default AppFileUploader
-
-AppFileUploader.defaultProps = {
-  isMulti: false,
-  btnClass: 'btn-info',
-  id: 0,
-  isDisabled: false,
-  placeholder: '',
-  containerClassName: ''
 }
 
 const Container = styled.label`

@@ -1,7 +1,7 @@
 import { store as alert } from 'react-notifications-component'
 
-const AppNotificationAlert = (props) => {
-  const { title, message, type, position, duration, ...others } = props
+export default function AppNotificationAlert(props) {
+  const { title, message, type, position, duration = 5000, ...others } = props
 
   if (type) {
     alert.addNotification({
@@ -21,9 +21,4 @@ const AppNotificationAlert = (props) => {
     })
   }
   return null
-}
-
-export default AppNotificationAlert
-AppNotificationAlert.defaultProps = {
-  duration: 5000
 }

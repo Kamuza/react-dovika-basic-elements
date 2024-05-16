@@ -24,27 +24,27 @@ const colors = window.dovikaBasicElementsColors || defaultColors
  *      others (OPC):           Añadirá cualquiero otro campo al INPUT.
  *   ]
  **/
-const AppInput = (props) => {
+export default function AppInput(props) {
   const {
     title,
     onChange,
     value,
     placeholder,
     icon,
-    name,
-    onKeyDown,
+    name = '',
+    onKeyDown = () => {},
     onPressKey,
     onPressKeyList,
     required,
     error,
     isClearable,
-    append,
-    autoFocus,
+    append = '',
+    autoFocus = false,
     isPassword,
     isReadOnly,
     isDisabled,
     noBorder,
-    containerClassName,
+    containerClassName = 'mb-2',
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
@@ -112,16 +112,6 @@ const AppInput = (props) => {
       {icon && <span className='input-icon-outside'>{icon}</span>}
     </Container>
   )
-}
-
-export default AppInput
-AppInput.defaultProps = {
-  name: '',
-  autoFocus: false,
-  append: '',
-  onKeyDown: () => {},
-  ref: null,
-  containerClassName: 'mb-2'
 }
 
 const Container = styled.div`
