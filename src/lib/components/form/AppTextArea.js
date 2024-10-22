@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import defaultColors from '../../constants/defaultColors'
@@ -52,6 +52,10 @@ export default function AppTextArea(props) {
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
+
+  useEffect(() => {
+    setHasValue(value)
+  }, [value])
 
   return (
     <Container

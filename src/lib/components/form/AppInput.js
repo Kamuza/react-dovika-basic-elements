@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import defaultColors from '../../constants/defaultColors'
@@ -48,6 +48,10 @@ export default function AppInput(props) {
     ...others
   } = props
   const [hasValue, setHasValue] = useState(value)
+
+  useEffect(() => {
+    setHasValue(value);
+  }, [value]);
 
   if (!isReadOnly && !isDisabled)
     return (

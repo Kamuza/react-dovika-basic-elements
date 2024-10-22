@@ -58,6 +58,10 @@ export default function AppInputNumber(props) {
   )
 
   useEffect(() => {
+    setHasValue(value);
+  }, [value]);
+
+  useEffect(() => {
     if (value) setFormattedValue(value.toString())
   }, [value])
 
