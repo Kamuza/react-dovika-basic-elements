@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useMemo } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import defaultTranslations from '../../constants/defaultTranslations'
@@ -128,6 +128,12 @@ export default function AppMultiAsync(props) {
   const deselectAll = useCallback(() => onChange([]), [])
   // < SELECT OPTIONS
 
+  const debouncedSearch = useMemo(() => {
+    return _.debounce((input) => {
+      changeSearchBox(input)
+    }, 800)
+  }, [changeSearchBox])
+
   return (
     <Container className={containerClassName}>
       <Input
@@ -194,9 +200,7 @@ export default function AppMultiAsync(props) {
                 className='w-100'
                 placeholder={ReactDOMServer.renderToString(translations.search)}
                 onKeyDown={keyUpSearchBox}
-                onChange={(e) =>
-                  _.debounce(changeSearchBox, 800)(e.target.value)
-                }
+                onChange={(e) => debouncedSearch(e.target.value)}
                 autoFocus
               />
             </div>
