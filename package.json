@@ -1,6 +1,6 @@
 {
   "name": "react-dovika-basic-elements",
-  "version": "1.6.9",
+  "version": "2.0.0",
   "description": "Dobika Basic Components ",
   "author": "Kamuza",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "Kamuza/react-dovika-basic-elements"
   },
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
+  "module": "dist/index.js",
   "source": "src/index.js",
   "engines": {
     "node": ">=10"
